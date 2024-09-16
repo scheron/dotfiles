@@ -1,5 +1,10 @@
 gui:
   language: en
+  border: single
+  authorColors:
+    'Oleg': 'yellow'
+    'infected-by-js': 'yellow'
+    '*': 'default'
 os:
   open: 'nvr --remote {{filename}}'
   editPreset: 'nvim'
