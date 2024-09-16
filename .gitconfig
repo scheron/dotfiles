@@ -1,0 +1,19 @@
+[user]
+	name = Sir Oleg
+	email = infectedbyjs@gmail.com
+[color]
+	ui = true
+[push]
+	followTags = true
+	autoSetupRemote = true
+[help]
+	autocorrect = 1
+[status]
+  showUntrackedFiles = all
+[core]
+	fileMode = false
+	editor = nvim
+[init]
+	defaultBranch = main
+[rerere]
+	enabled = true
