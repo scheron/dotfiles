@@ -1,0 +1,5 @@
+gui:
+  language: en
+os:
+  open: 'nvr --remote {{filename}}'
+  editPreset: 'nvim'
