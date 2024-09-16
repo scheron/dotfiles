@@ -1,0 +1,20 @@
+{
+  "Create vue script with setup": {
+    "scope": "vue, typescript, typescriptvue",
+    "prefix": "tssetup",
+    "body": [
+      "<script lang='ts'>",
+      "import { $1 } from 'vue'",
+      "</script>",
+      "",
+      "<script lang='ts' setup>",
+      " $2",
+      "</script>",
+      "",
+      "<template>",
+      "  <div>$2${TM_FILENAME_BASE}</div>",
+      "</template>"
+    ],
+    "description": "Create vue script with setup attribute"
+  }
+}

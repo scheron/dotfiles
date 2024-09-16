@@ -1,0 +1,199 @@
+{
+  // APC CUSTOMIZE++
+  "window.titleBarStyle": "native",
+  "apc.menubar.compact": true,
+  "apc.header": {
+    "height": 30
+  },
+  "apc.sidebar.titlebar": {
+    "height": 30
+  },
+  "apc.statusBar": {
+    "position": "editor-bottom",
+    "height": 30,
+  },
+  "apc.listRow": {
+    "lists": [
+      "customview-tree",
+      "results",
+      "open-editors",
+      "explorer-folders-view",
+      "outline-tree",
+      "quick-input-list",
+      "tree"
+    ],
+    "height": 20,
+    "fontSize": 16
+  },
+  "apc.imports": [
+    "file://${userHome}/.vscode/extensions/brandonkirbyson.vscode-animations-2.0.3/dist/updateHandler.js"
+  ],
+  "apc.electron": {
+    "frame": false,
+    "transparent": true,
+    "titleBarStyle": "hiddenInset",
+    "vibrancy": "ultra-dark",
+    "opacity": 0.96,
+    "visualEffectState": "active"
+  },
+  "apc.font.family": "SauceCodePro Nerd Font Mono",
+  "apc.monospace.font.family": "ZedMono Nerd Font Mono",
+  "apc.activityBar": {
+    "position": "bottom",
+    "size": 30,
+    "itemSize": 30
+  },
+  "apc.stylesheet": {
+    ".sidebar .title-label": "padding: 0 !important;",
+    ".quick-input-widget.show-file-icons, .editor-widget.find-widget": "box-shadow: none !important;",
+    ".quick-input-widget": "transform: translateY(-50%) !important; top: 50% !important; box-shadow: 0px 8px 20px rgba(0, 0, 0, .45) !important; backdrop-filter: blur(3px) !important; border-radius: 8px !important;",
+  },
+  "animations.Install-Method": "Apc Customize UI++",
+  // GIT
+  "diffEditor.ignoreTrimWhitespace": false,
+  "diffEditor.renderSideBySide": true,
+  "git-graph.commitDetailsView.location": "Docked to Bottom",
+  "git-graph.dialog.addTag.type": "Lightweight",
+  "git-graph.graph.style": "angular",
+  "git-graph.graph.uncommittedChanges": "Open Circle at the Checked Out Commit",
+  "git-graph.referenceLabels.alignment": "Branches (aligned to the graph) & Tags (on the right)",
+  "git-graph.repository.commits.fetchAvatars": true,
+  "git.openRepositoryInParentFolders": "never",
+  "workbench.sideBar.location": "right",
+  // COMMON
+  "javascript.preferences.renameMatchingJsxTags": false,
+  "typescript.preferences.renameMatchingJsxTags": false,
+  "window.commandCenter": false,
+  "editor.formatOnSave": false,
+  "prettier.requireConfig": true,
+  "prettier.useEditorConfig": false,
+  "files.autoSaveWhenNoErrors": true,
+  "editor.accessibilitySupport": "off",
+  "extensions.ignoreRecommendations": true,
+  "cSpell.userWords": [
+    "abortable",
+    "aggr",
+    "clsx",
+    "composables",
+    "endregion",
+    "filedata",
+    "Finres",
+    "maxt",
+    "pinia",
+    "unnessasery",
+    "vueuse"
+  ],
+  "terminal.explorerKind": "both",
+  "terminal.integrated.env.osx": {
+    "FIG_NEW_SESSION": "1"
+  },
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "[jsonc]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[vue]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "supermaven.enableFixWithSupermaven": true,
+  "workbench.iconTheme": "bearded-icons",
+  "workbench.colorTheme": "Bearded Theme Arc Blueberry",
+  // VIM
+  "vim.leader": "<space>",
+  "editor.lineNumbers": "relative",
+  "vim.easymotion": true, // activate <leader><leader> + KEY
+  "vim.incsearch": true,
+  "vim.hlsearch": true,
+  "vim.foldfix": true,
+  "vim.insertModeKeyBindings": [
+    { "before": [ "j", "j" ], "after": [ "<esc>" ] },
+    { "before": [ "<C-i>" ], "commands": [ "editor.action.triggerSuggest" ] },
+  ],
+  "vim.normalModeKeyBindingsNonRecursive": [
+    // SWITCH B/W BUFFERS
+    { "before": [ "<S-h>" ], "commands": [ ":bprevious" ] },
+    { "before": [ "<S-l>" ], "commands": [ ":bnext" ] },
+    // SPLITS
+    { "before": [ "leader", "v" ], "commands": [ ":vsplit" ] },
+    { "before": [ "leader", "s" ], "commands": [ ":split" ] },
+    // PANES
+    { "before": [ "leader", "h" ], "commands": [ "workbench.action.focusLeftGroup" ] },
+    { "before": [ "leader", "j" ], "commands": [ "workbench.action.focusBelowGroup" ] },
+    { "before": [ "leader", "k" ], "commands": [ "workbench.action.focusAboveGroup" ] },
+    { "before": [ "leader", "l" ], "commands": [ "workbench.action.focusRightGroup" ] },
+    // NICE TO HAVE
+    { "before": [ "leader", "w" ], "commands": [ ":w!" ] },
+    { "before": [ "leader", "q" ], "commands": [ ":q!" ] },
+    { "before": [ "leader", "x" ], "commands": [ ":x!" ] },
+    { "before": [ "[", "d" ], "commands": [ "editor.action.marker.prev" ] },
+    { "before": [ "]", "d" ], "commands": [ "editor.action.marker.next" ] },
+    { "before": [ "<leader>", "a" ], "commands": [ "editor.action.quickFix" ] },
+    { "before": [ "leader", "f" ], "commands": [ "workbench.action.quickOpen" ] },
+    { "before": [ "leader", "p" ], "commands": [ "editor.action.formatDocument" ] },
+    { "before": [ "g", "h" ], "commands": [ "editor.action.showDefinitionPreviewHover" ] },
+    // QUALITY OF LIFE
+    { "before": [ "<leader>", "o", ], "commands": [ "editor.action.organizeImports" ] },
+    { "before": [ "<leader>", "r" ], "commands": [ "editor.action.rename" ] },
+    { "before": [ "<leader>", "d" ], "commands": [ "editor.action.revealDefinition" ] },
+    { "before": [ "<leader>", "D", ], "commands": [ "editor.action.goToDeclaration" ] },
+    { "before": [ "<leader>", "i" ], "commands": [ "editor.action.showDefinitionPreviewHover" ] },
+    { "before": [ "<leader>", "e" ], "commands": [ "workbench.explorer.fileView.focus", "workbench.files.action.showActiveFileInExplorer" ] },
+  ],
+  "vim.visualModeKeyBindings": [
+    // STAY IN VISUAL MODE WHILE INDENTING
+    { "before": [ "<" ], "commands": [ "editor.action.outdentLines" ] },
+    { "before": [ ">" ], "commands": [ "editor.action.indentLines" ] },
+    // MOVE SELECTED LINES WHILE STAYING IN VISUAL MODE
+    { "before": [ "J" ], "commands": [ "editor.action.moveLinesDownAction" ] },
+    { "before": [ "K" ], "commands": [ "editor.action.moveLinesUpAction" ] },
+    // TOGGLE COMMENT SELECTION
+    { "before": [ "leader", "c" ], "commands": [ "editor.action.commentLine" ] }
+  ],
+  "vim.handleKeys": {
+    "<C-a>": false,
+    "<C-f>": false
+  },
+  "extensions.experimental.affinity": {
+    "vscodevim.vim": 1,
+    "asvetliakov.vscode-neovim": 1
+  },
+  "editor.suggest.insertMode": "insert",
+  "editor.fontFamily": "MesloLGS Nerd Font, Geist Mono, SauceCodePro Nerd Font Mono, Victor Mono, FiraCode Nerd Font Mono, Monoid Nerd Font Mono, ZedMono Nerd Font, JetBrainsMono Nerd Font Mono, Iosevka",
+  "terminal.integrated.fontFamily": "MesloLGS Nerd Font",
+  "terminal.integrated.fontSize": 15,
+  "editor.fontSize": 16,
+  "editor.lineHeight": 1.6,
+  "editor.glyphMargin": false,
+  "editor.minimap.enabled": false,
+  "explorer.compactFolders": false,
+  "editor.scrollbar.horizontal": "hidden",
+  "editor.scrollbar.vertical": "hidden",
+  "editor.scrollbar.horizontalScrollbarSize": 0,
+  "editor.scrollbar.verticalScrollbarSize": 10,
+  "symbols.hidesExplorerArrows": true,
+  "material-icon-theme.hidesExplorerArrows": true,
+  "workbench.tree.renderIndentGuides": "none",
+  "workbench.tips.enabled": false,
+  "editor.lightbulb.enabled": "off",
+  "editor.showFoldingControls": "never",
+  "editor.overviewRulerBorder": false,
+  "editor.cursorBlinking": "solid",
+  "editor.cursorSmoothCaretAnimation": "on",
+  "editor.fontLigatures": false,
+  // "workbench.editor.editorActionsLocation": "hidden",
+  "editor.renderWhitespace": "none",
+  "editor.renderControlCharacters": false,
+  "editor.stickyScroll.enabled": false,
+  "workbench.editor.showTabs": "multiple",
+  "editor.stickyScroll.scrollWithEditor": false,
+  "workbench.tree.enableStickyScroll": false,
+  "workbench.startupEditor": "none",
+  "zenMode.hideLineNumbers": false,
+  "breadcrumbs.symbolPath": "off",
+  "editor.codeLens": false,
+  "editor.linkedEditing": true,
+  "workbench.layoutControl.enabled": false,
+  "window.density.editorTabHeight": "compact",
+}

@@ -1,0 +1,21 @@
+{
+	"Create react component": {
+		"scope": "javascriptreact, javascript, typescriptreact, typescript",
+		"prefix": "rsc",
+		"body": [
+			"import * as S from './${TM_FILENAME_BASE}.styled'"
+			"",
+			"export const ${TM_FILENAME_BASE} = ($0) => {",
+			"		return (",
+			"			<div>",
+			"				${TM_FILENAME_BASE}",
+			"			</div>",
+			"		);",
+			"	};",
+			"",
+		],
+		"description": "Create react styled component"
+	}
+	//${TM_FILENAME_BASE}
+	//${TM_DIRECTORY/^.+[\\/\\\\]+(.*)$/$1/}
+}

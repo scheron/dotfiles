@@ -1,0 +1,24 @@
+[
+  // PANELS
+  { "key": "ctrl+1", "command": "workbench.action.toggleSidebarVisibility" },
+  { "key": "ctrl+2", "command": "git-graph.view" },
+  { "key": "ctrl+3", "command": "workbench.action.terminal.toggleTerminal", },
+
+  // TERMINAL
+  { "key": "cmd+shift+n", "command": "workbench.action.terminal.focusNext", "when": "terminalFocus" },
+  { "key": "cmd+shift+p", "command": "workbench.action.terminal.focusPrevious", "when": "terminalFocus" },
+  { "key": "cmd+shift+c", "command": "workbench.action.terminal.new", "when": "terminalFocus" },
+  { "key": "cmd+shift+q", "command": "workbench.action.terminal.kill", "when": "terminalFocus" },
+
+  // FILE TREE
+  { "key": "e", "command": "explorer.openAndPassFocus", "when": "explorerViewletFocus && !inputFocus" },
+  { "key": "ctrl+e" , "command": "workbench.action.toggleSidebarVisibility"}, 
+  { "key": "ctrl+e", "command": "workbench.files.action.focusFilesExplorer", "when": "editorTextFocus && !inputFocus" },
+  { "key": "shift+n", "command": "explorer.newFolder", "when": "explorerViewletFocus && !inputFocus" },
+  { "key": "n", "command": "explorer.newFile", "when": "filesExplorerFocus && !inputFocus" },
+  { "key": "r", "command": "renameFile", "when": "filesExplorerFocus && !inputFocus" },
+  { "key": "d", "command": "deleteFile", "when": "filesExplorerFocus && !inputFocus" },
+
+  // EXTRA
+  { "key": "cmd+o", "command": "workbench.action.openPreviousEditorFromHistory" }
+]

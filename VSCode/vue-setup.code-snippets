@@ -1,0 +1,25 @@
+{
+  "Create vue script with setup": {
+    "scope": "vue, javascript, typescript, typescriptvue",
+    "prefix": "vss",
+    "body": [
+      "<script>",
+      "export default {",
+      "  name: '$1{true ? 'Hello' : 'Not hello'}',",
+      "${1/(white)|(black)|(red)/${1:+#fff}${2:+#000}${3:+#f00}",
+      "};",
+      "</script>",
+      "",
+      "<script setup>",
+      "   $1",
+      "</script>",
+      "",
+      "<template>",
+      "  <div>$2${TM_DIRECTORY/^.+[\\/\\\\]+(.*)$/$1/}</div>",
+      "</template>"
+    ],
+    "description": "Create vue script with setup attribute"
+  }
+}
+
+      // "  name: '${TM_FILENAME_BASE} === \\'index.vue\\' ? ${TM_DIRECTORY/^.+[\\/\\\\]+(.*)$/$1/} : ${TM_FILENAME_BASE}',",

@@ -1,0 +1,24 @@
+{
+  "Create react functional component with props v18": {
+    "scope": "typescriptreact, typescript",
+    "prefix": "rts",
+    "body": [
+      "import { ReactNode, FC } from 'react';",
+      "",
+      "interface Props {",
+      "  children?: ReactNode;",
+      "}",
+      "",
+      "const ${TM_FILENAME_BASE}: FC<Props> = ($0) => {",
+      "  return (",
+      "    <div>${TM_FILENAME_BASE}</div>",
+      "  );",
+      "};",
+      "",
+      "export default ${TM_FILENAME_BASE};"
+    ],
+    "description": "Create react functional component(tsx) with props"
+  }
+  //${TM_FILENAME_BASE}
+  //${TM_DIRECTORY/^.+[\\/\\\\]+(.*)$/$1/}
+}
