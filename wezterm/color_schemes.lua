@@ -1,5 +1,12 @@
-return {
-	"Solarized Dark Higher Contrast",
-	"Ef-Night",
-	"Tokyo Night",
-}
+return "Solarized Dark Higher Contrast"
+-- return: "Ef-Night",
+-- return: "Gruvbox Dark",
+-- return: "Nord",
+-- return: "OneDark",
+-- return: "Solarized Dark",
+-- return: "Solarized Light",
+-- return: "Tomorrow Night",
+-- return: "Tomorrow Night Bright",
+-- return: "Tomorrow Night Eighties",
+-- return: "Tomorrow Night Blue",
+-- return: "Tomorrow Night Eighties",
