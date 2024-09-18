@@ -36,7 +36,7 @@
     "opacity": 0.96,
     "visualEffectState": "active"
   },
-  "apc.font.family": "SauceCodePro Nerd Font Mono",
+  "apc.font.family": "ZedMono Nerd Font Mono",
   "apc.monospace.font.family": "ZedMono Nerd Font Mono",
   "apc.activityBar": {
     "position": "bottom",
@@ -99,9 +99,10 @@
   },
   "supermaven.enableFixWithSupermaven": true,
   "workbench.iconTheme": "bearded-icons",
-  "workbench.colorTheme": "Bearded Theme Arc Blueberry",
+  "workbench.colorTheme": "Bearded Theme Black & Diamond Soft",
   // VIM
   "vim.leader": "<space>",
+  "vim.useSystemClipboard": false,
   "editor.lineNumbers": "relative",
   "vim.easymotion": true, // activate <leader><leader> + KEY
   "vim.incsearch": true,
@@ -133,6 +134,7 @@
     { "before": [ "leader", "f" ], "commands": [ "workbench.action.quickOpen" ] },
     { "before": [ "leader", "p" ], "commands": [ "editor.action.formatDocument" ] },
     { "before": [ "g", "h" ], "commands": [ "editor.action.showDefinitionPreviewHover" ] },
+    { "before": ["leader", "/"], "commands": ["editor.action.commentLine"] },
     // QUALITY OF LIFE
     { "before": [ "<leader>", "o", ], "commands": [ "editor.action.organizeImports" ] },
     { "before": [ "<leader>", "r" ], "commands": [ "editor.action.rename" ] },
@@ -163,7 +165,7 @@
   "editor.fontFamily": "MesloLGS Nerd Font, Geist Mono, SauceCodePro Nerd Font Mono, Victor Mono, FiraCode Nerd Font Mono, Monoid Nerd Font Mono, ZedMono Nerd Font, JetBrainsMono Nerd Font Mono, Iosevka",
   "terminal.integrated.fontFamily": "MesloLGS Nerd Font",
   "terminal.integrated.fontSize": 15,
-  "editor.fontSize": 16,
+  "editor.fontSize": 15,
   "editor.lineHeight": 1.6,
   "editor.glyphMargin": false,
   "editor.minimap.enabled": false,
