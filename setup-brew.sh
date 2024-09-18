@@ -6,25 +6,14 @@ brew tap joedrago/repo
 brew tap homebrew/cask-versions
 
 # Install CLI tools
-brew install fd
 brew install node
+brew install fd
 brew install git
 brew install lazygit
 brew install pnpm
 brew install fzf
 brew install nvim
-
-# Install Yazi & other tools
-brew install yazi
-brew install ffmpegthumbnailer  # for video thumbnails
-brew install sevenzip # for 7z
-brew install jq # for json
-brew install poppler # for pdf
-brew install fd # for file search
-brew install ripgrep # for file content search
-brew install fzf # for filetree navigation
-brew install zoxide # for historical navigation
-brew install imagemagick # for image preview
+brew install ripgrep 
 
 # Install casks
 brew install --cask 1password
