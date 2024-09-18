@@ -1,7 +1,6 @@
 {
   "LuaSnip": { "branch": "master", "commit": "e808bee352d1a6fcf902ca1a71cee76e60e24071" },
   "NvChad": { "branch": "v2.5", "commit": "8d2bb359e47d816e67ff86b5ce2d8f5abfe2b631" },
-  "alpha-nvim": { "branch": "main", "commit": "b6f4129302db197a7249e67a90de3f2b676de13e" },
   "base46": { "branch": "v2.5", "commit": "9b81403ef6e29a70bffb7990a0f3dbe5f6095047" },
   "better-escape.nvim": { "branch": "master", "commit": "bb197e51a91a635deb88630813c3bfc284413697" },
   "cmp-buffer": { "branch": "main", "commit": "3022dbc9166796b644a841a02de8dd1cc1d311fa" },
@@ -46,5 +45,6 @@
   "vim-flog": { "branch": "master", "commit": "03f6e39050c2a32deca6964291005c6c5c4c73cf" },
   "vim-fugitive": { "branch": "master", "commit": "d4877e54cef67f5af4f950935b1ade19ed6b7370" },
   "vim-markdown": { "branch": "master", "commit": "a657e697376909c41475a686eeef7fc7a4972d94" },
-  "which-key.nvim": { "branch": "main", "commit": "bfec3d6bc0a9b0b2cb11644642f78c2c3915eef0" }
+  "which-key.nvim": { "branch": "main", "commit": "bfec3d6bc0a9b0b2cb11644642f78c2c3915eef0" },
+  "yazi.nvim": { "branch": "main", "commit": "813b0665e6298d3fbb29b95c4546fefecff276fd" }
 }

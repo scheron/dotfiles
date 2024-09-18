@@ -118,7 +118,6 @@ alias tm=tmux
 alias vim="nvim"
 alias pn=pnpm
 alias gg=lazygit
-alias y=yazi
 
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"

@@ -24,7 +24,6 @@ map("n", "<leader>x", "<cmd>:bd<CR>", { desc = "Close buffer" })
 map("n", "<leader>cx", function() require("nvchad.tabufline").closeAllBufs() end, { desc = "Close All Buffers" })
 
 -- Splits
-
 map("n", "<leader>s", "<cmd>:split  <CR>", { desc = "Horizontal Split" })
 map("n", "<leader>v", "<cmd>:vsplit <CR>", { desc = "Vertical Split" })
 
