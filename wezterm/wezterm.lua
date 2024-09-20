@@ -1,9 +1,7 @@
 local wezterm = require("wezterm")
 local config = wezterm.config_builder()
 
-
-config.colors = require("themes")
--- config.color_scheme = require("color_schemes")
+require("setup_theme")(config)
 
 config.window_background_opacity = 0.7
 config.macos_window_background_blur = 50
