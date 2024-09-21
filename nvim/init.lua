@@ -9,7 +9,8 @@ vim.opt.errorbells = false --  No sound
 -- line numbers
 vim.opt.number = true
 vim.opt.relativenumber = true
-
+vim.opt.scrolloff = 10
+vim.opt.sidescrolloff = 10
 -- bootstrap lazy and all plugins
 local lazypath = vim.fn.stdpath "data" .. "/lazy/lazy.nvim"
 
