@@ -1,0 +1,67 @@
+# <type>(<scope>): <short description>
+# 
+# Type: 
+# - feat: A new feature
+# - fix: A bug fix
+# - docs: Documentation only changes
+# - style: Changes that do not affect the meaning of the code (white-space, formatting, etc.)
+# - refactor: A code change that neither fixes a bug nor adds a feature
+# - perf: A code change that improves performance
+# - test: Adding missing or correcting existing tests
+# - chore: Changes to the build process or auxiliary tools and libraries such as documentation generation
+# 
+# Scope (optional):
+# - The part of the codebase affected, such as a module, package, or feature (e.g., auth, api, ui).
+# - Use it to clarify what part of the code the change is related to. If not applicable, omit this part.
+# 
+# Short Description:
+# - A brief summary of the changes, using imperative mood (e.g., "add", "fix", "update").
+# - Keep it under 50 characters.
+# 
+# Body (optional):
+# - Provide more detailed explanation of the changes if necessary.
+# - Include context such as:
+#   - What was the previous behavior?
+#   - What is the new behavior?
+#   - Why were these changes necessary?
+# - Use bullet points or paragraphs, and keep lines under 72 characters for readability.
+# 
+# Footer (optional):
+# - Use for breaking changes, issues or tasks that have been completed.
+# - For breaking changes, start with "BREAKING CHANGE: " and describe the impact and how to migrate.
+# - For issue | tasks, start with "Closes #issue_number" or "Closes [issue link]".
+# 
+# Examples:
+#
+# ----------------------------------------------------------------------
+# 1 - Commit message
+# ----------------------------------------------------------------------
+# fix(ui): correct button alignment on mobile
+#
+#
+#
+# ----------------------------------------------------------------------
+# 2 - Commit message with description and task id
+# ----------------------------------------------------------------------
+# feat(auth): add JWT authentication
+# 
+# Implement JWT-based authentication for the API. This includes:
+# - Adding a new login endpoint
+# - Validating tokens on protected routes
+# - Refresh token mechanism
+# 
+# Closes #102
+# ----
+#
+#
+#
+# ----------------------------------------------------------------------
+# 3 - Commit message with description and breaking change
+# ----------------------------------------------------------------------
+# refactor(api): change user endpoint response format
+#
+# The user endpoint now returns a simplified JSON structure. The previous format
+# included nested objects, which made it difficult to parse on the frontend.
+#
+# BREAKING CHANGE: The user endpoint response format has changed. Update the
+# frontend code to handle the new structure.
