@@ -25,6 +25,7 @@ M.mason = {
     "css-lsp",
     "html-lsp",
     "typescript-language-server",
+    "tsserver",
     "prettier",
     "eslint_d",
     "clangd",
@@ -33,7 +34,16 @@ M.mason = {
     "vue-language-server",
     "shellcheck",
     "tailwindcss-language-server",
-    "ts_ls"
+  },
+  handlers = {
+    -- lsp_zero.default_setup,
+    function(server_name)
+      if server_name == "tsserver" then
+        server_name = "ts_ls"
+      else
+        lsp_zero.default_setup(server_name)
+      end
+    end,
   },
 }
 

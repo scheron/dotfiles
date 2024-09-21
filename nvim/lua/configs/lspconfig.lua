@@ -6,7 +6,7 @@ local capabilities = configs.capabilities
 local lspconfig = require "lspconfig"
 local util = require "lspconfig.util"
 
-local servers = { "html", "ts_ls", "volar", "cssls", "clangd", "gradle_ls" }
+local servers = { "html",  "volar", "cssls", "clangd", "gradle_ls" }
 
 local function organize_imports()
   local params = {
@@ -20,8 +20,7 @@ end
 for _, lsp in ipairs(servers) do
   lspconfig[lsp].setup {
     on_attach = on_attach,
-    on_init = on_init,
-    capabilities = capabilities,
+    on_init = on_init, capabilities = capabilities,
   }
 end
 
@@ -58,7 +57,7 @@ lspconfig.volar.setup {
   },
 }
 
-lspconfig.ts_ls.setup {
+lspconfig.tsserver.setup {
   on_attach = on_attach,
   capabilities = capabilities,
   filetypes = { "typescript", "typescriptreact", "javascript", "javascriptreact" },
