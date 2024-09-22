@@ -1,53 +1,51 @@
 return {
+  "hrsh7th/nvim-cmp",
+  dependencies = {
     "hrsh7th/cmp-nvim-lsp",
     "hrsh7th/cmp-nvim-lua",
     "hrsh7th/cmp-buffer",
     "hrsh7th/cmp-path",
-  "hrsh7th/nvim-cmp",
+    "onsails/lspkind.nvim",
+  },
   config = function()
     local cmp = require "cmp"
 
     cmp.setup {
-      mapping = cmp.mapping.preset.insert {
+      snippet = {
+        expand = function(args)
+          require("luasnip").lsp_expand(args.body)
+        end,
+      },
+      mapping = {
+        ["<Tab>"] = cmp.mapping(function(fallback)
+          if cmp.visible() then
+            cmp.confirm { select = true }
+          else
+            fallback() 
+          end
+        end, { "i", "s" }),
+
         ["<C-b>"] = cmp.mapping.scroll_docs(-4),
         ["<C-f>"] = cmp.mapping.scroll_docs(4),
         ["<C-Space>"] = cmp.mapping.complete(),
-        ["<C-i>"] = cmp.mapping(function(fallback)
-          cmp.complete({
-            config = {
-              sources = {
-                { name = "nvim_lsp" }, 
-              },
-            },
-          })
-        end),
+        ["<C-e>"] = cmp.mapping.close(),
         ["<CR>"] = cmp.mapping.confirm { select = true },
-
-        ["<C-j>"] = cmp.mapping.select_next_item(),
-        ["<C-k>"] = cmp.mapping.select_prev_item(),
       },
       sources = cmp.config.sources {
-        { name = "nvim_lsp" },  -- Default: LSP completions
-        { name = "nvim_lua" },  -- Lua completions for Neovim development
-        { name = "path" },      -- File path completions
-        { name = "buffer" },    -- Buffer completions
+        { name = "nvim_lsp" },
+        { name = "luasnip" },
+        { name = "buffer" },
+        { name = "path" },
       },
-
-      completion = {
-        completeopt = "menu,menuone,noinsert",
-      },
-
       formatting = {
         format = function(entry, vim_item)
           vim_item.kind = require("lspkind").presets.default[vim_item.kind]
-
           vim_item.menu = ({
             nvim_lsp = "[LSP]",
             buffer = "[Buffer]",
             nvim_lua = "[Lua]",
             path = "[Path]",
           })[entry.source.name]
-
           return vim_item
         end,
       },

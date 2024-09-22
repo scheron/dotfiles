@@ -7,13 +7,17 @@ map("n", "s", "<nop>", { desc = "Disable current s mapping" })
 map("n", "s", "cl", { desc = "Delete character and enter insert mode" })
 map("n", "<S-s>", "<nop>", { desc = "Disable current S mapping" })
 map("n", "<S-s>", "cc", { desc = "Delete line and enter insert mode" })
+map('i', '<Down>', function() require('cmp').select_next_item() end, { silent = true, desc = "Select next item in completion menu" })
+map('i', '<Up>', function() require('cmp').select_prev_item() end, { silent = true, desc = "Select previous item in completion menu" })
 
 -- Yank and paste
 map("v", "y", "ygv<esc>", { desc = "Yank and stay in visual mode" })
 
+
 map("v", "<S-j>", "mz:m+<CR>`zgv", { noremap = true, silent = true, desc = "Move line down and keep selection" })
 map("v", "<S-k>", "mz:m-2<CR>`zgv", { noremap = true, silent = true, desc = "Move line up and keep selection" })
 map("n", "<S-j>", "mzJ`z", { desc = "Join line without moving cursor" })
+
 
 -- Buffers
 map("n", "<S-h>", ":bprevious<CR>", { desc = "Prev Buffer" })
@@ -60,6 +64,7 @@ map("n", "<leader>q", "<cmd>:q<CR>", { desc = "Quit" })
 map("n", "<leader>Q", "<cmd>:q!<CR>", { desc = "Force Quit" })
 map("n", ";", ":", { desc = "CMD enter command mode" })
 map("i", "<C-g>", function() return vim.fn["codeium#Accept"]() end, { expr = true })
+
 
 -- Good to have
 map("n", "<leader>p", function() require("conform").format { lsp_fallback = true } end, { desc = "Format File" })
