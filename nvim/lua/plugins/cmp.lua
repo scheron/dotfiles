@@ -1,27 +1,20 @@
 return {
   "hrsh7th/nvim-cmp",
-  dependencies = {
-    "hrsh7th/cmp-nvim-lsp",
-    "hrsh7th/cmp-nvim-lua",
-    "hrsh7th/cmp-buffer",
-    "hrsh7th/cmp-path",
-    "onsails/lspkind.nvim",
-  },
+  "hrsh7th/cmp-nvim-lsp",
+  "hrsh7th/cmp-nvim-lua",
+  "hrsh7th/cmp-buffer",
+  "hrsh7th/cmp-path",
+  "onsails/lspkind.nvim",
   config = function()
     local cmp = require "cmp"
 
     cmp.setup {
-      snippet = {
-        expand = function(args)
-          require("luasnip").lsp_expand(args.body)
-        end,
-      },
       mapping = {
         ["<Tab>"] = cmp.mapping(function(fallback)
           if cmp.visible() then
             cmp.confirm { select = true }
           else
-            fallback() 
+            fallback()
           end
         end, { "i", "s" }),
 
