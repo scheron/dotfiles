@@ -43,10 +43,10 @@ require "options"
 require "nvchad.autocmds"
 
 -- plugins modifications
-require "configs/custom/telescope"
-require "configs/custom/nvim-tree"
-require "configs/custom/noice"
-require "configs/custom/notify"
+require "plugins/overrides/telescope"
+require "plugins/overrides/nvim-tree"
+require "plugins/overrides/noice"
+require "plugins/overrides/notify"
 
 vim.schedule(function()
   require "mappings"
