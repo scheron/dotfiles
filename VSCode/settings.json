@@ -23,7 +23,7 @@
       "tree"
     ],
     "height": 20,
-    "fontSize": 16
+    "fontSize": 15
   },
   "apc.imports": [
     "file://${userHome}/.vscode/extensions/brandonkirbyson.vscode-animations-2.0.3/dist/updateHandler.js"
@@ -33,7 +33,7 @@
     "transparent": true,
     "titleBarStyle": "hiddenInset",
     "vibrancy": "ultra-dark",
-    "opacity": 0.96,
+    "opacity": 0.92,
     "visualEffectState": "active"
   },
   "apc.font.family": "ZedMono Nerd Font Mono",
@@ -99,7 +99,7 @@
   },
   "supermaven.enableFixWithSupermaven": true,
   "workbench.iconTheme": "bearded-icons",
-  "workbench.colorTheme": "Bearded Theme Black & Diamond Soft",
+  "workbench.colorTheme": "Functional Contrast",
   // VIM
   "vim.leader": "<space>",
   "vim.useSystemClipboard": false,
@@ -162,11 +162,11 @@
     "asvetliakov.vscode-neovim": 1
   },
   "editor.suggest.insertMode": "insert",
-  "editor.fontFamily": "MesloLGS Nerd Font, Geist Mono, SauceCodePro Nerd Font Mono, Victor Mono, FiraCode Nerd Font Mono, Monoid Nerd Font Mono, ZedMono Nerd Font, JetBrainsMono Nerd Font Mono, Iosevka",
+  "editor.fontFamily": "SauceCodePro Nerd Font Mono, MesloLGS Nerd Font, Geist Mono, Victor Mono, FiraCode Nerd Font Mono, Monoid Nerd Font Mono, ZedMono Nerd Font, JetBrainsMono Nerd Font Mono, Iosevka",
   "terminal.integrated.fontFamily": "MesloLGS Nerd Font",
-  "terminal.integrated.fontSize": 15,
-  "editor.fontSize": 15,
-  "editor.lineHeight": 1.6,
+  "terminal.integrated.fontSize": 16,
+  "editor.fontSize": 16,
+  "editor.lineHeight": 1.5,
   "editor.glyphMargin": false,
   "editor.minimap.enabled": false,
   "explorer.compactFolders": false,
