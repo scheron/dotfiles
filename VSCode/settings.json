@@ -81,6 +81,7 @@
     "maxt",
     "pinia",
     "unnessasery",
+    "unsub",
     "vueuse"
   ],
   "terminal.explorerKind": "both",
@@ -99,7 +100,8 @@
   },
   "supermaven.enableFixWithSupermaven": true,
   "workbench.iconTheme": "bearded-icons",
-  "workbench.colorTheme": "Functional Contrast",
+  "workbench.colorTheme": "Functional Contrast Midnight",
+
   // VIM
   "vim.leader": "<space>",
   "vim.useSystemClipboard": false,
@@ -198,4 +200,5 @@
   "editor.linkedEditing": true,
   "workbench.layoutControl.enabled": false,
   "window.density.editorTabHeight": "compact",
+  "editor.renderLineHighlight": "none",
 }
