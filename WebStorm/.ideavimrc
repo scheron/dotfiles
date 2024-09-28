@@ -1,0 +1,104 @@
+""" Plugins ---------------------------------
+Plug 'tpope/vim-commentary'
+Plug 'machakann/vim-highlightedyank'
+Plug 'easymotion/vim-easymotion'
+Plug 'vim-scripts/argtextobj.vim'
+
+""" Plugin settings -------------------------
+let g:argtextobj_pairs="[:],(:),<:>"
+
+set surround
+set multiple-cursors
+set commentary
+set argtextobj
+set easymotion
+set textobj-entire
+set ReplaceWithRegister
+set exchange
+
+set hlsearch
+set incsearch
+set ignorecase
+set smartcase
+nnoremap <Esc> :nohlsearch<CR>
+
+""" Common settings -------------------------
+let mapleader=" "
+
+set showmode
+set number
+set scrolloff=10
+set clipboard^=unnamed,unnamedplus
+set matchpairs+=<:>
+
+
+""" Idea specific settings ------------------
+set ideajoin
+set ideastatusicon=gray
+
+" config
+noremap <leader>? :edit ~/.ideavimrc<CR>
+noremap <leader>?? :source ~/.ideavimrc<CR>:nohlsearch<CR>
+
+""" Mappings -----------------------------
+map <leader>z <Action>(ToggleDistractionFreeMode)
+
+map <leader>s <Action>(SplitHorizontally)
+map <leader>v <Action>(SplitVertically)
+map <leader>x <Action>(CloseContent)
+map <leader>X <Action>(CloseAllEditors)
+map <leader>c <Action>(CommentByLineComment)
+map <leader>p <Action>(ReformatCode)
+map <leader>O <Action>(OptimizeImports)
+
+map <leader>r <Action>(Replace)
+map <leader>rw <Action>(ReplaceInPath)
+map <leader>re <Action>(RenameElement)
+
+map <leader>ff <Action>(GotoFile)
+map <leader>fw <Action>(FindInPath)
+map <leader>fu <Action>(ShowUsages)
+map <leader>fs <Action>(FileStructurePopup)
+map <leader>fz <Action>(Find)
+map <leader>fr <Action>(RecentFiles)
+
+map <leader>td <Action>(QuickTypeDefinition)
+map <leader>ti <Action>(QuickImplementations)
+
+map <leader>sh <Action>(ShowHoverInfo)
+map <leader>sr <Action>(Refactorings.QuickListPopupAction)
+map <leader>sa <Action>(ShowIntentionActions)
+map <leader>ss <Action>(SurroundWith)
+
+map <leader>en <Action>(GotoNextError)
+map <leader>ep <Action>(GotoPrevError)
+
+map <S-h> <Action>(PreviousTab)
+map <S-l> <Action>(NextTab)
+
+vmap <S-j> <Action>(MoveLineDown)
+vmap <S-k> <Action>(MoveLineUp)
+
+map <leader>h <Plug>(easymotion-b)
+map <leader>l <Plug>(easymotion-w)
+
+
+"git blame
+map <leader>gb <Action>(Annotate)
+
+"" -- Remaps --------------------------------
+inoremap jk <Esc>
+
+" move to camelCase words
+noremap W [w
+noremap E ]w
+noremap B [b
+noremap ge ]b
+
+" redo
+noremap U <C-r>
+" map blackhole register
+noremap \ "_
+" paste over without overwriting default register
+noremap p P
+
