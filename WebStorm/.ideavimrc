@@ -43,12 +43,12 @@ noremap <leader>?? :source ~/.ideavimrc<CR>:nohlsearch<CR>
 """ Mappings -----------------------------
 map <leader>z <Action>(ToggleDistractionFreeMode)
 
-map <leader>s <Action>(SplitHorizontally)
-map <leader>v <Action>(SplitVertically)
+map <leader>- <Action>(SplitHorizontally)
+map <leader><S-\> <Action>(SplitVertically)
 map <leader>x <Action>(CloseContent)
 map <leader>X <Action>(CloseAllEditors)
 map <leader>c <Action>(CommentByLineComment)
-map <leader>p <Action>(ReformatCode)
+map <leader>p <Action>(ReformatWithPrettierAction)
 map <leader>O <Action>(OptimizeImports)
 
 map <leader>r <Action>(Replace)
@@ -65,10 +65,11 @@ map <leader>fr <Action>(RecentFiles)
 map <leader>td <Action>(QuickTypeDefinition)
 map <leader>ti <Action>(QuickImplementations)
 
-map <leader>sh <Action>(ShowHoverInfo)
+map <leader>si <Action>(ShowHoverInfo)
 map <leader>sr <Action>(Refactorings.QuickListPopupAction)
 map <leader>sa <Action>(ShowIntentionActions)
 map <leader>ss <Action>(SurroundWith)
+imap <C-i> <Action>(CodeCompletion)
 
 map <leader>en <Action>(GotoNextError)
 map <leader>ep <Action>(GotoPrevError)
@@ -101,4 +102,3 @@ noremap U <C-r>
 noremap \ "_
 " paste over without overwriting default register
 noremap p P
-
