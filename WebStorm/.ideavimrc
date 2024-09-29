@@ -45,6 +45,7 @@ map <leader>z <Action>(ToggleDistractionFreeMode)
 
 map <leader>- <Action>(SplitHorizontally)
 map <leader><S-\> <Action>(SplitVertically)
+map <leader>w <Action>(SaveAll)
 map <leader>x <Action>(CloseContent)
 map <leader>X <Action>(CloseAllEditors)
 map <leader>c <Action>(CommentByLineComment)
