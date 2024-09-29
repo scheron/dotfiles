@@ -63,14 +63,15 @@ map <leader>fs <Action>(FileStructurePopup)
 map <leader>fz <Action>(Find)
 map <leader>fr <Action>(RecentFiles)
 
-map <leader>td <Action>(QuickTypeDefinition)
-map <leader>ti <Action>(QuickImplementations)
 
-map <leader>si <Action>(ShowHoverInfo)
+map <leader>i <Action>(ShowHoverInfo)
+imap <C-i> <Action>(CodeCompletion)
+
+map <leader>sd <Action>(QuickTypeDefinition)
+map <leader>si <Action>(QuickImplementations)
 map <leader>sr <Action>(Refactorings.QuickListPopupAction)
 map <leader>sa <Action>(ShowIntentionActions)
 map <leader>ss <Action>(SurroundWith)
-imap <C-i> <Action>(CodeCompletion)
 
 map <leader>en <Action>(GotoNextError)
 map <leader>ep <Action>(GotoPrevError)
