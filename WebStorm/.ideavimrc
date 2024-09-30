@@ -86,8 +86,9 @@ map <leader>h <Plug>(easymotion-b)
 map <leader>l <Plug>(easymotion-w)
 
 
-"git blame
+"git 
 map <leader>gb <Action>(Annotate)
+map <leader>gg <Action>(ActivateVersionControlToolWindow)
 
 "" -- Remaps --------------------------------
 inoremap jk <Esc>
