@@ -5,7 +5,7 @@ require("setup_theme")(config)
 
 config.window_background_opacity = 0.7
 config.macos_window_background_blur = 50
-config.font = wezterm.font("SauceCodePro Nerd Font")
+config.font = wezterm.font("Fragment Mono")
 config.font_size = 19
 
 config.window_decorations = "RESIZE"
