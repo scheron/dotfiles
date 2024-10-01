@@ -36,6 +36,7 @@ brew install --cask font-iosevka
 brew install --cask font-victor-mono
 brew install --cask font-commit-mono-nerd-font
 brew install --cask font-hack-nerd-font
+brew install --cask font-fragment-mono
 
 
 # Remove outdated versions from the cellar.
