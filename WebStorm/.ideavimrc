@@ -92,6 +92,7 @@ map <leader>gg <Action>(ActivateVersionControlToolWindow)
 
 "" -- Remaps --------------------------------
 inoremap jk <Esc>
+inoremap jj <Esc>
 
 " move to camelCase words
 noremap W [w
