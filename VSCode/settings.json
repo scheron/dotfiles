@@ -36,7 +36,7 @@
     "opacity": 0.92,
     "visualEffectState": "active"
   },
-  "apc.font.family": "ZedMono Nerd Font Mono",
+  "apc.font.family": "Fragment Mono",
   "apc.monospace.font.family": "ZedMono Nerd Font Mono",
   "apc.activityBar": {
     "position": "bottom",
@@ -164,7 +164,7 @@
     "asvetliakov.vscode-neovim": 1
   },
   "editor.suggest.insertMode": "insert",
-  "editor.fontFamily": "Geist Mono, SauceCodePro Nerd Font Mono, MesloLGS Nerd Font, Victor Mono, FiraCode Nerd Font Mono, Monoid Nerd Font Mono, ZedMono Nerd Font, JetBrainsMono Nerd Font Mono, Iosevka",
+  "editor.fontFamily": "Fragment Mono, Geist Mono, SauceCodePro Nerd Font Mono, MesloLGS Nerd Font, Victor Mono, FiraCode Nerd Font Mono, Monoid Nerd Font Mono, ZedMono Nerd Font, JetBrainsMono Nerd Font Mono, Iosevka",
   "terminal.integrated.fontFamily": "MesloLGS Nerd Font",
   "terminal.integrated.fontSize": 16,
   "editor.fontSize": 16,
