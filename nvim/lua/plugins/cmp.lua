@@ -19,7 +19,7 @@ return {
   config = function()
     local cmp = require "cmp"
     local devicons = require "nvim-web-devicons"
-    local supermaven = require "supermaven-nvim.completion_preview" 
+    local supermaven = require "supermaven-nvim.completion_preview"
 
     local kind_icons = {
       Text = "",
@@ -63,7 +63,13 @@ return {
         end, { "i", "s" }),
 
         ["<C-e>"] = cmp.mapping.close(),
-        ["<CR>"] = cmp.mapping.confirm { select = true },
+        ["<CR>"] = cmp.mapping(function(fallback)
+          if cmp.visible() then
+            cmp.confirm { select = true }
+          else
+            fallback()
+          end
+        end, { "i", "s" }),
 
         ["<C-i>"] = cmp.mapping(function(fallback)
           if cmp.visible() then
