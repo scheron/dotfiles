@@ -22,8 +22,8 @@
       "quick-input-list",
       "tree"
     ],
-    "height": 20,
-    "fontSize": 15
+    "height": 22,
+    "fontSize": 18
   },
   "apc.imports": [
     "file://${userHome}/.vscode/extensions/brandonkirbyson.vscode-animations-2.0.3/dist/updateHandler.js"
@@ -32,11 +32,11 @@
     "frame": false,
     "transparent": true,
     "titleBarStyle": "hiddenInset",
-    "vibrancy": "ultra-dark",
-    "opacity": 0.92,
+    "vibrancy": "hud",
+    "opacity": 0.89,
     "visualEffectState": "active"
   },
-  "apc.font.family": "Fragment Mono",
+  "apc.font.family": "ZedMono Nerd Font Mono",
   "apc.monospace.font.family": "ZedMono Nerd Font Mono",
   "apc.activityBar": {
     "position": "bottom",
@@ -100,7 +100,7 @@
   },
   "supermaven.enableFixWithSupermaven": true,
   "workbench.iconTheme": "bearded-icons",
-  "workbench.colorTheme": "Bearded Theme Surprising Blueberry",
+  "workbench.colorTheme": "Bearded Theme feat. WebDevCody",
 
   // VIM
   "vim.leader": "<space>",
@@ -164,11 +164,12 @@
     "asvetliakov.vscode-neovim": 1
   },
   "editor.suggest.insertMode": "insert",
-  "editor.fontFamily": "Fragment Mono, Geist Mono, SauceCodePro Nerd Font Mono, MesloLGS Nerd Font, Victor Mono, FiraCode Nerd Font Mono, Monoid Nerd Font Mono, ZedMono Nerd Font, JetBrainsMono Nerd Font Mono, Iosevka",
+  "editor.fontFamily": "ZedMono Nerd Font, SauceCodePro Nerd Font Mono, Fragment Mono, Geist Mono, MesloLGS Nerd Font, Victor Mono, FiraCode Nerd Font Mono, Monoid Nerd Font Mono, JetBrainsMono Nerd Font Mono, Iosevka",
   "terminal.integrated.fontFamily": "MesloLGS Nerd Font",
-  "terminal.integrated.fontSize": 16,
-  "editor.fontSize": 16,
+  "terminal.integrated.fontSize": 18,
+  "editor.fontSize": 18,
   "editor.lineHeight": 1.5,
+  "editor.fontWeight": 300,
   "editor.glyphMargin": false,
   "editor.minimap.enabled": false,
   "explorer.compactFolders": false,
@@ -201,4 +202,5 @@
   "workbench.layoutControl.enabled": false,
   "window.density.editorTabHeight": "compact",
   "editor.renderLineHighlight": "none",
+  "javascript.updateImportsOnFileMove.enabled": "never",
 }
