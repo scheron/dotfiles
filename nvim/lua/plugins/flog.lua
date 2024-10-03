@@ -5,4 +5,9 @@ return {
   dependencies = {
     "tpope/vim-fugitive",
   },
+  config = function()
+    vim.g.flog_permanent_default_opts = {
+      date = 'relative',
+    }
+  end,
 }
