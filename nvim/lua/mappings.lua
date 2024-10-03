@@ -43,7 +43,8 @@ map("n", "<leader>fg", "<cmd>Telescope git_commits<CR>", { desc = "Find Commit" 
 map("n", "<leader>gg", "<cmd>LazyGit<CR>", { desc = "Open Lazygit" })
 map("n", "<leader>g?", ":DiffviewFileHistory<CR>", { desc = "Git File History" })
 map("n", "<leader>go", ":DiffviewOpen HEAD~1<CR>", { desc = "Git Last Commit" })
-map("n", "<leader>gh", ":Flog<CR>", { desc = "Git Graph" })
+map('n', '<leader>gh', function() require("gitgraph").draw({}, { all = true, max_count = 5000 }) end, { desc = "GitGraph - Draw" })
+map("n", "<leader>gf", ":Flog<CR>", { desc = "Git Flog" })
 
 -- Diagnostics
 map("n", "<leader>d", "<cmd>lua vim.diagnostic.open_float()<CR>", { desc = "Show Diagnostics" })

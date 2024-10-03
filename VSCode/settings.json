@@ -100,7 +100,7 @@
   },
   "supermaven.enableFixWithSupermaven": true,
   "workbench.iconTheme": "bearded-icons",
-  "workbench.colorTheme": "Functional Contrast Midnight",
+  "workbench.colorTheme": "Bearded Theme Surprising Blueberry",
 
   // VIM
   "vim.leader": "<space>",

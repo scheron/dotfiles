@@ -86,6 +86,10 @@ map <leader>h <Plug>(easymotion-b)
 map <leader>l <Plug>(easymotion-w)
 
 
+
+"Terminal
+map <leader>tt <Action>(ActivateTerminalToolWindow)
+
 "git 
 map <leader>gb <Action>(Annotate)
 map <leader>gg <Action>(ActivateVersionControlToolWindow)
