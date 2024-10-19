@@ -1,6 +1,6 @@
 {
   // APC CUSTOMIZE++
-  "window.titleBarStyle": "native",
+  "window.titleBarStyle": "custom",
   "apc.menubar.compact": true,
   "apc.header": {
     "height": 30
@@ -24,7 +24,7 @@
     ],
     "height": 22,
     "fontSize": 18
-  },
+  } ,
   "apc.imports": [
     "file://${userHome}/.vscode/extensions/brandonkirbyson.vscode-animations-2.0.3/dist/updateHandler.js"
   ],
@@ -33,7 +33,7 @@
     "transparent": true,
     "titleBarStyle": "hiddenInset",
     "vibrancy": "hud",
-    "opacity": 0.89,
+    "opacity": 0.9,
     "visualEffectState": "active"
   },
   "apc.font.family": "ZedMono Nerd Font Mono",
@@ -203,4 +203,12 @@
   "window.density.editorTabHeight": "compact",
   "editor.renderLineHighlight": "none",
   "javascript.updateImportsOnFileMove.enabled": "never",
+  "workbench.colorCustomizations": {
+    "terminal.background": "#00000000"
+  },
+  "workbench.settings.applyToAllProfiles": [
+    "workbench.colorCustomizations"
+  ],
+  "gitlens.ai.experimental.model": "openai:gpt-4o",
+  "workbench.activityBar.location": "bottom",
 }
