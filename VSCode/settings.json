@@ -1,6 +1,6 @@
 {
   // APC CUSTOMIZE++
-  "window.titleBarStyle": "custom",
+  "window.titleBarStyle": "native",
   "apc.menubar.compact": true,
   "apc.header": {
     "height": 30
@@ -23,10 +23,10 @@
       "tree"
     ],
     "height": 22,
-    "fontSize": 17
+    "fontSize": 16
   },
   "apc.imports": [
-    "file://${userHome}/.vscode/extensions/brandonkirbyson.vscode-animations-2.0.3/dist/updateHandler.js"
+    "file://~/.vscode/extensions/brandonkirbyson.vscode-animations-2.0.3/dist/updateHandler.js"
   ],
   "apc.electron": {
     "frame": false,
@@ -36,8 +36,8 @@
     "opacity": 0.89,
     "visualEffectState": "active"
   },
-  "apc.font.family": "ZedMono Nerd Font Mono",
-  "apc.monospace.font.family": "ZedMono Nerd Font Mono",
+  "apc.font.family": "Iosevka",
+  "apc.monospace.font.family": "Iosevka",
   "apc.activityBar": {
     "position": "bottom",
     "size": 30,
@@ -100,7 +100,7 @@
   },
   "supermaven.enableFixWithSupermaven": true,
   "workbench.iconTheme": "bearded-icons",
-  "workbench.colorTheme": "Bearded Theme feat. WebDevCody",
+  "workbench.colorTheme": "monokai-charcoal (white)",
 
   // VIM
   "vim.leader": "<space>",
@@ -112,13 +112,14 @@
   "vim.foldfix": true,
   "vim.insertModeKeyBindings": [
     { "before": [ "j", "j" ], "after": [ "<esc>" ] },
+    { "before": [ "j", "k" ], "after": [ "<esc>" ] },
     { "before": [ "<C-i>" ], "commands": [ "editor.action.triggerSuggest" ] },
   ],
   "vim.normalModeKeyBindingsNonRecursive": [
     // FIND
     { "before": [ "leader", "f", "s" ], "commands": [ "workbench.action.gotoSymbol" ] },
-    { "before": [ "leader", "f", "f" ], "commands": [ "workbench.action.quickOpen" ] },
-    { "before": [ "leader", "f", "w" ], "commands": [ "workbench.action.findInFiles" ] },
+    { "before": [ "leader", "f", "f" ], "commands": [ "find-it-faster.findFiles" ] },
+    { "before": [ "leader", "f", "w" ], "commands": [ "find-it-faster.findWithinFiles" ] },
     { "before": [ "leader", "f", "b" ], "commands": [ "workbench.action.showAllEditors" ] },
     { "before": [ "leader", "f", "r" ], "commands": [ "workbench.action.showAllEditorsByMostRecentlyUsed"] },
 
@@ -178,11 +179,11 @@
     "asvetliakov.vscode-neovim": 1
   },
   "editor.suggest.insertMode": "insert",
-  "editor.fontFamily": "ZedMono Nerd Font, SauceCodePro Nerd Font Mono, Fragment Mono, Geist Mono, MesloLGS Nerd Font, Victor Mono, FiraCode Nerd Font Mono, Monoid Nerd Font Mono, JetBrainsMono Nerd Font Mono, Iosevka",
+  "editor.fontFamily": "Geist Mono, VictorMono Nerd Font Mono, ZedMono Nerd Font, SauceCodePro Nerd Font Mono, Fragment Mono, MesloLGS Nerd Font, FiraCode Nerd Font Mono, Monoid Nerd Font Mono, JetBrainsMono Nerd Font Mono, Iosevka",
   "terminal.integrated.fontFamily": "MesloLGS Nerd Font",
   "terminal.integrated.fontSize": 16,
-  "editor.fontSize": 16,
-  "editor.lineHeight": 1.5,
+  "editor.fontSize": 17,
+  "editor.lineHeight": 1.6,
   "editor.fontWeight": 300,
   "editor.glyphMargin": false,
   "editor.minimap.enabled": false,
@@ -214,8 +215,8 @@
   "editor.codeLens": false,
   "editor.linkedEditing": true,
   "workbench.layoutControl.enabled": false,
-  "window.density.editorTabHeight": "compact",
   "editor.renderLineHighlight": "none",
   "javascript.updateImportsOnFileMove.enabled": "never",
-  "workbench.activityBar.location": "bottom",
+  "animations.Enabled": true,
+  "window.customTitleBarVisibility": "never",
 }
