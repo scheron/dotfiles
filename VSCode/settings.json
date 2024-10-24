@@ -1,6 +1,6 @@
 {
   // APC CUSTOMIZE++
-  "window.titleBarStyle": "native",
+  "window.titleBarStyle": "custom",
   "apc.menubar.compact": true,
   "apc.header": {
     "height": 30
@@ -23,7 +23,7 @@
       "tree"
     ],
     "height": 22,
-    "fontSize": 18
+    "fontSize": 17
   },
   "apc.imports": [
     "file://${userHome}/.vscode/extensions/brandonkirbyson.vscode-animations-2.0.3/dist/updateHandler.js"
@@ -50,7 +50,7 @@
   },
   "animations.Install-Method": "Apc Customize UI++",
   // GIT
-  "diffEditor.ignoreTrimWhitespace": false,
+  "diffEditor.ignoreTrimWhitespace": true,
   "diffEditor.renderSideBySide": true,
   "git-graph.commitDetailsView.location": "Docked to Bottom",
   "git-graph.dialog.addTag.type": "Lightweight",
@@ -115,45 +115,59 @@
     { "before": [ "<C-i>" ], "commands": [ "editor.action.triggerSuggest" ] },
   ],
   "vim.normalModeKeyBindingsNonRecursive": [
-    // SWITCH B/W BUFFERS
+    // FIND
+    { "before": [ "leader", "f", "s" ], "commands": [ "workbench.action.gotoSymbol" ] },
+    { "before": [ "leader", "f", "f" ], "commands": [ "workbench.action.quickOpen" ] },
+    { "before": [ "leader", "f", "w" ], "commands": [ "workbench.action.findInFiles" ] },
+    { "before": [ "leader", "f", "b" ], "commands": [ "workbench.action.showAllEditors" ] },
+    { "before": [ "leader", "f", "r" ], "commands": [ "workbench.action.showAllEditorsByMostRecentlyUsed"] },
+
+    // BUFFERS
     { "before": [ "<S-h>" ], "commands": [ ":bprevious" ] },
     { "before": [ "<S-l>" ], "commands": [ ":bnext" ] },
+    { "before": [ "<S-Tab>" ], "commands": [ ":bprevious" ] },
+    { "before": [ "<Tab>" ], "commands": [ ":bnext" ] },
+
     // SPLITS
-    { "before": [ "leader", "v" ], "commands": [ ":vsplit" ] },
-    { "before": [ "leader", "s" ], "commands": [ ":split" ] },
+    { "before": [ "leader", "|" ], "commands": [ ":vsplit" ] },
+    { "before": [ "leader", "-" ], "commands": [ ":split" ] },
+
     // PANES
     { "before": [ "leader", "h" ], "commands": [ "workbench.action.focusLeftGroup" ] },
     { "before": [ "leader", "j" ], "commands": [ "workbench.action.focusBelowGroup" ] },
     { "before": [ "leader", "k" ], "commands": [ "workbench.action.focusAboveGroup" ] },
     { "before": [ "leader", "l" ], "commands": [ "workbench.action.focusRightGroup" ] },
-    // NICE TO HAVE
+
+    // FILE
     { "before": [ "leader", "w" ], "commands": [ ":w!" ] },
     { "before": [ "leader", "q" ], "commands": [ ":q!" ] },
+    { "before": [ "Q" ], "commands": [ "workbench.action.closeAllEditors" ] },
     { "before": [ "leader", "x" ], "commands": [ ":x!" ] },
+
+
+    // ERRORS
     { "before": [ "[", "d" ], "commands": [ "editor.action.marker.prev" ] },
     { "before": [ "]", "d" ], "commands": [ "editor.action.marker.next" ] },
-    { "before": [ "<leader>", "a" ], "commands": [ "editor.action.quickFix" ] },
-    { "before": [ "leader", "f" ], "commands": [ "workbench.action.quickOpen" ] },
-    { "before": [ "leader", "p" ], "commands": [ "editor.action.formatDocument" ] },
-    { "before": [ "g", "h" ], "commands": [ "editor.action.showDefinitionPreviewHover" ] },
-    { "before": ["leader", "/"], "commands": ["editor.action.commentLine"] },
+
+    // TIPS
+    { "before": [ "leader", "s", "i" ], "commands": [ "editor.action.showDefinitionPreviewHover" ] },
+    { "before": [ "leader", "s", "a" ], "commands": [ "editor.action.codeAction" ] },
+    { "before": [ "leader", "s", "d" ], "commands": [ "editor.action.revealDefinition" ] },
+
     // QUALITY OF LIFE
-    { "before": [ "<leader>", "o", ], "commands": [ "editor.action.organizeImports" ] },
-    { "before": [ "<leader>", "r" ], "commands": [ "editor.action.rename" ] },
-    { "before": [ "<leader>", "d" ], "commands": [ "editor.action.revealDefinition" ] },
-    { "before": [ "<leader>", "D", ], "commands": [ "editor.action.goToDeclaration" ] },
-    { "before": [ "<leader>", "i" ], "commands": [ "editor.action.showDefinitionPreviewHover" ] },
+    { "before": [ "leader", "p" ], "commands": [ "editor.action.formatDocument" ] },
+    { "before": [ "leader", "o" ], "commands": [ "editor.action.organizeImports" ] },
+    { "before": [ "leader", "r" ], "commands": [ "editor.action.rename" ] },
+    { "before": [ "leader", "/" ], "commands": ["editor.action.commentLine"] },
     { "before": [ "<leader>", "e" ], "commands": [ "workbench.explorer.fileView.focus", "workbench.files.action.showActiveFileInExplorer" ] },
   ],
   "vim.visualModeKeyBindings": [
-    // STAY IN VISUAL MODE WHILE INDENTING
+    // SELECTION MOVEMENT
     { "before": [ "<" ], "commands": [ "editor.action.outdentLines" ] },
     { "before": [ ">" ], "commands": [ "editor.action.indentLines" ] },
-    // MOVE SELECTED LINES WHILE STAYING IN VISUAL MODE
     { "before": [ "J" ], "commands": [ "editor.action.moveLinesDownAction" ] },
     { "before": [ "K" ], "commands": [ "editor.action.moveLinesUpAction" ] },
-    // TOGGLE COMMENT SELECTION
-    { "before": [ "leader", "c" ], "commands": [ "editor.action.commentLine" ] }
+
   ],
   "vim.handleKeys": {
     "<C-a>": false,
@@ -166,8 +180,8 @@
   "editor.suggest.insertMode": "insert",
   "editor.fontFamily": "ZedMono Nerd Font, SauceCodePro Nerd Font Mono, Fragment Mono, Geist Mono, MesloLGS Nerd Font, Victor Mono, FiraCode Nerd Font Mono, Monoid Nerd Font Mono, JetBrainsMono Nerd Font Mono, Iosevka",
   "terminal.integrated.fontFamily": "MesloLGS Nerd Font",
-  "terminal.integrated.fontSize": 18,
-  "editor.fontSize": 18,
+  "terminal.integrated.fontSize": 16,
+  "editor.fontSize": 16,
   "editor.lineHeight": 1.5,
   "editor.fontWeight": 300,
   "editor.glyphMargin": false,
@@ -203,4 +217,5 @@
   "window.density.editorTabHeight": "compact",
   "editor.renderLineHighlight": "none",
   "javascript.updateImportsOnFileMove.enabled": "never",
+  "workbench.activityBar.location": "bottom",
 }
