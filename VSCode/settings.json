@@ -1,6 +1,6 @@
 {
   // APC CUSTOMIZE++
-  "window.titleBarStyle": "custom",
+  "window.titleBarStyle": "native",
   "apc.menubar.compact": true,
   "apc.header": {
     "height": 30
@@ -100,7 +100,7 @@
   },
   "supermaven.enableFixWithSupermaven": true,
   "workbench.iconTheme": "bearded-icons",
-  "workbench.colorTheme": "monokai-charcoal (white)",
+  "workbench.colorTheme": "Tokyo Night",
 
   // VIM
   "vim.leader": "<space>",
@@ -179,12 +179,12 @@
     "asvetliakov.vscode-neovim": 1
   },
   "editor.suggest.insertMode": "insert",
-  "editor.fontFamily": "Geist Mono, VictorMono Nerd Font Mono, ZedMono Nerd Font, SauceCodePro Nerd Font Mono, Fragment Mono, MesloLGS Nerd Font, FiraCode Nerd Font Mono, Monoid Nerd Font Mono, JetBrainsMono Nerd Font Mono, Iosevka",
+  "editor.fontFamily": "ZedMono Nerd Font, Geist Mono, VictorMono Nerd Font Mono, SauceCodePro Nerd Font Mono, Fragment Mono, MesloLGS Nerd Font, FiraCode Nerd Font Mono, Monoid Nerd Font Mono, JetBrainsMono Nerd Font Mono, Iosevka",
   "terminal.integrated.fontFamily": "MesloLGS Nerd Font",
   "terminal.integrated.fontSize": 16,
-  "editor.fontSize": 17,
+  "editor.fontSize": 20,
   "editor.lineHeight": 1.6,
-  "editor.fontWeight": 300,
+  "editor.fontWeight": 400,
   "editor.glyphMargin": false,
   "editor.minimap.enabled": false,
   "explorer.compactFolders": false,
@@ -224,5 +224,6 @@
     "workbench.colorCustomizations"
   ],
   "gitlens.ai.experimental.model": "openai:gpt-4o",
-  "workbench.activityBar.location": "bottom",
+  "update.mode": "none",
+  "animations.Enabled": true,
 }
