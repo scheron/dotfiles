@@ -4,6 +4,9 @@
   { "key": "ctrl+2", "command": "git-graph.view" },
   { "key": "ctrl+3", "command": "workbench.action.terminal.toggleTerminal", },
 
+  // PREVIOUS EDITOR
+  { "key": "cmd+o", "command": "workbench.action.openPreviousEditorFromHistory" },
+
   // TERMINAL
   { "key": "cmd+shift+n", "command": "workbench.action.terminal.focusNext", "when": "terminalFocus" },
   { "key": "cmd+shift+p", "command": "workbench.action.terminal.focusPrevious", "when": "terminalFocus" },
@@ -11,14 +14,14 @@
   { "key": "cmd+shift+q", "command": "workbench.action.terminal.kill", "when": "terminalFocus" },
 
   // FILE TREE
-  { "key": "e", "command": "explorer.openAndPassFocus", "when": "explorerViewletFocus && !inputFocus" },
-  { "key": "ctrl+e" , "command": "workbench.action.toggleSidebarVisibility"}, 
-  { "key": "ctrl+e", "command": "workbench.files.action.focusFilesExplorer", "when": "editorTextFocus && !inputFocus" },
-  { "key": "shift+a", "command": "explorer.newFolder", "when": "explorerViewletFocus && !inputFocus" },
-  { "key": "a", "command": "explorer.newFile", "when": "filesExplorerFocus && !inputFocus" },
-  { "key": "r", "command": "renameFile", "when": "filesExplorerFocus && !inputFocus" },
-  { "key": "d", "command": "deleteFile", "when": "filesExplorerFocus && !inputFocus" },
+  { "key": "a", "command": "explorer.newFile", "when": "filesExplorerFocus && foldersViewVisible && !explorerResourceIsRoot && !explorerResourceReadonly && !inputFocus" },
+  { "key": "shift-a", "command": "explorer.newFolder", "when": "filesExplorerFocus && foldersViewVisible && !explorerResourceIsRoot && !explorerResourceReadonly && !inputFocus" },
+  { "key": "r", "command": "renameFile", "when": "filesExplorerFocus && foldersViewVisible && !explorerResourceIsRoot && !explorerResourceReadonly && !inputFocus" }, 
+  { "key": "c", "command": "filesExplorer.copy", "when": "filesExplorerFocus && foldersViewVisible && !explorerResourceIsRoot && !explorerResourceReadonly && !inputFocus" },
+  { "key": "p", "command": "filesExplorer.paste", "when": "filesExplorerFocus && foldersViewVisible && !explorerResourceIsRoot && !explorerResourceReadonly && !inputFocus" },
+  { "key": "x", "command": "filesExplorer.cut", "when": "filesExplorerFocus && foldersViewVisible && !explorerResourceIsRoot && !explorerResourceReadonly && !inputFocus" },
+  { "key": "d", "command": "deleteFile", "when": "filesExplorerFocus && foldersViewVisible && !explorerResourceIsRoot && !explorerResourceReadonly && !inputFocus" },
 
-  // EXTRA
-  { "key": "cmd+o", "command": "workbench.action.openPreviousEditorFromHistory" }
+  { "key": "s", "command": "explorer.openToSide", "when": "filesExplorerFocus && foldersViewVisible && !explorerResourceIsRoot && !explorerResourceReadonly && !inputFocus" },
+  { "key": "shift-s", "command": "runCommands", "when": "filesExplorerFocus && foldersViewVisible && !explorerResourceIsRoot && !explorerResourceReadonly && !inputFocus", "args": { "commands": [ "workbench.action.splitEditorDown", "explorer.openAndPassFocus", "workbench.action.closeOtherEditors" ] } }
 ]
