@@ -79,6 +79,7 @@
     "filedata",
     "Finres",
     "maxt",
+    "Nuxt",
     "pinia",
     "unnessasery",
     "unsub",
@@ -100,7 +101,7 @@
   },
   "supermaven.enableFixWithSupermaven": true,
   "workbench.iconTheme": "bearded-icons",
-  "workbench.colorTheme": "Tokyo Night",
+  "workbench.colorTheme": "Bearded Theme feat. WebDevCody",
 
   // VIM
   "vim.leader": "<space>",
@@ -226,4 +227,6 @@
   "gitlens.ai.experimental.model": "openai:gpt-4o",
   "update.mode": "none",
   "animations.Enabled": true,
+  "screencastMode.verticalOffset": 30,
+  "editor.cursorSurroundingLines": 10,
 }
