@@ -230,4 +230,5 @@
   "animations.Enabled": true,
   "screencastMode.verticalOffset": 30,
   "editor.cursorSurroundingLines": 10,
+  "workbench.sideBar.location": "right",
 }
