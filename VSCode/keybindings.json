@@ -11,7 +11,7 @@
   { "key": "cmd+shift+n", "command": "workbench.action.terminal.focusNext", "when": "terminalFocus" },
   { "key": "cmd+shift+p", "command": "workbench.action.terminal.focusPrevious", "when": "terminalFocus" },
   { "key": "cmd+shift+c", "command": "workbench.action.terminal.new", "when": "terminalFocus" },
-  { "key": "cmd+shift+q", "command": "workbench.action.terminal.kill", "when": "terminalFocus" },
+  { "key": "cmd+shift+o", "command": "workbench.action.terminal.kill", "when": "terminalFocus" },
 
   // FILE TREE
   { "key": "a", "command": "explorer.newFile", "when": "filesExplorerFocus && foldersViewVisible && !explorerResourceIsRoot && !explorerResourceReadonly && !inputFocus" },
@@ -23,5 +23,8 @@
   { "key": "d", "command": "deleteFile", "when": "filesExplorerFocus && foldersViewVisible && !explorerResourceIsRoot && !explorerResourceReadonly && !inputFocus" },
 
   { "key": "s", "command": "explorer.openToSide", "when": "filesExplorerFocus && foldersViewVisible && !explorerResourceIsRoot && !explorerResourceReadonly && !inputFocus" },
-  { "key": "shift-s", "command": "runCommands", "when": "filesExplorerFocus && foldersViewVisible && !explorerResourceIsRoot && !explorerResourceReadonly && !inputFocus", "args": { "commands": [ "workbench.action.splitEditorDown", "explorer.openAndPassFocus", "workbench.action.closeOtherEditors" ] } }
+  { "key": "shift-s", "command": "runCommands", "when": "filesExplorerFocus && foldersViewVisible && !explorerResourceIsRoot && !explorerResourceReadonly && !inputFocus", "args": { "commands": [ "workbench.action.splitEditorDown", "explorer.openAndPassFocus", "workbench.action.closeOtherEditors" ] } },
+
+  { "key": "cmd+shift+m", "command": "workbench.action.toggleMaximizedPanel" },
+  { "key": "cmd+shift+e", "command": "workbench.actions.view.problems"}
 ]
