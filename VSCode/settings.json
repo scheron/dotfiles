@@ -102,7 +102,7 @@
   },
   "supermaven.enableFixWithSupermaven": true,
   "workbench.iconTheme": "bearded-icons",
-  "workbench.colorTheme": "Bearded Theme feat. Gold D Raynh",
+  "workbench.colorTheme": "Bearded Theme Arc Blueberry",
 
   // VIM
   "vim.leader": "<space>",
