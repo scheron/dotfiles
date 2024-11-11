@@ -181,10 +181,10 @@
     "asvetliakov.vscode-neovim": 1
   },
   "editor.suggest.insertMode": "insert",
-  "editor.fontFamily": "Geist Mono, ZedMono Nerd Font, VictorMono Nerd Font Mono, SauceCodePro Nerd Font Mono, Fragment Mono, MesloLGS Nerd Font, FiraCode Nerd Font Mono, Monoid Nerd Font Mono, JetBrainsMono Nerd Font Mono, Iosevka",
+  "editor.fontFamily": "Iosevka, ZedMono Nerd Font, Geist Mono, VictorMono Nerd Font Mono, SauceCodePro Nerd Font Mono, Fragment Mono, MesloLGS Nerd Font, FiraCode Nerd Font Mono, Monoid Nerd Font Mono, JetBrainsMono Nerd Font Mono",
   "terminal.integrated.fontFamily": "MesloLGS Nerd Font",
   "terminal.integrated.fontSize": 16,
-  "editor.fontSize": 19,
+  "editor.fontSize": 20,
   "editor.lineHeight": 1.6,
   "editor.fontWeight": 400,
   "editor.glyphMargin": false,
