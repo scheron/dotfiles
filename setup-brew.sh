@@ -21,11 +21,13 @@ brew install --cask wezterm
 brew install --cask cleanmymac
 brew install --cask firefox
 brew install --cask brave-browser
+brew install --cask ark
 brew install --cask insomnia
 brew install --cask logi-options+
 brew install --cask raycast
 brew install --cask telegram
 brew install --cask visual-studio-code
+brew install --cask docker
 
 # Install fonts
 brew install --cask font-symbols-only-nerd-font
@@ -37,6 +39,7 @@ brew install --cask font-victor-mono
 brew install --cask font-commit-mono-nerd-font
 brew install --cask font-hack-nerd-font
 brew install --cask font-fragment-mono
+brew install --cask font-maple
 
 
 # Remove outdated versions from the cellar.
