@@ -33,7 +33,7 @@
     "transparent": true,
     "titleBarStyle": "hiddenInset",
     "vibrancy": "hud",
-    "opacity": 0.92,
+    "opacity": 0.90,
     "visualEffectState": "active"
   },
   "apc.font.family": "Maple Mono",
@@ -102,7 +102,7 @@
   },
   "supermaven.enableFixWithSupermaven": true,
   "workbench.iconTheme": "bearded-icons",
-  "workbench.colorTheme": "Shades of Purple (Super Dark)",
+  "workbench.colorTheme": "Dark Magic",
 
   // VIM
   "vim.leader": "<space>",
@@ -181,7 +181,7 @@
     "asvetliakov.vscode-neovim": 1
   },
   "editor.suggest.insertMode": "insert",
-  "editor.fontFamily": "Maple Mono, Geist Mono, ZedMono Nerd Font, VictorMono Nerd Font Mono, SauceCodePro Nerd Font Mono, Fragment Mono, MesloLGS Nerd Font, FiraCode Nerd Font Mono, Monoid Nerd Font Mono, JetBrainsMono Nerd Font Mono, Iosevka",
+  "editor.fontFamily": "Maple Mono, Victor Mono, Iosevka, ZedMono Nerd Font, Geist Mono, SauceCodePro Nerd Font Mono, Fragment Mono, MesloLGS Nerd Font, FiraCode Nerd Font Mono, Monoid Nerd Font Mono, JetBrainsMono Nerd Font Mono",
   "terminal.integrated.fontFamily": "MesloLGS Nerd Font",
   "terminal.integrated.fontSize": 16,
   "editor.fontSize": 20,
