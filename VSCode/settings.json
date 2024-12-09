@@ -23,7 +23,7 @@
       "tree"
     ],
     "height": 22,
-    "fontSize": 18
+    "fontSize": 16
   } ,
   "apc.imports": [
     "file://~/.vscode/extensions/brandonkirbyson.vscode-animations-2.0.3/dist/updateHandler.js"
@@ -36,7 +36,7 @@
     "opacity": 0.90,
     "visualEffectState": "active"
   },
-  "apc.font.family": "Maple Mono",
+  "apc.font.family": "Iosevka",
   "apc.monospace.font.family": "Iosevka",
   "apc.activityBar": {
     "position": "bottom",
@@ -84,7 +84,8 @@
     "unnessasery",
     "unsub",
     "Vaul",
-    "vueuse"
+    "vueuse",
+    "Вопросы"
   ],
   "terminal.explorerKind": "both",
   "terminal.integrated.env.osx": {
@@ -101,8 +102,8 @@
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
   "supermaven.enableFixWithSupermaven": true,
-  "workbench.iconTheme": "bearded-icons",
-  "workbench.colorTheme": "Dark Magic",
+  "workbench.iconTheme": "symbols",
+  "workbench.colorTheme": "Bearded Theme Black & Diamond",
 
   // VIM
   "vim.leader": "<space>",
@@ -181,10 +182,10 @@
     "asvetliakov.vscode-neovim": 1
   },
   "editor.suggest.insertMode": "insert",
-  "editor.fontFamily": "Maple Mono, Victor Mono, Iosevka, ZedMono Nerd Font, Geist Mono, SauceCodePro Nerd Font Mono, Fragment Mono, MesloLGS Nerd Font, FiraCode Nerd Font Mono, Monoid Nerd Font Mono, JetBrainsMono Nerd Font Mono",
+  "editor.fontFamily": "Iosevka, Maple Mono, Victor Mono, ZedMono Nerd Font, Geist Mono, SauceCodePro Nerd Font Mono, Fragment Mono, MesloLGS Nerd Font, FiraCode Nerd Font Mono, Monoid Nerd Font Mono, JetBrainsMono Nerd Font Mono",
   "terminal.integrated.fontFamily": "MesloLGS Nerd Font",
   "terminal.integrated.fontSize": 16,
-  "editor.fontSize": 20,
+  "editor.fontSize": 18,
   "editor.lineHeight": 1.6,
   "editor.fontWeight": 400,
   "editor.glyphMargin": false,
