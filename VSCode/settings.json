@@ -30,10 +30,10 @@
   ],
   "apc.electron": {
     "frame": false,
-    "transparent": true,
+    "transparent": false,
     "titleBarStyle": "hiddenInset",
     "vibrancy": "hud",
-    "opacity": 0.90,
+    "opacity": 0.96,
     "visualEffectState": "active"
   },
   "apc.font.family": "Iosevka",
