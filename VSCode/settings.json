@@ -30,14 +30,20 @@
   ],
   "apc.electron": {
     "frame": false,
-    "transparent": false,
+    "transparent": true,
     "titleBarStyle": "hiddenInset",
     "vibrancy": "hud",
-    "opacity": 0.96,
+    "opacity": 0.95,
     "visualEffectState": "active"
   },
-  "apc.font.family": "Iosevka",
-  "apc.monospace.font.family": "Iosevka",
+  "apc.font.family": "Lekton Nerd Font Mono",
+  "apc.monospace.font.family": "Lekton Nerd Font Mono",
+  "editor.fontFamily": "Lekton Nerd Font Mono, ProFontWindows Nerd Font Mono, RecMonoLinear Nerd Font, IosevkaTermSlab Nerd Font, Iosevka, Maple Mono, Victor Mono, ZedMono Nerd Font, Geist Mono, SauceCodePro Nerd Font Mono, Fragment Mono, MesloLGS Nerd Font, FiraCode Nerd Font, JetBrainsMono Nerd Font Mono",
+  "terminal.integrated.fontFamily": "MesloLGS Nerd Font",
+  "terminal.integrated.fontSize": 16,
+  "editor.fontSize": 19,
+  "editor.lineHeight": 1.6,
+  "editor.fontWeight":400,
   "apc.activityBar": {
     "position": "bottom",
     "size": 30,
@@ -103,7 +109,7 @@
   },
   "supermaven.enableFixWithSupermaven": true,
   "workbench.iconTheme": "symbols",
-  "workbench.colorTheme": "Bearded Theme Black & Diamond",
+  "workbench.colorTheme": "Bearded Theme Arc Blueberry",
 
   // VIM
   "vim.leader": "<space>",
@@ -182,12 +188,6 @@
     "asvetliakov.vscode-neovim": 1
   },
   "editor.suggest.insertMode": "insert",
-  "editor.fontFamily": "Iosevka, Maple Mono, Victor Mono, ZedMono Nerd Font, Geist Mono, SauceCodePro Nerd Font Mono, Fragment Mono, MesloLGS Nerd Font, FiraCode Nerd Font Mono, Monoid Nerd Font Mono, JetBrainsMono Nerd Font Mono",
-  "terminal.integrated.fontFamily": "MesloLGS Nerd Font",
-  "terminal.integrated.fontSize": 16,
-  "editor.fontSize": 18,
-  "editor.lineHeight": 1.6,
-  "editor.fontWeight": 400,
   "editor.glyphMargin": false,
   "editor.minimap.enabled": false,
   "explorer.compactFolders": false,
