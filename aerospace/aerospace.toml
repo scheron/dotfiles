@@ -44,8 +44,6 @@ outer.right =      18
 # All possible modifiers: cmd, alt, ctrl, shift
 # All possible commands: https://nikitabobko.github.io/AeroSpace/commands
 
-
-# See: https://nikitabobko.github.io/AeroSpace/commands#workspace
 alt-1 = 'workspace M1'
 alt-2 = 'workspace M2'
 alt-3 = 'workspace M3'
@@ -54,6 +52,11 @@ alt-5 = 'workspace M5'
 alt-q = 'workspace SQ'
 alt-w = 'workspace SW'
 alt-e = 'workspace SE'
+
+alt-p = ['focus-monitor main', 'workspace prev --wrap-around']
+alt-n = ['focus-monitor main', 'workspace next --wrap-around']
+alt-shift-p = ['focus-monitor secondary', 'workspace prev --wrap-around']
+alt-shift-n = ['focus-monitor secondary', 'workspace next --wrap-around']
 
 
 alt-shift-1 = 'move-node-to-workspace M1'
@@ -64,6 +67,7 @@ alt-shift-5 = 'move-node-to-workspace M5'
 alt-shift-q = 'move-node-to-workspace SQ'
 alt-shift-w = 'move-node-to-workspace SW'
 alt-shift-e = 'move-node-to-workspace SE'
+
 
 
 alt-shift-f = 'fullscreen'
@@ -129,27 +133,41 @@ SW = 'secondary'
 SE = 'secondary'
 
 # HOOKS
+# [[on-window-detected]]
+# check-further-callbacks = true
+# run = 'layout floating'
+
 [[on-window-detected]]
 if.app-id = 'com.brave.Browser'
 run = "move-node-to-workspace M1"
-
 [[on-window-detected]]
 if.app-id = 'com.microsoft.VSCode'
 run = "move-node-to-workspace M2"
 
 [[on-window-detected]]
-if.app-id = 'com.github.wez.wezterm'
-run = 'layout floating'
-
-
-[[on-window-detected]]
 if.app-id = 'ru.keepcoder.Telegram' 
 run = "move-node-to-workspace SW"
-
 [[on-window-detected]]
 if.app-id = 'com.spotify.client' 
 run = "move-node-to-workspace SE"
 
+
+[[on-window-detected]]
+if.app-id = 'com.github.wez.wezterm'
+run = 'layout floating'
+[[on-window-detected]]
+if.app-id = 'com.apple.finder'
+run = 'layout floating'
+[[on-window-detected]]
+if.app-id = 'com.apple.finder'
+run = 'layout floating'
+[[on-window-detected]]
+if.app-id = 'net.freemacsoft.AppCleaner'
+run = 'layout floating'
+[[on-window-detected]]
+if.app-id = 'dev.yuguo.FoXray'
+run = 'layout floating'
+
 # [[on-window-detected]]
-# check-further-callbacks = true
-# run = 'layout floating'
+# if.app-name-regex-substring = 'Signal|Discord|Messages'
+# run = ['layout tiling', 'move-node-to-workspace 5']
