@@ -51,9 +51,9 @@ alt-2 = 'workspace M2'
 alt-3 = 'workspace M3'
 alt-4 = 'workspace M4'
 alt-5 = 'workspace M5'
-alt-q = 'workspace S1'
-alt-w = 'workspace S2'
-alt-e = 'workspace S3'
+alt-q = 'workspace SQ'
+alt-w = 'workspace SW'
+alt-e = 'workspace SE'
 
 
 alt-shift-1 = 'move-node-to-workspace M1'
@@ -61,9 +61,9 @@ alt-shift-2 = 'move-node-to-workspace M2'
 alt-shift-3 = 'move-node-to-workspace M3'
 alt-shift-4 = 'move-node-to-workspace M4'
 alt-shift-5 = 'move-node-to-workspace M5'
-alt-shift-q = 'move-node-to-workspace S1'
-alt-shift-w = 'move-node-to-workspace S2'
-alt-shift-e = 'move-node-to-workspace S3'
+alt-shift-q = 'move-node-to-workspace SQ'
+alt-shift-w = 'move-node-to-workspace SW'
+alt-shift-e = 'move-node-to-workspace SE'
 
 
 alt-shift-f = 'fullscreen'
@@ -87,10 +87,11 @@ alt-shift-j = 'move down'
 alt-shift-k = 'move up'
 alt-shift-l = 'move right'
 
+# MODES
+alt-shift-r = 'mode resize'
+alt-shift-slash = 'mode service'
 
 # BINDING MODES - RESIZE
-alt-shift-r = 'mode resize'
-
 [mode.resize.binding]
 h = 'resize width -50'
 j = 'resize height +50'
@@ -106,8 +107,6 @@ esc = 'mode main'
 
 
 # BINDING MODES - SERVICE
-alt-shift-semicolon = 'mode service'
-
 [mode.service.binding]
 esc = ['reload-config', 'mode main']
 r = ['flatten-workspace-tree', 'mode main'] # reset layout
@@ -125,31 +124,32 @@ M2 = 'main'
 M3 = 'main'                      
 M4 = 'main'
 M5 = 'main'
-S1 = 'secondary'                 
-S2 = 'secondary'                 
-S3 = 'secondary'                 
+SQ = 'secondary'                 
+SW = 'secondary'                 
+SE = 'secondary'
 
 # HOOKS
-# [[on-window-detected]]
-# if.app-id = 'com.brave.Browser'
-# run = "move-node-to-workspace 🥸"
-
-# [[on-window-detected]]
-# if.app-id = 'com.github.wez.wezterm'
-# run = "move-node-to-workspace T"
-
-# [[on-window-detected]]
-# if.app-id = 'com.microsoft.VSCode'
-# run = "move-node-to-workspace C"
+[[on-window-detected]]
+if.app-id = 'com.brave.Browser'
+run = "move-node-to-workspace M1"
 
 [[on-window-detected]]
-if.app-id = 'com.spotify.client' 
-run = "move-node-to-workspace S1"
+if.app-id = 'com.microsoft.VSCode'
+run = "move-node-to-workspace M2"
+
+[[on-window-detected]]
+if.app-id = 'com.github.wez.wezterm'
+run = 'layout floating'
+
 
 [[on-window-detected]]
 if.app-id = 'ru.keepcoder.Telegram' 
-run = "move-node-to-workspace S2"
+run = "move-node-to-workspace SW"
 
 [[on-window-detected]]
-check-further-callbacks = true
-run = 'layout floating'
+if.app-id = 'com.spotify.client' 
+run = "move-node-to-workspace SE"
+
+# [[on-window-detected]]
+# check-further-callbacks = true
+# run = 'layout floating'
