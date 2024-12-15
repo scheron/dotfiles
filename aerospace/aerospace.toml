@@ -1,0 +1,153 @@
+# Configuration file for AeroSpace
+# https://github.com/nikitabobko/AeroSpace
+start-at-login = true
+
+after-login-command = []
+after-startup-command = []
+
+enable-normalization-flatten-containers = true
+enable-normalization-opposite-orientation-for-nested-containers = true
+
+accordion-padding = 30
+
+default-root-container-layout = 'tiles'
+default-root-container-orientation = 'auto'
+
+on-focused-monitor-changed = ['move-mouse monitor-lazy-center']
+on-focus-changed = 'move-mouse window-lazy-center'
+
+automatically-unhide-macos-hidden-apps = true
+
+[key-mapping]
+preset = 'qwerty'
+
+[gaps]
+inner.horizontal = 18
+inner.vertical =   18
+outer.left =       18
+outer.bottom =     18
+outer.top =        18
+outer.right =      18
+
+[mode.main.binding]
+# All possible keys:
+# - Letters.        a, b, c, ..., z
+# - Numbers.        0, 1, 2, ..., 9
+# - Keypad numbers. keypad0, keypad1, keypad2, ..., keypad9
+# - F-keys.         f1, f2, ..., f20
+# - Special keys.   minus, equal, period, comma, slash, backslash, quote, semicolon, backtick,
+#                   leftSquareBracket, rightSquareBracket, space, enter, esc, backspace, tab
+# - Keypad special. keypadClear, keypadDecimalMark, keypadDivide, keypadEnter, keypadEqual,
+#                   keypadMinus, keypadMultiply, keypadPlus
+# - Arrows.         left, down, up, right
+
+# All possible modifiers: cmd, alt, ctrl, shift
+# All possible commands: https://nikitabobko.github.io/AeroSpace/commands
+
+
+# See: https://nikitabobko.github.io/AeroSpace/commands#workspace
+alt-1 = 'workspace S1'
+alt-2 = 'workspace S2'
+alt-3 = 'workspace S3'
+alt-4 = 'workspace S4'
+alt-5 = 'workspace S5'
+alt-q = 'workspace ES1'
+alt-w = 'workspace ES2'
+alt-e = 'workspace ES3'
+
+alt-b = 'workspace 🪼' # Browser
+alt-c = 'workspace 🚀' # Code
+alt-t = 'workspace 🥸' # Terminal
+alt-m = 'workspace 🫠' # Media (telegram / spotify / etc)
+
+alt-shift-1 = 'move-node-to-workspace S1'
+alt-shift-2 = 'move-node-to-workspace S2'
+alt-shift-3 = 'move-node-to-workspace S3'
+alt-shift-4 = 'move-node-to-workspace S4'
+alt-shift-5 = 'move-node-to-workspace S5'
+alt-shift-q = 'move-node-to-workspace ES1'
+alt-shift-w = 'move-node-to-workspace ES2'
+alt-shift-e = 'move-node-to-workspace ES3'
+
+alt-shift-b = 'move-node-to-workspace 🪼'
+alt-shift-c = 'move-node-to-workspace 🚀'
+alt-shift-t = 'move-node-to-workspace 🥸'
+alt-shift-m = 'move-node-to-workspace 🫠'
+
+alt-shift-f = 'fullscreen'
+
+alt-tab = 'workspace-back-and-forth'
+alt-shift-tab = 'move-workspace-to-monitor --wrap-around next'
+
+# LAYOUT
+alt-slash = 'layout tiles horizontal vertical'
+alt-comma = 'layout accordion horizontal vertical'
+
+# FOCUS
+alt-h = 'focus left'
+alt-j = 'focus down'
+alt-k = 'focus up'
+alt-l = 'focus right'
+
+# MOVE
+alt-shift-h = 'move left'
+alt-shift-j = 'move down'
+alt-shift-k = 'move up'
+alt-shift-l = 'move right'
+
+
+# BINDING MODES - RESIZE
+alt-shift-r = 'mode resize'
+
+[mode.resize.binding]
+h = 'resize width -50'
+j = 'resize height +50'
+k = 'resize height -50'
+l = 'resize width +50'
+b = 'balance-sizes'
+
+minus = 'resize smart -50'
+equal = 'resize smart +50'
+
+enter = 'mode main'
+esc = 'mode main'
+
+
+# BINDING MODES - SERVICE
+alt-shift-semicolon = 'mode service'
+
+[mode.service.binding]
+esc = ['reload-config', 'mode main']
+r = ['flatten-workspace-tree', 'mode main'] # reset layout
+f = ['layout floating tiling', 'mode main'] # Toggle between floating and tiling layout
+backspace = ['close-all-windows-but-current', 'mode main']
+
+alt-shift-h = ['join-with left', 'mode main']
+alt-shift-j = ['join-with down', 'mode main']
+alt-shift-k = ['join-with up', 'mode main']
+alt-shift-l = ['join-with right', 'mode main']
+
+# HOOKS
+[[on-window-detected]]
+if.app-id = 'com.brave.Browser'
+run = "move-node-to-workspace 🪼"
+
+[[on-window-detected]]
+if.app-id = 'com.github.wez.wezterm'
+run = "move-node-to-workspace 🥸"
+
+[[on-window-detected]]
+if.app-id = 'com.microsoft.VSCode'
+run = "move-node-to-workspace 🚀"
+
+[[on-window-detected]]
+if.app-id = 'com.spotify.client' 
+run = "move-node-to-workspace 🫠"
+
+[[on-window-detected]]
+if.app-id = 'ru.keepcoder.Telegram' 
+run = "move-node-to-workspace 🫠"
+
+[[on-window-detected]]
+check-further-callbacks = true
+run = 'layout floating'
