@@ -1,4 +1,4 @@
-# Configuration file for AeroSpace
+# Configuration file for Ae4oSpace
 # https://github.com/nikitabobko/AeroSpace
 start-at-login = true
 
@@ -46,33 +46,25 @@ outer.right =      18
 
 
 # See: https://nikitabobko.github.io/AeroSpace/commands#workspace
-alt-1 = 'workspace S1'
-alt-2 = 'workspace S2'
-alt-3 = 'workspace S3'
-alt-4 = 'workspace S4'
-alt-5 = 'workspace S5'
-alt-q = 'workspace ES1'
-alt-w = 'workspace ES2'
-alt-e = 'workspace ES3'
+alt-1 = 'workspace M1'
+alt-2 = 'workspace M2'
+alt-3 = 'workspace M3'
+alt-4 = 'workspace M4'
+alt-5 = 'workspace M5'
+alt-q = 'workspace S1'
+alt-w = 'workspace S2'
+alt-e = 'workspace S3'
 
-alt-b = 'workspace 🪼' # Browser
-alt-c = 'workspace 🚀' # Code
-alt-t = 'workspace 🥸' # Terminal
-alt-m = 'workspace 🫠' # Media (telegram / spotify / etc)
 
-alt-shift-1 = 'move-node-to-workspace S1'
-alt-shift-2 = 'move-node-to-workspace S2'
-alt-shift-3 = 'move-node-to-workspace S3'
-alt-shift-4 = 'move-node-to-workspace S4'
-alt-shift-5 = 'move-node-to-workspace S5'
-alt-shift-q = 'move-node-to-workspace ES1'
-alt-shift-w = 'move-node-to-workspace ES2'
-alt-shift-e = 'move-node-to-workspace ES3'
+alt-shift-1 = 'move-node-to-workspace M1'
+alt-shift-2 = 'move-node-to-workspace M2'
+alt-shift-3 = 'move-node-to-workspace M3'
+alt-shift-4 = 'move-node-to-workspace M4'
+alt-shift-5 = 'move-node-to-workspace M5'
+alt-shift-q = 'move-node-to-workspace S1'
+alt-shift-w = 'move-node-to-workspace S2'
+alt-shift-e = 'move-node-to-workspace S3'
 
-alt-shift-b = 'move-node-to-workspace 🪼'
-alt-shift-c = 'move-node-to-workspace 🚀'
-alt-shift-t = 'move-node-to-workspace 🥸'
-alt-shift-m = 'move-node-to-workspace 🫠'
 
 alt-shift-f = 'fullscreen'
 
@@ -127,26 +119,36 @@ alt-shift-j = ['join-with down', 'mode main']
 alt-shift-k = ['join-with up', 'mode main']
 alt-shift-l = ['join-with right', 'mode main']
 
+[workspace-to-monitor-force-assignment]
+M1 = 'main'                      
+M2 = 'main'                      
+M3 = 'main'                      
+M4 = 'main'
+M5 = 'main'
+S1 = 'secondary'                 
+S2 = 'secondary'                 
+S3 = 'secondary'                 
+
 # HOOKS
-[[on-window-detected]]
-if.app-id = 'com.brave.Browser'
-run = "move-node-to-workspace 🪼"
+# [[on-window-detected]]
+# if.app-id = 'com.brave.Browser'
+# run = "move-node-to-workspace 🥸"
 
-[[on-window-detected]]
-if.app-id = 'com.github.wez.wezterm'
-run = "move-node-to-workspace 🥸"
+# [[on-window-detected]]
+# if.app-id = 'com.github.wez.wezterm'
+# run = "move-node-to-workspace T"
 
-[[on-window-detected]]
-if.app-id = 'com.microsoft.VSCode'
-run = "move-node-to-workspace 🚀"
+# [[on-window-detected]]
+# if.app-id = 'com.microsoft.VSCode'
+# run = "move-node-to-workspace C"
 
 [[on-window-detected]]
 if.app-id = 'com.spotify.client' 
-run = "move-node-to-workspace 🫠"
+run = "move-node-to-workspace S1"
 
 [[on-window-detected]]
 if.app-id = 'ru.keepcoder.Telegram' 
-run = "move-node-to-workspace 🫠"
+run = "move-node-to-workspace S2"
 
 [[on-window-detected]]
 check-further-callbacks = true
