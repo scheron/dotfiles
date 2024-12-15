@@ -162,7 +162,7 @@ run = 'layout floating'
 if.app-id = 'net.freemacsoft.AppCleaner'
 run = 'layout floating'
 [[on-window-detected]]
-if.app-id = 'dev.yuguo.FoXray'
+if.app-name-regex-substring = 'FoXray'
 run = 'layout floating'
 
 # [[on-window-detected]]
