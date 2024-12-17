@@ -13,9 +13,6 @@ accordion-padding = 30
 default-root-container-layout = 'tiles'
 default-root-container-orientation = 'auto'
 
-on-focused-monitor-changed = ['move-mouse monitor-lazy-center']
-on-focus-changed = 'move-mouse window-lazy-center'
-
 automatically-unhide-macos-hidden-apps = true
 
 [key-mapping]
@@ -152,9 +149,6 @@ if.app-id = 'com.spotify.client'
 run = "move-node-to-workspace SE"
 
 
-[[on-window-detected]]
-if.app-id = 'com.github.wez.wezterm'
-run = 'layout floating'
 [[on-window-detected]]
 if.app-id = 'com.apple.finder'
 run = 'layout floating'
