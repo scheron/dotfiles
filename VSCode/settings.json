@@ -22,8 +22,8 @@
       "quick-input-list",
       "tree"
     ],
-    "height": 30,
-    "fontSize": 20
+    "height": 20,
+    "fontSize": 16
   } ,
   "apc.imports": [
     "file://~/.vscode/extensions/brandonkirbyson.vscode-animations-2.0.3/dist/updateHandler.js"
@@ -36,13 +36,13 @@
     "opacity": 0.94,
     "visualEffectState": "active"
   },
-  "apc.font.family": "Lekton Nerd Font Mono",
-  "apc.monospace.font.family": "Lekton Nerd Font Mono",
-  "editor.fontFamily": "IntoneMone Nerd Font,Lekton Nerd Font Mono, ProFontWindows Nerd Font Mono, RecMonoLinear Nerd Font, IosevkaTermSlab Nerd Font, Iosevka, Maple Mono, Victor Mono, ZedMono Nerd Font, Geist Mono, SauceCodePro Nerd Font Mono, Fragment Mono, MesloLGS Nerd Font, FiraCode Nerd Font, JetBrainsMono Nerd Font Mono",
+  "apc.font.family": "Iosevka",
+  "apc.monospace.font.family": "Iosevka",
+  "editor.fontFamily": "Lekton Nerd Font Mono, Iosevka, ProFontWindows Nerd Font Mono, RecMonoLinear Nerd Font, IosevkaTermSlab Nerd Font, Maple Mono, Victor Mono, ZedMono Nerd Font, Geist Mono, SauceCodePro Nerd Font Mono, Fragment Mono, MesloLGS Nerd Font, FiraCode Nerd Font, JetBrainsMono Nerd Font Mono",
   "terminal.integrated.fontFamily": "MesloLGS Nerd Font",
-  "terminal.integrated.fontSize": 18,
-  "editor.fontSize": 20,
-  "editor.lineHeight": 1.3,
+  "terminal.integrated.fontSize": 16,
+  "editor.fontSize": 18,
+  "editor.lineHeight": 1.4,
   "editor.fontWeight":400,
   "apc.activityBar": {
     "position": "bottom",
@@ -109,7 +109,7 @@
   },
   "supermaven.enableFixWithSupermaven": true,
   "workbench.iconTheme": "symbols",
-  "workbench.colorTheme": "Moonlight",
+  "workbench.colorTheme": "Tokyo Night",
 
   // VIM
   "vim.leader": "<space>",
@@ -209,7 +209,7 @@
   "editor.renderWhitespace": "none",
   "editor.renderControlCharacters": false,
   "editor.stickyScroll.enabled": false,
-  "workbench.editor.showTabs": "multiple",
+  "workbench.editor.showTabs": "none",
   "editor.stickyScroll.scrollWithEditor": false,
   "workbench.tree.enableStickyScroll": false,
   "workbench.startupEditor": "none",
@@ -233,4 +233,11 @@
   "editor.cursorSurroundingLines": 10,
   "database-client.autoSync": true,
   "cSpell.language": "en,ru",
+    "vscodeCustomCodeColor.fileLanguageIdList": [
+      "vue",
+      "typescript"
+    ],
+    "vscodeCustomCodeColor.highlightValue": "v-role",
+    "vscodeCustomCodeColor.highlightValueColor": "#6366f1",
+    "workbench.sideBar.location": "right"
 }
