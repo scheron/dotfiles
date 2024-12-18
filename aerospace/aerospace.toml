@@ -67,6 +67,7 @@ alt-shift-e = 'move-node-to-workspace SE'
 
 
 
+alt-f = 'layout floating tiling'
 alt-shift-f = 'fullscreen'
 
 alt-tab = 'workspace-back-and-forth'
