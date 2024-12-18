@@ -3,6 +3,7 @@
   { "key": "ctrl+1", "command": "workbench.action.toggleSidebarVisibility" },
   { "key": "ctrl+2", "command": "git-graph.view" },
   { "key": "ctrl+3", "command": "workbench.action.terminal.toggleTerminal", },
+  { "key": "ctrl+4", "command": "workbench.action.toggleAuxiliaryBar", },
 
   // PREVIOUS EDITOR
   { "key": "cmd+o", "command": "workbench.action.openPreviousEditorFromHistory" },
