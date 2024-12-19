@@ -109,7 +109,7 @@
   },
   "supermaven.enableFixWithSupermaven": true,
   "workbench.iconTheme": "symbols",
-  "workbench.colorTheme": "Tokyo Night",
+  "workbench.colorTheme": "Bearded Theme HC Ebony",
 
   // VIM
   "vim.leader": "<space>",
@@ -217,6 +217,7 @@
   "editor.codeLens": false,
   "editor.linkedEditing": true,
   "workbench.layoutControl.enabled": false,
+  "workbench.editor.enablePreview": false,
   "editor.renderLineHighlight": "none",
   "javascript.updateImportsOnFileMove.enabled": "never",
   "workbench.colorCustomizations": {
