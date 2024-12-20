@@ -19,12 +19,12 @@ automatically-unhide-macos-hidden-apps = true
 preset = 'qwerty'
 
 [gaps]
-inner.horizontal = 18
-inner.vertical =   18
-outer.left =       18
-outer.bottom =     18
-outer.top =        18
-outer.right =      18
+inner.horizontal = 12
+inner.vertical =   12
+outer.left =       12
+outer.bottom =     12
+outer.top =        12
+outer.right =      12
 
 [mode.main.binding]
 # All possible keys:
@@ -73,9 +73,6 @@ alt-shift-f = 'fullscreen'
 alt-tab = 'workspace-back-and-forth'
 alt-shift-tab = 'move-workspace-to-monitor --wrap-around next'
 
-# LAYOUT
-alt-slash = 'layout tiles horizontal vertical'
-alt-comma = 'layout accordion horizontal vertical'
 
 # FOCUS
 alt-h = 'focus left'
@@ -92,6 +89,10 @@ alt-shift-l = 'move right'
 # MODES
 alt-shift-r = 'mode resize'
 alt-shift-slash = 'mode service'
+
+# LAYOUT
+alt-slash = 'layout tiles horizontal vertical'
+alt-comma = 'layout accordion horizontal vertical'
 
 # BINDING MODES - RESIZE
 [mode.resize.binding]
@@ -141,6 +142,10 @@ run = "move-node-to-workspace M1"
 [[on-window-detected]]
 if.app-id = 'com.microsoft.VSCode'
 run = "move-node-to-workspace M2"
+[[on-window-detected]]
+if.app-id = 'com.github.wez.wezterm'
+run = "move-node-to-workspace M3"
+
 
 [[on-window-detected]]
 if.app-id = 'ru.keepcoder.Telegram' 
@@ -148,6 +153,11 @@ run = "move-node-to-workspace SW"
 [[on-window-detected]]
 if.app-id = 'com.spotify.client' 
 run = "move-node-to-workspace SE"
+
+[[on-window-detected]]
+if.app-id = 'com.atlassian.trello'
+run = "move-node-to-workspace SQ"
+
 
 
 [[on-window-detected]]
