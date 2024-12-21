@@ -1,5 +1,7 @@
 {
   // APC CUSTOMIZE++
+  "vsicons.presets.hideExplorerArrows": true,
+  "catppuccin-icons.hidesExplorerArrows": true,
   "window.titleBarStyle": "native",
   "apc.menubar.compact": true,
   "apc.header": {
@@ -33,7 +35,7 @@
     "transparent": true,
     "titleBarStyle": "hiddenInset",
     "vibrancy": "hud",
-    "opacity": 0.94,
+    "opacity": 0.93,
     "visualEffectState": "active"
   },
   "apc.font.family": "Iosevka",
@@ -108,8 +110,8 @@
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
   "supermaven.enableFixWithSupermaven": true,
-  "workbench.iconTheme": "symbols",
-  "workbench.colorTheme": "Bearded Theme HC Midnight Void",
+  "workbench.iconTheme": "catppuccin-latte",
+  "workbench.colorTheme": "Catppuccin Macchiato Darker",
 
   // VIM
   "vim.leader": "<space>",
