@@ -111,7 +111,7 @@
   },
   "supermaven.enableFixWithSupermaven": true,
   "workbench.iconTheme": "catppuccin-latte",
-  "workbench.colorTheme": "Catppuccin Macchiato Darker",
+  "workbench.colorTheme": "Night Owl Theme",
 
   // VIM
   "vim.leader": "<space>",
