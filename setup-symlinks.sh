@@ -7,7 +7,9 @@ ln -s ~/.dotfiles/yabai ~/.config/
 ln -s ~/.dotfiles/wezterm ~/.config/
 ln -s ~/.dotfiles/lazygit ~/.config/
 ln -s ~/.dotfiles/yazi ~/.config/
+ln -s ~/.dotfiles/sketchybar ~/.config/
 
 ln -s ~/.dotfiles/WebStorm/.ideavimrc ~/.ideavimrc
 ln -s ~/.dotfiles/.gitconfig ~/.gitconfig
+
 
