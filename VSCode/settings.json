@@ -35,7 +35,7 @@
     "transparent": true,
     "titleBarStyle": "hiddenInset",
     "vibrancy": "hud",
-    "opacity": 0.93,
+    "opacity": 0.95,
     "visualEffectState": "active"
   },
   "apc.font.family": "Iosevka",
