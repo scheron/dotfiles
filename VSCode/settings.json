@@ -24,8 +24,8 @@
       "quick-input-list",
       "tree"
     ],
-    "height": 22,
-    "fontSize": 18
+    "height": 24,
+    "fontSize": 20
   } ,
   "apc.imports": [
     "file://~/.vscode/extensions/brandonkirbyson.vscode-animations-2.0.3/dist/updateHandler.js"
@@ -38,14 +38,14 @@
     "opacity": 0.95,
     "visualEffectState": "active"
   },
-  "apc.font.family": "Iosevka",
+  "apc.font.family": "Lekton Nerd Font Mono",
   "apc.monospace.font.family": "Iosevka",
-  "editor.fontFamily": "Lekton Nerd Font Mono, Iosevka, ProFontWindows Nerd Font Mono, RecMonoLinear Nerd Font, IosevkaTermSlab Nerd Font, Maple Mono, Victor Mono, ZedMono Nerd Font, Geist Mono, SauceCodePro Nerd Font Mono, Fragment Mono, MesloLGS Nerd Font, FiraCode Nerd Font, JetBrainsMono Nerd Font Mono",
+  "editor.fontFamily": "RecMonoLinear Nerd Font, ZedMono Nerd Font, Lekton Nerd Font Mono, ProFontWindows Nerd Font Mono, SF Mono, Iosevka, IosevkaTermSlab Nerd Font, Maple Mono, Victor Mono, Geist Mono, SauceCodePro Nerd Font Mono, Fragment Mono, MesloLGS Nerd Font, FiraCode Nerd Font, JetBrainsMono Nerd Font Mono",
   "terminal.integrated.fontFamily": "MesloLGS Nerd Font",
   "terminal.integrated.fontSize": 16,
   "editor.fontSize": 19,
-  "editor.lineHeight": 1.3,
-  "editor.fontWeight":400,
+  "editor.lineHeight": 1.5,
+  "editor.fontWeight":200,
   "apc.activityBar": {
     "position": "bottom",
     "size": 30,
@@ -111,7 +111,7 @@
   },
   "supermaven.enableFixWithSupermaven": true,
   "workbench.iconTheme": "catppuccin-latte",
-  "workbench.colorTheme": "Night Owl Theme",
+  "workbench.colorTheme": "Bearded Theme Stained Blue",
 
   // VIM
   "vim.leader": "<space>",
@@ -129,8 +129,8 @@
   "vim.normalModeKeyBindingsNonRecursive": [
     // FIND
     { "before": [ "leader", "f", "s" ], "commands": [ "workbench.action.gotoSymbol" ] },
-    { "before": [ "leader", "f", "f" ], "commands": [ "find-it-faster.findFiles" ] },
-    { "before": [ "leader", "f", "w" ], "commands": [ "find-it-faster.findWithinFiles" ] },
+    { "before": [ "leader", "f", "f" ], "commands": [ "workbench.action.quickOpen" ] },
+    { "before": [ "leader", "f", "w" ], "commands": [ "workbench.action.findInFiles" ] },
     { "before": [ "leader", "f", "b" ], "commands": [ "workbench.action.showAllEditors" ] },
     { "before": [ "leader", "f", "r" ], "commands": [ "workbench.action.showAllEditorsByMostRecentlyUsed"] },
 

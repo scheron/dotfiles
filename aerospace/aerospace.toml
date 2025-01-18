@@ -25,10 +25,10 @@ preset = 'qwerty'
 [gaps]
 inner.horizontal = 16
 inner.vertical =   16
-outer.left =       16
-outer.bottom =     16
-outer.top =        16
-outer.right =      16
+outer.left =       24
+outer.bottom =     24
+outer.top =        24
+outer.right =      24
 
 [mode.main.binding]
 # All possible keys:
@@ -60,14 +60,14 @@ alt-shift-p = ['focus-monitor secondary', 'workspace prev --wrap-around']
 alt-shift-n = ['focus-monitor secondary', 'workspace next --wrap-around']
 
 
-alt-shift-1 = 'move-node-to-workspace --focus-follows-window M1 '
-alt-shift-2 = 'move-node-to-workspace --focus-follows-window M2 '
-alt-shift-3 = 'move-node-to-workspace --focus-follows-window M3 '
-alt-shift-4 = 'move-node-to-workspace --focus-follows-window M4 '
-alt-shift-5 = 'move-node-to-workspace --focus-follows-window M5 '
-alt-shift-q = 'move-node-to-workspace --focus-follows-window SQ'
-alt-shift-w = 'move-node-to-workspace --focus-follows-window SW'
-alt-shift-e = 'move-node-to-workspace --focus-follows-window SE'
+alt-shift-1 = 'move-node-to-workspace M1'
+alt-shift-2 = 'move-node-to-workspace M2'
+alt-shift-3 = 'move-node-to-workspace M3'
+alt-shift-4 = 'move-node-to-workspace M4'
+alt-shift-5 = 'move-node-to-workspace M5'
+alt-shift-q = 'move-node-to-workspace SQ'
+alt-shift-w = 'move-node-to-workspace SW'
+alt-shift-e = 'move-node-to-workspace SE'
 
 
 
