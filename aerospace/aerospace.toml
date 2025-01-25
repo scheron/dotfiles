@@ -25,10 +25,10 @@ preset = 'qwerty'
 [gaps]
 inner.horizontal = 16
 inner.vertical =   16
-outer.left =       24
-outer.bottom =     24
-outer.top =        24
-outer.right =      24
+outer.left =       16
+outer.bottom =     16
+outer.top =        16
+outer.right =      16
 
 [mode.main.binding]
 # All possible keys:
@@ -146,6 +146,10 @@ run = "move-node-to-workspace M1"
 if.app-id = 'com.microsoft.VSCode'
 run = "move-node-to-workspace M2"
 [[on-window-detected]]
+if.app-id='com.todesktop.230313mzl4w4u92'
+run = "move-node-to-workspace M2"
+
+[[on-window-detected]]
 if.app-id = 'com.github.wez.wezterm'
 run = "move-node-to-workspace M3"
 
@@ -160,18 +164,6 @@ run = "move-node-to-workspace SE"
 [[on-window-detected]]
 if.app-id = 'com.atlassian.trello'
 run = "move-node-to-workspace SQ"
-
-
-
-[[on-window-detected]]
-if.app-id = 'com.apple.finder'
-run = 'layout floating'
-[[on-window-detected]]
-if.app-id = 'net.freemacsoft.AppCleaner'
-run = 'layout floating'
-[[on-window-detected]]
-if.app-name-regex-substring = 'FoXray'
-run = 'layout floating'
 
 # [[on-window-detected]]
 # if.app-name-regex-substring = 'Signal|Discord|Messages'

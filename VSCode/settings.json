@@ -40,7 +40,7 @@
   },
   "apc.font.family": "Lekton Nerd Font Mono",
   "apc.monospace.font.family": "Iosevka",
-  "editor.fontFamily": "RecMonoLinear Nerd Font, ZedMono Nerd Font, Lekton Nerd Font Mono, ProFontWindows Nerd Font Mono, SF Mono, Iosevka, IosevkaTermSlab Nerd Font, Maple Mono, Victor Mono, Geist Mono, SauceCodePro Nerd Font Mono, Fragment Mono, MesloLGS Nerd Font, FiraCode Nerd Font, JetBrainsMono Nerd Font Mono",
+  "editor.fontFamily": "Maple Mono, SF Mono, RecMonoLinear Nerd Font, ZedMono Nerd Font, Lekton Nerd Font Mono, ProFontWindows Nerd Font Mono, Iosevka, IosevkaTermSlab Nerd Font, Victor Mono, Geist Mono, SauceCodePro Nerd Font Mono, Fragment Mono, MesloLGS Nerd Font, FiraCode Nerd Font, JetBrainsMono Nerd Font Mono",
   "terminal.integrated.fontFamily": "MesloLGS Nerd Font",
   "terminal.integrated.fontSize": 16,
   "editor.fontSize": 19,
@@ -111,7 +111,7 @@
   },
   "supermaven.enableFixWithSupermaven": true,
   "workbench.iconTheme": "catppuccin-latte",
-  "workbench.colorTheme": "Bearded Theme Stained Blue",
+  "workbench.colorTheme": "Bearded Theme feat. Gold D Raynh",
 
   // VIM
   "vim.leader": "<space>",
@@ -240,5 +240,6 @@
       "typescript"
     ],
     "vscodeCustomCodeColor.highlightValue": "v-role",
-    "vscodeCustomCodeColor.highlightValueColor": "#6366f1"
+    "vscodeCustomCodeColor.highlightValueColor": "#6366f1",
+    "typescript.updateImportsOnFileMove.enabled": "never"
 }
