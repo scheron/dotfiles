@@ -11,5 +11,10 @@ ln -s ~/.dotfiles/sketchybar ~/.config/
 
 ln -s ~/.dotfiles/WebStorm/.ideavimrc ~/.ideavimrc
 ln -s ~/.dotfiles/.gitconfig ~/.gitconfig
+ln -s ~/.dotfiles/VSCode/settings.json /Users/olegato/Library/Application Support/Code/User/
+ln -s ~/.dotfiles/VSCode/keybindings.json /Users/olegato/Library/Application Support/Code/User/
+
+ln -s ~/.dotfiles/cursor/settings.json ~/Library/Application Support/Cursor/User/
+ln -s ~/.dotfiles/VSCode/keybindings.json /Users/olegato/Library/Application Support/Cursor/User/
 
 

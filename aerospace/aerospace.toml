@@ -25,10 +25,10 @@ preset = 'qwerty'
 [gaps]
 inner.horizontal = 16
 inner.vertical =   16
-outer.left =       16
-outer.bottom =     16
-outer.top =        16
-outer.right =      16
+outer.left =       30
+outer.bottom =     30
+outer.top =        30
+outer.right =      30
 
 [mode.main.binding]
 # All possible keys:
@@ -142,9 +142,11 @@ SE = 'secondary'
 [[on-window-detected]]
 if.app-id = 'com.brave.Browser'
 run = "move-node-to-workspace M1"
-[[on-window-detected]]
-if.app-id = 'com.microsoft.VSCode'
-run = "move-node-to-workspace M2"
+
+# [[on-window-detected]]
+# if.app-id = 'com.microsoft.VSCode'
+# run = "move-node-to-workspace M2"
+
 [[on-window-detected]]
 if.app-id='com.todesktop.230313mzl4w4u92'
 run = "move-node-to-workspace M2"
