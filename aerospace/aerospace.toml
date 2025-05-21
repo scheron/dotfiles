@@ -143,6 +143,14 @@ SE = 'secondary'
 if.app-id = 'com.brave.Browser'
 run = "move-node-to-workspace M1"
 
+[[on-window-detected]]
+if.app-id = 'org.mozilla.firefox'
+run = "move-node-to-workspace M1"
+
+[[on-window-detected]]
+if.app-id = 'company.thebrowser.Browser' # Arc browser
+run = "move-node-to-workspace M1"
+
 # [[on-window-detected]]
 # if.app-id = 'com.microsoft.VSCode'
 # run = "move-node-to-workspace M2"

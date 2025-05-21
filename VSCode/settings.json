@@ -25,7 +25,7 @@
       "tree"
     ],
     "height": 24,
-    "fontSize": 20
+    "fontSize": 18
   } ,
   "apc.imports": [
     "file://~/.vscode/extensions/brandonkirbyson.vscode-animations-2.0.3/dist/updateHandler.js"
@@ -38,9 +38,9 @@
     "opacity": 0.95,
     "visualEffectState": "active"
   },
-  "apc.font.family": "Lekton Nerd Font Mono",
+  "apc.font.family": "Iosevka",
   "apc.monospace.font.family": "Iosevka",
-  "editor.fontFamily": "Maple Mono, SF Mono, RecMonoLinear Nerd Font, ZedMono Nerd Font, Lekton Nerd Font Mono, ProFontWindows Nerd Font Mono, Iosevka, IosevkaTermSlab Nerd Font, Victor Mono, Geist Mono, SauceCodePro Nerd Font Mono, Fragment Mono, MesloLGS Nerd Font, FiraCode Nerd Font, JetBrainsMono Nerd Font Mono",
+  "editor.fontFamily": "ZedMono Nerd Font, Maple Mono, SF Mono, RecMonoLinear Nerd Font, Lekton Nerd Font Mono, ProFontWindows Nerd Font Mono, Iosevka, IosevkaTermSlab Nerd Font, Victor Mono, Geist Mono, SauceCodePro Nerd Font Mono, Fragment Mono, MesloLGS Nerd Font, FiraCode Nerd Font, JetBrainsMono Nerd Font Mono",
   "terminal.integrated.fontFamily": "MesloLGS Nerd Font",
   "terminal.integrated.fontSize": 16,
   "editor.fontSize": 19,
@@ -111,7 +111,7 @@
   },
   "supermaven.enableFixWithSupermaven": true,
   "workbench.iconTheme": "catppuccin-latte",
-  "workbench.colorTheme": "Viow Light",
+  "workbench.colorTheme": "Bearded Theme feat. WebDevCody",
 
   // VIM
   "vim.leader": "<space>",
@@ -242,5 +242,6 @@
     "vscodeCustomCodeColor.highlightValue": "v-role",
     "vscodeCustomCodeColor.highlightValueColor": "#6366f1",
     "typescript.updateImportsOnFileMove.enabled": "never",
-    "workbench.sideBar.location": "right"
+    "workbench.sideBar.location": "right",
+    "editor.tabSize": 2
 }

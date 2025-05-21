@@ -39,7 +39,7 @@
     "apc.font.family": "Lekton Nerd Font",
     "apc.monospace.font.family": "Iosevka",
       "custom-ui-style.font.sansSerif": "ZedMono Nerd Font",
-    "editor.fontFamily": "Monoid Nerd Font, ZedMono Nerd Font, Geist Mono, SauceCodePro Nerd Font Mono, FiraCode Nerd Font, SF Mono, Maple Mono, RecMonoLinear Nerd Font, Lekton Nerd Font Mono, ProFontWindows Nerd Font Mono, Iosevka, IosevkaTermSlab Nerd Font, Victor Mono, Fragment Mono, MesloLGS Nerd Font, JetBrainsMono Nerd Font Mono",
+    "editor.fontFamily": "Fragment Mono, Lekton Nerd Font Mono, ZedMono Nerd Font, RecMonoLinear Nerd Font, Maple Mono, Geist Mono, Monoid Nerd Font, SauceCodePro Nerd Font Mono, FiraCode Nerd Font, SF Mono, ProFontWindows Nerd Font Mono, Iosevka, IosevkaTermSlab Nerd Font, Victor Mono, MesloLGS Nerd Font, JetBrainsMono Nerd Font Mono",
     "terminal.integrated.fontFamily": "ZedMono Nerd Font",
     "terminal.integrated.fontSize": 13,
     "editor.fontSize": 15,
@@ -67,7 +67,6 @@
     "git.openRepositoryInParentFolders": "never",
     "javascript.preferences.renameMatchingJsxTags": false,
     "typescript.preferences.renameMatchingJsxTags": false,
-    "window.commandCenter": false,
     "editor.formatOnSave": false,
     "prettier.requireConfig": true,
     "prettier.useEditorConfig": false,
@@ -108,9 +107,9 @@
     },
     "supermaven.enableFixWithSupermaven": true,
     "workbench.iconTheme": "charmed-icons",
-    "workbench.colorTheme": "Bearded Themanopia (Experimental)",
+    "workbench.colorTheme": "Bearded Theme Arc Blueberry",
     "vim.leader": "<space>",
-    "vim.useSystemClipboard": false,
+    "vim.useSystemClipboard": true,
     "editor.lineNumbers": "relative",
     "vim.easymotion": true,
     "vim.incsearch": true,
@@ -488,7 +487,7 @@
         "workbench.colorCustomizations"
     ],
     "gitlens.ai.experimental.model": "openai:gpt-4o",
-    "update.mode": "none",
+    "update.mode": "manual",
     "animations.Enabled": true,
     "screencastMode.verticalOffset": 30,
     "editor.cursorSurroundingLines": 10,
@@ -500,7 +499,6 @@
     ],
     "vscodeCustomCodeColor.highlightValue": "v-role",
     "vscodeCustomCodeColor.highlightValueColor": "#6366f1",
-    "extensions.autoCheckUpdates": false,
     "update.showReleaseNotes": false,
 
     "custom-ui-style.electron": {
@@ -551,12 +549,23 @@
         "[Aura Dracula Spirit (Soft)]": {
           "editorSuggestWidget.selectedBackground": "#3A334B"
         }
-      },
-    "workbench.editor.editorActionsLocation": "hidden",
-    "workbench.sideBar.location": "right",
-    "workbench.activityBar.location": "bottom",
-    "window.customTitleBarVisibility": "never",
+    },
     "editor.quickSuggestionsDelay": 100,
     "workbench.hover.delay": 1500,
     "workbench.sash.hoverDelay": 1000,
+    "workbench.productIconTheme": "fluent-icons",
+    "editor.tabSize": 2,
+    "workbench.editor.highlightModifiedTabs": true,
+    "workbench.editor.pinnedTabsOnSeparateRow": true,
+    "workbench.fontAliasing": "auto",
+    "workbench.view.alwaysShowHeaderActions": true,
+    "workbench.view.showQuietly": {
+        "workbench.panel.output": false
+    },
+    "workbench.editor.alwaysShowEditorActions": true,
+    "workbench.editor.closeEmptyGroups": false,
+    "window.commandCenter": true,
+    "workbench.navigationControl.enabled": false,
+    "workbench.layoutControl.enabled": false,
+    "window.customTitleBarVisibility": "never"
 }
