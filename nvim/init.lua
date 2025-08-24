@@ -45,8 +45,6 @@ require "nvchad.autocmds"
 -- plugins modifications
 require "plugins/overrides/telescope"
 require "plugins/overrides/nvim-tree"
-require "plugins/overrides/noice"
-require "plugins/overrides/notify"
 
 vim.schedule(function()
   require "mappings"

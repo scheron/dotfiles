@@ -1,61 +1,13 @@
 {
     "vsicons.presets.hideExplorerArrows": true,
     "catppuccin-icons.hidesExplorerArrows": true,
-    "apc.menubar.compact": true,
-    "apc.header": {
-        "height": 30
-    },
-    "apc.sidebar.titlebar": {
-        "height": 30
-    },
-    "apc.statusBar": {
-        "position": "editor-bottom",
-        "height": 30
-    },
-    "apc.listRow": {
-        "lists": [
-            "customview-tree",
-            "results",
-            "open-editors",
-            "explorer-folders-view",
-            "outline-tree",
-            "quick-input-list",
-            "tree"
-        ],
-        "height": 24,
-        "fontSize": 19
-    },
-    "apc.imports": [
-        "file://~/.vscode/extensions/brandonkirbyson.vscode-animations-2.0.3/dist/updateHandler.js"
-    ],
-    "apc.electron": {
-        "frame": false,
-        "transparent": true,
-        "titleBarStyle": "hiddenInset",
-        "vibrancy": "hud",
-        "opacity": 0.95,
-        "visualEffectState": "active"
-    },
-    "apc.font.family": "Lekton Nerd Font",
-    "apc.monospace.font.family": "Iosevka",
-      "custom-ui-style.font.sansSerif": "ZedMono Nerd Font",
-    "editor.fontFamily": "Fragment Mono, Lekton Nerd Font Mono, ZedMono Nerd Font, RecMonoLinear Nerd Font, Maple Mono, Geist Mono, Monoid Nerd Font, SauceCodePro Nerd Font Mono, FiraCode Nerd Font, SF Mono, ProFontWindows Nerd Font Mono, Iosevka, IosevkaTermSlab Nerd Font, Victor Mono, MesloLGS Nerd Font, JetBrainsMono Nerd Font Mono",
+    "custom-ui-style.font.sansSerif": "Iosevka",
+    "editor.fontFamily": "Geist Mono, Zenbones Mono, Fragment Mono, Test Söhne Mono, SF Mono, Lekton Nerd Font Mono, ZedMono Nerd Font, RecMonoLinear Nerd Font, Maple Mono, Monoid Nerd Font, SauceCodePro Nerd Font Mono, FiraCode Nerd Font, ProFontWindows Nerd Font Mono, Iosevka, IosevkaTermSlab Nerd Font, Victor Mono, MesloLGS Nerd Font, JetBrainsMono Nerd Font Mono",
     "terminal.integrated.fontFamily": "ZedMono Nerd Font",
     "terminal.integrated.fontSize": 13,
     "editor.fontSize": 15,
     "editor.lineHeight": 1.5,
-    "editor.fontWeight": 200,
-    "apc.activityBar": {
-        "position": "bottom",
-        "size": 30,
-        "itemSize": 30
-    },
-    "apc.stylesheet": {
-        ".sidebar .title-label": "padding: 0 !important;",
-        ".quick-input-widget.show-file-icons, .editor-widget.find-widget": "box-shadow: none !important;",
-        ".quick-input-widget": "transform: translateY(-50%) !important; top: 50% !important; box-shadow: 0px 8px 20px rgba(0, 0, 0, .45) !important; backdrop-filter: blur(3px) !important; border-radius: 8px !important;"
-    },
-    "animations.Install-Method": "Apc Customize UI++",
+    "editor.fontWeight": 500,
     "diffEditor.ignoreTrimWhitespace": true,
     "diffEditor.renderSideBySide": true,
     "git-graph.commitDetailsView.location": "Docked to Bottom",
@@ -83,6 +35,7 @@
         "Finres",
         "fullscreen",
         "maxt",
+        "nsec",
         "Nuxt",
         "pinia",
         "unnessasery",
@@ -106,8 +59,8 @@
         "editor.defaultFormatter": "esbenp.prettier-vscode"
     },
     "supermaven.enableFixWithSupermaven": true,
-    "workbench.iconTheme": "charmed-icons",
-    "workbench.colorTheme": "Bearded Theme Arc Blueberry",
+    "workbench.iconTheme": "charmed-warm",
+    "workbench.colorTheme": "Tokyo Night",
     "vim.leader": "<space>",
     "vim.useSystemClipboard": true,
     "editor.lineNumbers": "relative",
@@ -116,333 +69,46 @@
     "vim.hlsearch": true,
     "vim.foldfix": true,
     "vim.insertModeKeyBindings": [
-        {
-            "before": [
-                "j",
-                "j"
-            ],
-            "after": [
-                "<esc>"
-            ]
-        },
-        {
-            "before": [
-                "j",
-                "k"
-            ],
-            "after": [
-                "<esc>"
-            ]
-        },
-        {
-            "before": [
-                "<C-i>"
-            ],
-            "commands": [
-                "editor.action.triggerSuggest"
-            ]
-        }
+        { "before": [ "j", "j" ], "after": [ "<esc>" ] },
+        { "before": [ "j", "k" ], "after": [ "<esc>" ] },
+        { "before": [ "<C-i>" ], "commands": [ "editor.action.triggerSuggest" ] }
     ],
     "vim.normalModeKeyBindingsNonRecursive": [
-        {
-            "before": [
-                "leader",
-                "f",
-                "s"
-            ],
-            "commands": [
-                "workbench.action.gotoSymbol"
-            ]
-        },
-        {
-            "before": [
-                "leader",
-                "f",
-                "f"
-            ],
-            "commands": [
-                "workbench.action.quickOpen"
-            ]
-        },
-        {
-            "before": [
-                "leader",
-                "f",
-                "w"
-            ],
-            "commands": [
-                "workbench.action.findInFiles"
-            ]
-        },
-        {
-            "before": [
-                "leader",
-                "f",
-                "b"
-            ],
-            "commands": [
-                "workbench.action.showAllEditors"
-            ]
-        },
-        {
-            "before": [
-                "leader",
-                "f",
-                "r"
-            ],
-            "commands": [
-                "workbench.action.showAllEditorsByMostRecentlyUsed"
-            ]
-        },
-        {
-            "before": [
-                "<S-h>"
-            ],
-            "commands": [
-                ":bprevious"
-            ]
-        },
-        {
-            "before": [
-                "<S-l>"
-            ],
-            "commands": [
-                ":bnext"
-            ]
-        },
-        {
-            "before": [
-                "<S-Tab>"
-            ],
-            "commands": [
-                ":bprevious"
-            ]
-        },
-        {
-            "before": [
-                "<Tab>"
-            ],
-            "commands": [
-                ":bnext"
-            ]
-        },
-        {
-            "before": [
-                "leader",
-                "|"
-            ],
-            "commands": [
-                ":vsplit"
-            ]
-        },
-        {
-            "before": [
-                "leader",
-                "-"
-            ],
-            "commands": [
-                ":split"
-            ]
-        },
-        {
-            "before": [
-                "leader",
-                "h"
-            ],
-            "commands": [
-                "workbench.action.focusLeftGroup"
-            ]
-        },
-        {
-            "before": [
-                "leader",
-                "j"
-            ],
-            "commands": [
-                "workbench.action.focusBelowGroup"
-            ]
-        },
-        {
-            "before": [
-                "leader",
-                "k"
-            ],
-            "commands": [
-                "workbench.action.focusAboveGroup"
-            ]
-        },
-        {
-            "before": [
-                "leader",
-                "l"
-            ],
-            "commands": [
-                "workbench.action.focusRightGroup"
-            ]
-        },
-        {
-            "before": [
-                "leader",
-                "w"
-            ],
-            "commands": [
-                ":w!"
-            ]
-        },
-        {
-            "before": [
-                "leader",
-                "q"
-            ],
-            "commands": [
-                ":q!"
-            ]
-        },
-        {
-            "before": [
-                "Q"
-            ],
-            "commands": [
-                "workbench.action.closeAllEditors"
-            ]
-        },
-        {
-            "before": [
-                "leader",
-                "x"
-            ],
-            "commands": [
-                ":x!"
-            ]
-        },
-        {
-            "before": [
-                "[",
-                "d"
-            ],
-            "commands": [
-                "editor.action.marker.prev"
-            ]
-        },
-        {
-            "before": [
-                "]",
-                "d"
-            ],
-            "commands": [
-                "editor.action.marker.next"
-            ]
-        },
-        {
-            "before": [
-                "leader",
-                "s",
-                "i"
-            ],
-            "commands": [
-                "editor.action.showDefinitionPreviewHover"
-            ]
-        },
-        {
-            "before": [
-                "leader",
-                "s",
-                "a"
-            ],
-            "commands": [
-                "editor.action.codeAction"
-            ]
-        },
-        {
-            "before": [
-                "leader",
-                "s",
-                "d"
-            ],
-            "commands": [
-                "editor.action.revealDefinition"
-            ]
-        },
-        {
-            "before": [
-                "leader",
-                "p"
-            ],
-            "commands": [
-                "editor.action.formatDocument"
-            ]
-        },
-        {
-            "before": [
-                "leader",
-                "o"
-            ],
-            "commands": [
-                "editor.action.organizeImports"
-            ]
-        },
-        {
-            "before": [
-                "leader",
-                "r"
-            ],
-            "commands": [
-                "editor.action.rename"
-            ]
-        },
-        {
-            "before": [
-                "leader",
-                "/"
-            ],
-            "commands": [
-                "editor.action.commentLine"
-            ]
-        },
-        {
-            "before": [
-                "<leader>",
-                "e"
-            ],
-            "commands": [
-                "workbench.explorer.fileView.focus",
-                "workbench.files.action.showActiveFileInExplorer"
-            ]
-        }
+        { "before": [ "leader", "f", "s" ], "commands": [ "workbench.action.gotoSymbol" ] },
+        { "before": [ "leader", "f", "f" ], "commands": [ "workbench.action.quickOpen" ] },
+        { "before": [ "leader", "f", "w" ], "commands": [ "workbench.action.findInFiles" ] },
+        { "before": [ "leader", "f", "b" ], "commands": [ "workbench.action.showAllEditors" ] },
+        { "before": [ "leader", "f", "r" ], "commands": [ "workbench.action.showAllEditorsByMostRecentlyUsed" ] },
+        { "before": [ "<S-h>" ], "commands": [ ":bprevious" ] },
+        { "before": [ "<S-l>" ], "commands": [ ":bnext" ] },
+        { "before": [ "<S-Tab>" ], "commands": [ ":bprevious" ] },
+        { "before": [ "<Tab>" ], "commands": [ ":bnext" ] },
+        { "before": [ "leader", "|" ], "commands": [ ":vsplit" ] },
+        { "before": [ "leader", "-" ], "commands": [ ":split" ] },
+        { "before": [ "leader", "h" ], "commands": [ "workbench.action.focusLeftGroup" ] },
+        { "before": [ "leader", "j" ], "commands": [ "workbench.action.focusBelowGroup" ] },
+        { "before": [ "leader", "k" ], "commands": [ "workbench.action.focusAboveGroup" ] },
+        { "before": [ "leader", "l" ], "commands": [ "workbench.action.focusRightGroup" ] },
+        { "before": [ "leader", "w" ], "commands": [ ":w!" ] },
+        { "before": [ "leader", "q" ], "commands": [ ":q!" ] },
+        { "before": [ "Q" ], "commands": [ "workbench.action.closeAllEditors" ] },
+        { "before": [ "leader", "x" ], "commands": [ ":x!" ] },
+        { "before": [ "[", "d" ], "commands": [ "editor.action.marker.prev" ] },
+        { "before": [ "]", "d" ], "commands": [ "editor.action.marker.next" ] },
+        { "before": [ "leader", "s", "i" ], "commands": [ "editor.action.showDefinitionPreviewHover" ] },
+        { "before": [ "leader", "s", "a" ], "commands": [ "editor.action.codeAction" ] },
+        { "before": [ "leader", "s", "d" ], "commands": [ "editor.action.revealDefinition" ] },
+        { "before": [ "leader", "p" ], "commands": [ "editor.action.formatDocument" ] },
+        { "before": [ "leader", "o" ], "commands": [ "editor.action.organizeImports" ] },
+        { "before": [ "leader", "r" ], "commands": [ "editor.action.rename" ] },
+        { "before": [ "leader", "/" ], "commands": [ "editor.action.commentLine" ] },
+        { "before": [ "<leader>", "e" ], "commands": [ "workbench.explorer.fileView.focus", "workbench.files.action.showActiveFileInExplorer" ] }
     ],
     "vim.visualModeKeyBindings": [
-        {
-            "before": [
-                "<"
-            ],
-            "commands": [
-                "editor.action.outdentLines"
-            ]
-        },
-        {
-            "before": [
-                ">"
-            ],
-            "commands": [
-                "editor.action.indentLines"
-            ]
-        },
-        {
-            "before": [
-                "J"
-            ],
-            "commands": [
-                "editor.action.moveLinesDownAction"
-            ]
-        },
-        {
-            "before": [
-                "K"
-            ],
-            "commands": [
-                "editor.action.moveLinesUpAction"
-            ]
-        }
+        { "before": [ "<" ], "commands": [ "editor.action.outdentLines" ] },
+        { "before": [ ">" ], "commands": [ "editor.action.indentLines" ] },
+        { "before": [ "J" ], "commands": [ "editor.action.moveLinesDownAction" ] },
+        { "before": [ "K" ], "commands": [ "editor.action.moveLinesUpAction" ] }
     ],
     "vim.handleKeys": {
         "<C-a>": false,
@@ -480,12 +146,10 @@
     "breadcrumbs.symbolPath": "off",
     "editor.codeLens": false,
     "editor.linkedEditing": true,
-    "workbench.editor.enablePreview": false,
+    "workbench.editor.enablePreview": true,
     "editor.renderLineHighlight": "none",
     "javascript.updateImportsOnFileMove.enabled": "never",
-    "workbench.settings.applyToAllProfiles": [
-        "workbench.colorCustomizations"
-    ],
+    "workbench.settings.applyToAllProfiles": [],
     "gitlens.ai.experimental.model": "openai:gpt-4o",
     "update.mode": "manual",
     "animations.Enabled": true,
@@ -500,56 +164,8 @@
     "vscodeCustomCodeColor.highlightValue": "v-role",
     "vscodeCustomCodeColor.highlightValueColor": "#6366f1",
     "update.showReleaseNotes": false,
-
-    "custom-ui-style.electron": {
-        "workbench.activityBar.location": "bottom",
-        "titleBarStyle": "hiddenInset",
-        "trafficLightPosition": {
-          "x": 20,
-          "y": 16
-        }
-      },
-      "custom-ui-style.stylesheet": {
-        ".notification-toast": "box-shadow: none !important",
-        ".quick-input-widget.show-file-icons": "box-shadow: none !important",
-        ".quick-input-widget": "top: 25vh !important",
-        ".quick-input-list .scrollbar": "display: none",
-        ".monaco-action-bar.quick-input-inline-action-bar": "display: none",
-        ".editor-widget.find-widget": "box-shadow: none; border-radius: 4px",
-        ".quick-input-titlebar": "background: #100B15 !important",
-        ".monaco-workbench .part.editor > .content .editor-group-container > .title.title-border-bottom:after": "display: none",
-        ".monaco-scrollable-element > .shadow.top": "display: none",
-        ".sidebar .title-label": "padding: 0 !important",
-        ".sidebar": "border: none !important",
-        ".monaco-workbench .monaco-list:not(.element-focused):focus:before": "outline: none !important",
-        ".monaco-list-row.focused": "outline: none !important",
-        ".monaco-editor .scroll-decoration": "display: none",
-        ".title-actions": "display: none !important",
-        ".title.show-file-icons .label-container .monaco-icon-label.file-icon": "justify-content: center; padding: 0 !important",
-        ".title .monaco-icon-label:after": "margin-right: 0",
-        ".monaco-workbench .part.editor>.content .editor-group-container>.title .tabs-container": "padding-left: 60px !important",
-      },
-      "window.titleBarStyle": "native",
-      "window.zoomLevel": 1.5,
-      "workbench.colorCustomizations": {
-        "editorCursor.background": "#000000",
-        "editorOverviewRuler.wordHighlightStrongForeground": "#0000",
-        "editorOverviewRuler.selectionHighlightForeground": "#0000",
-        "editorOverviewRuler.rangeHighlightForeground": "#0000",
-        "editorOverviewRuler.wordHighlightForeground": "#0000",
-        "editorOverviewRuler.bracketMatchForeground": "#0000",
-        "editorOverviewRuler.findMatchForeground": "#0000",
-        "editorOverviewRuler.modifiedForeground": "#0000",
-        "editorOverviewRuler.deletedForeground": "#0000",
-        "editorOverviewRuler.warningForeground": "#0000",
-        "editorOverviewRuler.addedForeground": "#0000",
-        "editorOverviewRuler.errorForeground": "#0000",
-        "editorOverviewRuler.infoForeground": "#0000",
-        "editorOverviewRuler.border": "#0000",
-        "[Aura Dracula Spirit (Soft)]": {
-          "editorSuggestWidget.selectedBackground": "#3A334B"
-        }
-    },
+    "window.titleBarStyle": "custom",
+    "window.zoomLevel": 1.5,
     "editor.quickSuggestionsDelay": 100,
     "workbench.hover.delay": 1500,
     "workbench.sash.hoverDelay": 1000,
@@ -564,8 +180,22 @@
     },
     "workbench.editor.alwaysShowEditorActions": true,
     "workbench.editor.closeEmptyGroups": false,
-    "window.commandCenter": true,
     "workbench.navigationControl.enabled": false,
     "workbench.layoutControl.enabled": false,
-    "window.customTitleBarVisibility": "never"
+    "git.autofetch": true,
+    "git.confirmSync": false,
+    "vscode_vibrancy.forceFramelessWindow": true,
+    "vscode_vibrancy.theme": "Catppuccin Mocha",
+    "vscode_vibrancy.type": "auto",
+    "vscode_vibrancy.disableThemeFixes": false,
+    "vscode_vibrancy.opacity": "-1",
+    "vscode_vibrancy.preventFlash": true,
+    "vscode_vibrancy.enableAutoTheme": false,
+    "workbench.sideBar.location": "right",
+    "workbench.colorCustomizations": {
+        "terminal.background": "#00000000"
+    },
+    "terminal.integrated.gpuAcceleration": "off",
+    "window.systemColorTheme": "dark",
+    "window.autoDetectColorScheme": false
 }

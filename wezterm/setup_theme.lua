@@ -39,8 +39,8 @@ local color_scheme = {
 }
 
 function setup_theme(config)
-	-- config.colors = colors["dark_blue_theme"]
-	config.color_scheme = color_scheme[4]
+	config.colors = colors["dark_blue_theme"]
+	-- config.color_scheme = color_scheme[4]
 end
 
 return setup_theme

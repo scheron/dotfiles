@@ -27,5 +27,6 @@
   { "key": "shift-s", "command": "runCommands", "when": "filesExplorerFocus && foldersViewVisible && !explorerResourceIsRoot && !explorerResourceReadonly && !inputFocus", "args": { "commands": [ "workbench.action.splitEditorDown", "explorer.openAndPassFocus", "workbench.action.closeOtherEditors" ] } },
 
   { "key": "cmd+shift+m", "command": "workbench.action.toggleMaximizedPanel" },
-  { "key": "cmd+shift+e", "command": "workbench.actions.view.problems"}
+  { "key": "cmd+shift+e", "command": "workbench.actions.view.problems" },
+  { "key": "cmd+i", "command": "composerMode.agent" }
 ]

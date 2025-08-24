@@ -42,6 +42,9 @@ alias gd="git diff"
 alias gco="git checkout"
 alias gfa="git fetch --all --prune"
 
+alias py="python"
+alias py3="python3"
+
 
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
 
@@ -52,11 +55,6 @@ source /opt/homebrew/share/powerlevel10k/powerlevel10k.zsh-theme
 export LC_ALL=en_US.UTF-8
 export LANG=en_US.UTF-8
 source ~/powerlevel10k/powerlevel10k.zsh-theme
-
-
-
-
-
 
 ___MY_VMOPTIONS_SHELL_FILE="${HOME}/.jetbrains.vmoptions.sh"; if [ -f "${___MY_VMOPTIONS_SHELL_FILE}" ]; then . "${___MY_VMOPTIONS_SHELL_FILE}"; fi
 
@@ -69,3 +67,9 @@ export PATH="$BUN_INSTALL/bin:$PATH"
 
 # Added by Windsurf
 export PATH="/Users/olegato/.codeium/windsurf/bin:$PATH"
+
+# Python
+export PATH="$(brew --prefix python)/libexec/bin:$PATH"
+
+# Created by `pipx` on 2025-07-01 16:33:30
+export PATH="$PATH:/Users/olegato/.local/bin"

@@ -151,6 +151,10 @@ run = "move-node-to-workspace M1"
 if.app-id = 'company.thebrowser.Browser' # Arc browser
 run = "move-node-to-workspace M1"
 
+[[on-window-detected]]
+if.app-id = 'app.zen-browser.zen' # Arc browser
+run = "move-node-to-workspace M1"
+
 # [[on-window-detected]]
 # if.app-id = 'com.microsoft.VSCode'
 # run = "move-node-to-workspace M2"
