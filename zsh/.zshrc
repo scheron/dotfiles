@@ -13,6 +13,7 @@ export ZSH="$HOME/.oh-my-zsh"
 export PATH="$PATH:/Applications/Visual Studio Code.app/Contents/Resources/app/bin"
 export PATH=$HOME/local/bin:$PATH
 export PATH=/usr/local/bin:$PATH
+export PATH=/usr/share/dotnet/dotnet:$PATH
 export XDG_CONFIG_HOME="$HOME/.config"
 
 # See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes

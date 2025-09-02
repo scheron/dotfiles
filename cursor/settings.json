@@ -38,6 +38,7 @@
         "nsec",
         "Nuxt",
         "pinia",
+        "primevue",
         "unnessasery",
         "unsub",
         "Vaul",
@@ -191,7 +192,6 @@
     "vscode_vibrancy.opacity": "-1",
     "vscode_vibrancy.preventFlash": true,
     "vscode_vibrancy.enableAutoTheme": false,
-    "workbench.sideBar.location": "right",
     "workbench.colorCustomizations": {
         "terminal.background": "#00000000"
     },

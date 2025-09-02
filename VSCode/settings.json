@@ -82,10 +82,12 @@
     "aggr",
     "clsx",
     "composables",
+    "Cooldown",
     "endregion",
     "filedata",
     "Finres",
     "fullscreen",
+    "Mathf",
     "maxt",
     "Nuxt",
     "pinia",
@@ -260,5 +262,8 @@
       "editor.defaultFormatter": "ms-dotnettools.csharp"
     },
     "godot-dotnet-tools.executablePath": "/Applications/Godot_mono.app",
-    "workbench.productIconTheme": "fluent-icons"
+    "workbench.productIconTheme": "fluent-icons",
+    "workbench.activityBar.location": "top",
+    "git.confirmSync": false,
+    "git.autofetch": true
 }
