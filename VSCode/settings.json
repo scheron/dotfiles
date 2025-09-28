@@ -80,6 +80,7 @@
   "cSpell.userWords": [
     "abortable",
     "aggr",
+    "ATTACKABLE",
     "clsx",
     "composables",
     "Cooldown",
@@ -87,9 +88,12 @@
     "filedata",
     "Finres",
     "fullscreen",
+    "INTERACTABLE",
+    "interactables",
     "Mathf",
     "maxt",
     "Nuxt",
+    "onready",
     "pinia",
     "Tilemap",
     "tscn",
@@ -265,5 +269,8 @@
     "workbench.productIconTheme": "fluent-icons",
     "workbench.activityBar.location": "top",
     "git.confirmSync": false,
-    "git.autofetch": true
+    "git.autofetch": true,
+    "[gdscript]": {
+      "editor.defaultFormatter": "geequlim.godot-tools"
+    }
 }

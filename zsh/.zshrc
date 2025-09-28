@@ -14,6 +14,7 @@ export PATH="$PATH:/Applications/Visual Studio Code.app/Contents/Resources/app/b
 export PATH=$HOME/local/bin:$PATH
 export PATH=/usr/local/bin:$PATH
 export PATH=/usr/share/dotnet/dotnet:$PATH
+export PATH="$PATH:/Applications/Godot_mono.app/Contents/MacOS"
 export XDG_CONFIG_HOME="$HOME/.config"
 
 # See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
