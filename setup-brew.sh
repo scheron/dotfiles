@@ -37,6 +37,7 @@ brew install --cask \
 
 # --- Fonts ---
 brew install --cask \
+  font-iosevka-nerd-font \
   font-fira-code-nerd-font \
   font-symbols-only-nerd-font \
   font-fragment-mono
