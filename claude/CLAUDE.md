@@ -1,11 +1,13 @@
 # Global Instructions
 
-## Комментарии в коде
+## Code Comments
 
-Не добавляй комментарии в код, если пользователь явно об этом не попросил. Исключение — JSDoc-комментарии (`/** ... */`) для публичных функций, классов и типов: их добавлять можно.
+Don't add comments to code unless the user explicitly asks for it. Exception — JSDoc comments (`/** ... */`) for public functions, classes, and types: those are fine to add.
 
-## Соавторство в коммитах
+## Commit Co-authorship
 
-Никогда не добавляй себя в соавторы коммитов (`Co-Authored-By: Claude ...`) и не добавляй сноску `🤖 Generated with Claude Code` в описания PR.
+Never add yourself as a commit co-author (`Co-Authored-By: Claude ...`) and never add the `🤖 Generated with Claude Code` footnote to PR descriptions.
+
+Never add a `Claude-Session: ...` line (session link) to commit messages or PR descriptions.
 
 @RTK.md
