@@ -6,8 +6,6 @@ MODEL=$(echo "$input" | jq -r '.model.display_name // "?"')
 PCT=$(echo "$input" | jq -r '.context_window.used_percentage // 0' | cut -d. -f1)
 USED=$(echo "$input" | jq -r '.context_window.total_input_tokens // 0')
 DIR=$(echo "$input" | jq -r '.workspace.current_dir // .cwd // "."')
-ADDED=$(echo "$input" | jq -r '.cost.total_lines_added // 0')
-REMOVED=$(echo "$input" | jq -r '.cost.total_lines_removed // 0')
 COST_RAW=$(echo "$input" | jq -r '.cost.total_cost_usd // empty')
 FIVEH=$(echo "$input" | jq -r '.rate_limits.five_hour.used_percentage // empty' | cut -d. -f1)
 FIVEH_AT=$(echo "$input" | jq -r '.rate_limits.five_hour.resets_at // empty')
@@ -16,8 +14,7 @@ WEEK_AT=$(echo "$input" | jq -r '.rate_limits.seven_day.resets_at // empty')
 
 # ── colors ────────────────────────────────────────────────────────────
 RESET=$'\033[0m'; DIM=$'\033[2m'; BOLD=$'\033[1m'
-BLUE=$'\033[34m'; CYAN=$'\033[36m'; YELLOW=$'\033[33m'
-WHITE=$'\033[97m'; GREEN=$'\033[32m'; RED=$'\033[31m'
+BLUE=$'\033[34m'; CYAN=$'\033[36m'; YELLOW=$'\033[33m'; WHITE=$'\033[97m'
 SEP=" ${DIM}·${RESET} "
 
 # ── icons (Nerd Font, octal UTF-8 so bash 3.2 renders them; swap freely)
@@ -54,16 +51,12 @@ if [ -n "$BRANCH" ]; then
 fi
 LINE1="${BLUE}${I_PROJ} $(basename "$DIR")${RESET}${GIT_SEG}${SEP}${YELLOW}${I_MODEL} ${MODEL}${RESET}"
 
-# ── line 2: context (icon used (pct)) · edits · cost ──────────────────
+# ── line 2: context (icon used (pct)) ─────────────────────────────────
 CTXC=$(pct_color "$PCT")
 USED_K=$((USED / 1000))
 LINE2="${CTXC}${I_CTX} ${BOLD}${USED_K}k${RESET}${CTXC} (${PCT}%)${RESET}"
-if [ "$ADDED" -gt 0 ] || [ "$REMOVED" -gt 0 ]; then
-  LINE2="${LINE2}${SEP}${GREEN}+${ADDED}${RESET} ${RED}-${REMOVED}${RESET}"
-fi
-[ -n "$COST_RAW" ] && LINE2="${LINE2}${SEP}${WHITE}\$$(printf '%.2f' "$COST_RAW")${RESET}"
 
-# ── line 3: 5h · week (bright labels, muted reset) ────────────────────
+# ── row 2 pieces: limits (5h · week) and cost, kept separate ───────────
 SEGMENTS=()
 if [ -n "$FIVEH" ]; then
   seg="${I_5H} 5h $(pct_color "$FIVEH")${FIVEH}%${RESET}"
@@ -75,11 +68,27 @@ if [ -n "$WEEK" ]; then
   [ -n "$WEEK_AT" ] && seg="${seg} (${I_RESET} $(fmt_reset "$WEEK_AT"))"
   SEGMENTS+=("$seg")
 fi
-LINE3=""
+LIMITS=""
 for s in "${SEGMENTS[@]}"; do
-  if [ -z "$LINE3" ]; then LINE3="$s"; else LINE3="${LINE3}${SEP}${s}"; fi
+  if [ -z "$LIMITS" ]; then LIMITS="$s"; else LIMITS="${LIMITS}${SEP}${s}"; fi
 done
+COST=""
+[ -n "$COST_RAW" ] && COST="${WHITE}\$$(printf '%.2f' "$COST_RAW")${RESET}"
 
-printf "%s\n" "$LINE1"
-printf "%s\n" "$LINE2"
-[ -n "$LINE3" ] && printf "%s\n" "$LINE3"
+# visible column width (ANSI stripped) — to sit cost under the context group
+vlen() {
+  local s
+  s=$(printf '%s' "$1" | sed $'s/\033\[[0-9;]*m//g')
+  printf '%s' "$s" | LC_ALL=en_US.UTF-8 wc -m | tr -d '[:space:]'
+}
+
+# ── row1: model · context   row2: limits … cost (aligned under context)
+printf "%s%s%s\n" "$LINE1" "$SEP" "$LINE2"
+if [ -n "$COST" ]; then
+  COL=$(( $(vlen "$LINE1") + $(vlen "$SEP") ))   # column where context begins on row1
+  PAD=$(( COL - $(vlen "$LIMITS") ))
+  [ "$PAD" -lt 1 ] && PAD=1
+  printf "%s%*s%s\n" "$LIMITS" "$PAD" "" "$COST"
+elif [ -n "$LIMITS" ]; then
+  printf "%s\n" "$LIMITS"
+fi
