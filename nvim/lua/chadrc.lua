@@ -1,43 +1,16 @@
 -- This file needs to have same structure as nvconfig.lua
--- https://github.com/NvChad/ui/blob/v2.5/lua/nvconfig.lua
+-- https://github.com/NvChad/ui/blob/v3.0/lua/nvconfig.lua
 
 ---@type ChadrcConfig
 local M = {}
 
+vim.api.nvim_create_user_command("Theme", function()
+  vim.cmd "Telescope themes"
+end, {})
 
-vim.api.nvim_create_user_command("Theme", function() vim.cmd "Telescope themes" end, {})
-
-M.ui = {
+M.base46 = {
   theme = "tokyonight",
   transparency = true,
-  statusline = {
-    theme = "vscode_colored",
-  },
-  nvdash = {
-    load_on_startup = true,
-    header = {
-      "██╗███╗   ██╗███████╗███████╗ ██████╗████████╗███████╗██████╗ ",
-      "██║████╗  ██║██╔════╝██╔════╝██╔════╝╚══██╔══╝██╔════╝██╔══██╗",
-      "██║██╔██╗ ██║█████╗  █████╗  ██║        ██║   █████╗  ██║  ██║",
-      "██║██║╚██╗██║██╔══╝  ██╔══╝  ██║        ██║   ██╔══╝  ██║  ██║",
-      "██║██║ ╚████║██║     ███████╗╚██████╗   ██║   ███████╗██████╔╝",
-      "╚═╝╚═╝  ╚═══╝╚═╝     ╚══════╝ ╚═════╝   ╚═╝   ╚══════╝╚═════╝ ",
-      "                                                              ",
-      "            ██████╗ ██╗   ██╗         ██╗███████╗             ",
-      "            ██╔══██╗╚██╗ ██╔╝         ██║██╔════╝             ",
-      "            ██████╔╝ ╚████╔╝          ██║███████╗             ",
-      "            ██╔══██╗  ╚██╔╝      ██   ██║╚════██║             ",
-      "            ██████╔╝   ██║       ╚█████╔╝███████║             ",
-      "            ╚═════╝    ╚═╝        ╚════╝ ╚══════╝             ",
-    },
-
-    buttons = {
-        { "  Find File", "Spc f f", "Telescope find_files" },
-        { "󰈚  Recent Files", "Spc f o", "Telescope oldfiles" },
-        { "󰈭  Find Word", "Spc f w", "Telescope live_grep" },
-        { "  Themes", "Spc t h", "Telescope themes" },
-    }
-  },
   hl_override = {
     Comment = { italic = true },
     ["@comment"] = { italic = true },
@@ -54,11 +27,42 @@ M.ui = {
       fg = "none",
     },
   },
+}
+
+M.ui = {
+  statusline = {
+    theme = "vscode_colored",
+  },
 
   tabufline = {
     enabled = false,
     lazyload = true,
-    override = {},
+  },
+}
+
+M.nvdash = {
+  load_on_startup = true,
+  header = {
+    "██╗███╗   ██╗███████╗███████╗ ██████╗████████╗███████╗██████╗ ",
+    "██║████╗  ██║██╔════╝██╔════╝██╔════╝╚══██╔══╝██╔════╝██╔══██╗",
+    "██║██╔██╗ ██║█████╗  █████╗  ██║        ██║   █████╗  ██║  ██║",
+    "██║██║╚██╗██║██╔══╝  ██╔══╝  ██║        ██║   ██╔══╝  ██║  ██║",
+    "██║██║ ╚████║██║     ███████╗╚██████╗   ██║   ███████╗██████╔╝",
+    "╚═╝╚═╝  ╚═══╝╚═╝     ╚══════╝ ╚═════╝   ╚═╝   ╚══════╝╚═════╝ ",
+    "                                                              ",
+    "            ██████╗ ██╗   ██╗         ██╗███████╗             ",
+    "            ██╔══██╗╚██╗ ██╔╝         ██║██╔════╝             ",
+    "            ██████╔╝ ╚████╔╝          ██║███████╗             ",
+    "            ██╔══██╗  ╚██╔╝      ██   ██║╚════██║             ",
+    "            ██████╔╝   ██║       ╚█████╔╝███████║             ",
+    "            ╚═════╝    ╚═╝        ╚════╝ ╚══════╝             ",
+  },
+
+  buttons = {
+    { txt = "  Find File", keys = "ff", cmd = "Telescope find_files" },
+    { txt = "󰈚  Recent Files", keys = "fo", cmd = "Telescope oldfiles" },
+    { txt = "󰈭  Find Word", keys = "fw", cmd = "Telescope live_grep" },
+    { txt = "  Themes", keys = "th", cmd = "Telescope themes" },
   },
 }
 

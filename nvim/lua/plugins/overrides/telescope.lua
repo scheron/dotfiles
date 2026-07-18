@@ -1,8 +1,8 @@
 require("telescope").setup {
   defaults = {
     sorting_strategy = "ascending",
-    prompt_prefix = " ",
-    selection_caret = " ",
+    prompt_prefix = " ",
+    selection_caret = " ",
     path_display = { "truncate" },
     file_ignore_patterns = { "node_modules", ".git" },
   },
@@ -15,4 +15,3 @@ require("telescope").setup {
     todos = { theme = "dropdown" },
   },
 }
-

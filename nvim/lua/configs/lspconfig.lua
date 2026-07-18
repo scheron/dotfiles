@@ -1,77 +1,43 @@
-local configs = require "nvchad.configs.lspconfig"
-local on_attach = configs.on_attach
-local on_init = configs.on_init
-local capabilities = configs.capabilities
+local nvlsp = require "nvchad.configs.lspconfig"
 
-local lspconfig = require "lspconfig"
-local util = require "lspconfig.util"
+nvlsp.defaults()
 
-local servers = { "html", "ts_ls", "volar", "cssls", "clangd", "gradle_ls" }
+local servers = { "html", "ts_ls", "vue_ls", "cssls", "clangd", "gradle_ls" }
+vim.lsp.enable(servers)
 
-local function organize_imports()
-  local params = {
-    command = "_typescript.organizeImports",
-    arguments = { vim.api.nvim_buf_get_name(0) },
-    title = "",
-  }
-  vim.lsp.buf.execute_command(params)
-end
+-- vue_ls (Vue 3 language server) runs in hybrid mode: it delegates TypeScript to
+-- ts_ls, which must attach to .vue files and load @vue/typescript-plugin.
+local vue_language_server_path = vim.fn.stdpath "data"
+  .. "/mason/packages/vue-language-server/node_modules/@vue/language-server"
 
-for _, lsp in ipairs(servers) do
-  lspconfig[lsp].setup {
-    on_attach = on_attach,
-    on_init = on_init,
-    capabilities = capabilities,
-  }
-end
-
-local function get_typescript_server_path(root_dir)
-  local global_ts = "/opt/homebrew/lib/node_modules/typescript/lib"
-  local found_ts = ""
-
-  local function check_dir(path)
-    found_ts = util.path.join(path, "node_modules", "typescript", "lib")
-    if util.path.exists(found_ts) then
-      return found_ts
-    end
-  end
-
-  if util.search_ancestors(root_dir, check_dir) then
-    return found_ts
-  else
-    return global_ts
-  end
-end
-
-lspconfig.volar.setup {
-  on_attach = on_attach,
-  on_init = on_init,
-  capabilities = capabilities,
-  filetypes = { "javascript", "typescript", "vue" },
-  on_new_config = function(new_config, new_root_dir)
-    new_config.init_options.typescript.tsdk = get_typescript_server_path(new_root_dir)
-  end,
+vim.lsp.config("ts_ls", {
+  filetypes = { "javascript", "javascriptreact", "typescript", "typescriptreact", "vue" },
+  single_file_support = true,
   init_options = {
-    vue = {
-      hybridMode = false,
+    plugins = {
+      {
+        name = "@vue/typescript-plugin",
+        location = vue_language_server_path,
+        languages = { "vue" },
+      },
     },
   },
-}
-
-lspconfig.ts_ls.setup {
-  on_attach = on_attach,
-  capabilities = capabilities,
-  filetypes = { "typescript", "typescriptreact", "javascript", "javascriptreact" },
-  single_file_support = true,
   commands = {
     OrganizeImports = {
-      organize_imports,
+      function()
+        local params = {
+          command = "_typescript.organizeImports",
+          arguments = { vim.api.nvim_buf_get_name(0) },
+          title = "",
+        }
+        vim.lsp.buf_request(0, "workspace/executeCommand", params)
+      end,
       description = "Organize Imports",
     },
   },
-}
+})
 
-lspconfig.emmet_language_server.setup {
+vim.lsp.config("emmet_language_server", {
   filetypes = {
     "html",
     "css",
@@ -84,4 +50,5 @@ lspconfig.emmet_language_server.setup {
     "vue",
     "svelte",
   },
-}
+})
+vim.lsp.enable "emmet_language_server"

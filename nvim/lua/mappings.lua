@@ -7,8 +7,8 @@ map("n", "s", "<nop>", { desc = "Disable current s mapping" })
 map("n", "s", "cl", { desc = "Delete character and enter insert mode" })
 map("n", "<S-s>", "<nop>", { desc = "Disable current S mapping" })
 map("n", "<S-s>", "cc", { desc = "Delete line and enter insert mode" })
-map('i', '<Down>', function() require('cmp').select_next_item() end, { silent = true, desc = "Select next item in completion menu" })
-map('i', '<Up>', function() require('cmp').select_prev_item() end, { silent = true, desc = "Select previous item in completion menu" })
+map("i", "<Down>", function() require("cmp").select_next_item() end, { silent = true, desc = "Select next item in completion menu" })
+map("i", "<Up>", function() require("cmp").select_prev_item() end, { silent = true, desc = "Select previous item in completion menu" })
 
 -- Yank and paste
 map("v", "y", "ygv<esc>", { desc = "Yank and stay in visual mode" })
@@ -43,7 +43,7 @@ map("n", "<leader>fg", "<cmd>Telescope git_commits<CR>", { desc = "Find Commit" 
 map("n", "<leader>gg", "<cmd>LazyGit<CR>", { desc = "Open Lazygit" })
 map("n", "<leader>g?", ":DiffviewFileHistory<CR>", { desc = "Git File History" })
 map("n", "<leader>go", ":DiffviewOpen HEAD~1<CR>", { desc = "Git Last Commit" })
-map('n', '<leader>gh', function() require("gitgraph").draw({}, { all = true, max_count = 5000 }) end, { desc = "GitGraph - Draw" })
+map("n", "<leader>gh", function() require("gitgraph").draw({}, { all = true, max_count = 5000 }) end, { desc = "GitGraph - Draw" })
 map("n", "<leader>gf", ":Flog<CR>", { desc = "Git Flog" })
 
 -- Diagnostics
@@ -68,7 +68,8 @@ map("i", "<C-g>", function() return vim.fn["codeium#Accept"]() end, { expr = tru
 
 
 -- Good to have
-map("n", "<leader>p", function() require("conform").format { lsp_fallback = true } end, { desc = "Format File" })
+pcall(vim.keymap.del, "n", "<leader>pt")
+map("n", "<leader>p", function() require("conform").format { lsp_fallback = true, stop_after_first = true } end, { desc = "Format File" })
 
 -- NOTE: NvimTree
 -- Show hidden files <S-h>

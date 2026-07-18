@@ -57,11 +57,11 @@ require("nvim-tree").setup {
       glyphs = {
         default = "󰈚",
         folder = {
-          default = "",
-          empty = "",
-          empty_open = "",
-          open = "",
-          symlink = "",
+          default = "",
+          empty = "",
+          empty_open = "",
+          open = "",
+          symlink = "",
         },
         git = {
           renamed = "R", -- Renamed

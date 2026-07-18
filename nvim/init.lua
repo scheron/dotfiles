@@ -1,4 +1,4 @@
-vim.g.base46_cache = vim.fn.stdpath "data" .. "/nvchad/base46/"
+vim.g.base46_cache = vim.fn.stdpath "data" .. "/base46/"
 vim.g.mapleader = " "
 
 -- vim configurations
@@ -11,6 +11,7 @@ vim.opt.number = true
 vim.opt.relativenumber = true
 vim.opt.scrolloff = 10
 vim.opt.sidescrolloff = 10
+
 -- bootstrap lazy and all plugins
 local lazypath = vim.fn.stdpath "data" .. "/lazy/lazy.nvim"
 
@@ -43,8 +44,8 @@ require "options"
 require "nvchad.autocmds"
 
 -- plugins modifications
-require "plugins/overrides/telescope"
-require "plugins/overrides/nvim-tree"
+require "plugins.overrides.telescope"
+require "plugins.overrides.nvim-tree"
 
 vim.schedule(function()
   require "mappings"
