@@ -1,6 +1,9 @@
-pnpm add -g @tailwindcss/language-server 
-pnpm add -g @vue/language-server 
-pnpm add -g prettier
-pnpm add -g typescript
-pnpm add -g typescript-language-server
+#!/usr/bin/env bash
+#
+# Global npm tools not managed by Neovim's Mason.
+#   ~/.dotfiles/setup-pnpm.sh
 
+set -euo pipefail
+
+# prettierd — prettier daemon; keeps prettier warm so :Format is instant.
+pnpm add -g @fsouza/prettierd

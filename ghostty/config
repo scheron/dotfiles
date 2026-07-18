@@ -1,0 +1,16 @@
+confirm-close-surface		= false
+macos-titlebar-proxy-icon	= "hidden"
+macos-option-as-alt		= true
+mouse-hide-while-typing		= true
+
+font-family 			= "Iosevka Nerd Font Mono"
+font-size 			= 19
+
+theme 				= "Horizon"
+background-opacity 		= 0.7
+background-blur    		= 55
+
+window-height			= 30
+window-width			= 120
+
+keybind = shift+enter=text:\x1b\r

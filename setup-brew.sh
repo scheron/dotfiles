@@ -1,46 +1,49 @@
-# Upgrade brew
+#!/usr/bin/env bash
+#
+# Install Homebrew formulae, casks and fonts on a fresh machine.
+#   ~/.dotfiles/setup-brew.sh
+
+set -euo pipefail
+
+brew update
 brew upgrade
 
-# Add some taps
-brew tap joedrago/repo
-brew tap homebrew/cask-versions
+# --- CLI tools ---
+brew install \
+  git gh lazygit \
+  neovim \
+  eza fd fzf ripgrep z \
+  starship \
+  zsh-autosuggestions zsh-syntax-highlighting \
+  node pnpm yarn n \
+  python@3.14 uv \
+  jq make websocat \
+  tree-sitter-cli \
+  podman
 
-# Install CLI tools
-brew install node
-brew install fd
-brew install git
-brew install lazygit
-brew install pnpm
-brew install fzf
-brew install nvim
-brew install ripgrep 
+# --- Swift / iOS toolchain (drop this line if not doing Swift dev) ---
+brew install swift-format swiftformat xcbeautify xcode-build-server
 
-# Install casks
-brew install --cask 1password
-brew install --cask wezterm
-brew install --cask cleanmymac
-brew install --cask firefox
-brew install --cask brave-browser
-brew install --cask ark
-brew install --cask insomnia
-brew install --cask logi-options+
-brew install --cask raycast
-brew install --cask telegram
-brew install --cask visual-studio-code
-brew install --cask docker
+# --- Apps ---
+brew install --cask \
+  ghostty \
+  aerospace swipeaerospace \
+  karabiner-elements \
+  zed visual-studio-code \
+  raycast \
+  claude-code codex \
+  logi-options+ \
+  numi spotify vlc
 
-# Install fonts
-brew install --cask font-symbols-only-nerd-font
-brew install --cask font-zed-mono-nerd-font
-brew install --cask font-jetbrains-mono
-brew install --cask font-fira-code-nerd-font
-brew install --cask font-iosevka
-brew install --cask font-victor-mono
-brew install --cask font-commit-mono-nerd-font
-brew install --cask font-hack-nerd-font
-brew install --cask font-fragment-mono
-brew install --cask font-maple
+# --- Fonts ---
+brew install --cask \
+  font-fira-code-nerd-font \
+  font-symbols-only-nerd-font \
+  font-fragment-mono
+# "Dank Mono" (editor font referenced in configs) is a paid font — install it manually.
 
+# --- Personal tools (need their own taps; uncomment after adding the tap) ---
+# brew install rtk           # token-killer CLI proxy
+# brew install --cask daily  # scheron/tap
 
-# Remove outdated versions from the cellar.
 brew cleanup

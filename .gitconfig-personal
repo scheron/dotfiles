@@ -1,0 +1,6 @@
+[user]
+  name = Oleg 👾
+  email = infectedbyjs@gmail.com
+
+[url "git@github.com-scheron:"]
+  insteadOf = git@github.com:

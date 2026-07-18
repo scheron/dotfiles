@@ -1,0 +1,6 @@
+[user]
+  name = bmox0 📱
+  email = rideonroot@gmail.com
+
+[url "git@github.com-bmox0:"]
+  insteadOf = git@github.com:

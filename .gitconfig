@@ -1,6 +1,13 @@
 [user]
-	name =  Oleg 👾
+	name = Oleg 👾
 	email = infectedbyjs@gmail.com
+
+[includeIf "gitdir:~/Documents/Projects/Personal/scheron/"]
+  path = ~/.gitconfig-personal
+
+[includeIf "gitdir:~/Documents/Projects/Personal/bmox0/"]
+  path = ~/.gitconfig-private
+
 [color]
 	ui = true
 [push]
