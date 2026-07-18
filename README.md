@@ -1,6 +1,6 @@
 # dotfiles
 
-Personal macOS configuration. Highly opinionated — fork it, don't run it blindly.
+Personal macOS configuration
 
 **What's inside:** zsh (oh-my-zsh + starship), git (with per-project identities),
 Ghostty, AeroSpace, Karabiner, Neovim (NvChad), Zed, VSCode, lazygit, yazi,
