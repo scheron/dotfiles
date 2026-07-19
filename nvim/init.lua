@@ -3,6 +3,8 @@ vim.g.mapleader = " "
 
 -- vim configurations
 vim.opt.wrap = false
+vim.opt.linebreak = true
+vim.opt.breakindent = true
 vim.opt.clipboard = "unnamedplus"
 vim.opt.errorbells = false --  No sound
 
