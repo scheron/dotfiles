@@ -19,6 +19,7 @@ brew install \
   python@3.14 uv \
   jq make websocat \
   tree-sitter-cli \
+  rtk \
   podman
 
 # --- Swift / iOS toolchain (drop this line if not doing Swift dev) ---
@@ -44,7 +45,6 @@ brew install --cask \
 # "Dank Mono" (editor font referenced in configs) is a paid font — install it manually.
 
 # --- Personal tools (need their own taps; uncomment after adding the tap) ---
-# brew install rtk           # token-killer CLI proxy
 # brew install --cask daily  # scheron/tap
 
 brew cleanup

@@ -73,7 +73,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "rtk hook claude"
+            "command": "$HOME/.claude/rtk-rewrite.sh"
           }
         ]
       },
