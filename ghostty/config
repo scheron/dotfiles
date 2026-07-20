@@ -6,7 +6,7 @@ mouse-hide-while-typing		= true
 font-family 			= "Fragment Mono"
 font-size 			= 19
 
-theme 				= "Horizon"
+theme 				= "Glacier"
 background-opacity 		= 0.7
 background-blur    		= 55
 
