@@ -27,6 +27,14 @@ Claude Code, and gh. Retired configs live in [`.archive/`](.archive).
 `setup-pnpm.sh` (global pnpm packages) is optional — language servers are now
 managed by Neovim's Mason, so most machines don't need it.
 
+## Updating an existing machine
+
+After `git pull`, re-run `setup-symlinks.sh` whenever the pull adds a **new**
+tracked config. Existing symlinks pick up edits instantly, but new files aren't
+linked until the script runs again — skipping it can leave a config referencing
+a not-yet-linked file (e.g. a hook pointing at a missing script). It's
+idempotent, so re-running it every time is safe.
+
 ## Per-machine setup (not stored in this repo)
 
 This repo is public, so secrets and per-machine state are configured by hand:

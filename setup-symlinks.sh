@@ -4,6 +4,9 @@
 # Idempotent: safe to re-run. An existing real file/dir at a target is
 # moved aside to "<target>.backup" before the symlink is created.
 #
+# Re-run after any `git pull` that adds a new tracked config — pull updates
+# files already symlinked, but only this script links newly added ones.
+#
 #   ~/.dotfiles/setup-symlinks.sh
 
 set -euo pipefail
