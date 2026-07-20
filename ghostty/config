@@ -3,7 +3,7 @@ macos-titlebar-proxy-icon	= "hidden"
 macos-option-as-alt		= true
 mouse-hide-while-typing		= true
 
-font-family 			= "Iosevka Nerd Font Mono"
+font-family 			= "Fragment Mono"
 font-size 			= 19
 
 theme 				= "Horizon"
