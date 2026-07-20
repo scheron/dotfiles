@@ -34,6 +34,16 @@ require("nvim-tree").setup {
   },
 
 
+  notify = {
+    threshold = vim.log.levels.WARN,
+  },
+  ui = {
+    confirm = {
+      remove = false,
+      trash = false,
+    },
+  },
+
   filters = { dotfiles = false },
   disable_netrw = true,
   hijack_cursor = true,
