@@ -3,6 +3,8 @@ input=$(cat)
 
 # ── data ──────────────────────────────────────────────────────────────
 MODEL=$(echo "$input" | jq -r '.model.display_name // "?"')
+MODEL=$(printf '%s' "$MODEL" | sed -E 's/ *\([^)]*\)$//')   # drop trailing "(1M context)"
+EFFORT=$(echo "$input" | jq -r '.effort.level // empty')
 PCT=$(echo "$input" | jq -r '.context_window.used_percentage // 0' | cut -d. -f1)
 USED=$(echo "$input" | jq -r '.context_window.total_input_tokens // 0')
 DIR=$(echo "$input" | jq -r '.workspace.current_dir // .cwd // "."')
@@ -30,6 +32,22 @@ pct_color() {
   if [ "$1" -ge 80 ]; then printf '\033[31m'; elif [ "$1" -ge 50 ]; then printf '\033[33m'; else printf '\033[32m'; fi
 }
 
+effort_label() {
+  case "$1" in
+    low) printf 'Low';; medium) printf 'Medium';; high) printf 'High';;
+    xhigh) printf 'xHigh';; max) printf 'Max';; *) printf '%s' "$1";;
+  esac
+}
+
+effort_color() {
+  case "$1" in
+    max) printf '\033[35m';;          # magenta — strongest
+    xhigh|high) printf '\033[33m';;   # yellow
+    medium) printf '\033[36m';;       # cyan
+    *) printf '\033[32m';;            # green — light
+  esac
+}
+
 fmt_reset() {
   local now diff d h m
   now=$(date +%s)
@@ -49,7 +67,11 @@ if [ -n "$BRANCH" ]; then
   [ -n "$(git -C "$DIR" status --porcelain 2>/dev/null)" ] && DIRTY="*"
   GIT_SEG="${SEP}${CYAN}${I_BRANCH} ${BRANCH}${DIRTY}${RESET}"
 fi
-LINE1="${BLUE}${I_PROJ} $(basename "$DIR")${RESET}${GIT_SEG}${SEP}${YELLOW}${I_MODEL} ${MODEL}${RESET}"
+MODEL_SEG="${YELLOW}${I_MODEL} ${MODEL}${RESET}"
+if [ -n "$EFFORT" ]; then
+  MODEL_SEG="${MODEL_SEG} ${BOLD}$(effort_color "$EFFORT")($(effort_label "$EFFORT"))${RESET}"
+fi
+LINE1="${BLUE}${I_PROJ} $(basename "$DIR")${RESET}${GIT_SEG}${SEP}${MODEL_SEG}"
 
 # ── line 2: context (icon used (pct)) ─────────────────────────────────
 CTXC=$(pct_color "$PCT")
