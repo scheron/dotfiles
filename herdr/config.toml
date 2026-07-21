@@ -28,11 +28,6 @@ key = "prefix+shift+v"
 type = "plugin_action"
 command = "persiyanov.reviewr.toggle"
 
-[[keys.command]]              # fzf command palette — fuzzy-run any plugin action (jt.command-palette)
-key = "prefix+shift+p"
-type = "plugin_action"
-command = "jt.command-palette.open"
-
 [ui]
 accent = "#7aa2f7"            # tokyo-night blue for borders/highlights/nav
 agent_panel_sort = "priority" # attention queue: blocked/done agents float to the top
