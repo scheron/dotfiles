@@ -1,0 +1,47 @@
+# herdr configuration — managed in ~/.dotfiles/herdr/config.toml
+# Reload:  herdr server reload-config   (or prefix+shift+r inside Herdr)
+# Check:   herdr config check
+# Prefix is ctrl+g (see [keys]); "prefix+x" below means: press ctrl+g, then x.
+
+[theme]
+name = "tokyo-night"          # matches nvim (tokyonight), dark
+
+[terminal]
+new_cwd = "follow"            # new panes inherit the source pane/workspace cwd
+
+[keys]
+prefix = "ctrl+g"             # aerospace owns alt-*/cmd-* → prefix stays on ctrl, no conflicts
+new_worktree = "prefix+shift+o"  # moved off shift+g (freed for lazygit below)
+# Everything else keeps Herdr's vim-flavored defaults:
+#   panes  prefix+h/j/k/l   splits  prefix+v (vert) / prefix+- (horiz)
+#   tabs   prefix+c new · prefix+n/p next/prev · prefix+1..9 · zoom prefix+z · sidebar prefix+b
+
+[[keys.command]]              # lazygit in a popup
+key = "prefix+shift+g"
+type = "popup"
+command = "lazygit"
+width = "90%"
+height = "90%"
+
+[ui]
+accent = "#7aa2f7"            # tokyo-night blue for borders/highlights/nav
+agent_panel_sort = "priority" # attention queue: blocked/done agents float to the top
+
+show_agent_labels_on_pane_borders = false
+[ui.sidebar.agents.rows_by_agent]
+claude = [["state_icon", "workspace", "tab"], ["terminal_title_stripped"], ["agent"]]
+codex  = [["state_icon", "workspace", "tab"], ["terminal_title_stripped"], ["agent"]]
+
+[ui.toast]
+delivery = "system"          # desktop notification when a background agent changes state
+
+[ui.sound]
+enabled = true               # audible cue on agent state changes in background workspaces
+
+[session]
+resume_agents_on_restore = true  # resume claude/codex into their sessions after a server restart
+
+[experimental]
+# During prefix mode, temporarily switch macOS input source to ASCII so
+# prefix+letter commands register even when a Cyrillic layout is active.
+switch_ascii_input_source_in_prefix = true
