@@ -14,3 +14,4 @@ window-height			= 30
 window-width			= 120
 
 keybind = shift+enter=text:\x1b\r
+keybind = ctrl+key_g=text:\x07
