@@ -34,31 +34,43 @@
       "source": {
         "source": "github",
         "repo": "ChromeDevTools/chrome-devtools-mcp"
-      }
+      },
+      "autoUpdate": true
     },
     "supabase-agent-skills": {
       "source": {
         "source": "github",
         "repo": "supabase/agent-skills"
-      }
+      },
+      "autoUpdate": true
     },
     "impeccable": {
       "source": {
         "source": "github",
         "repo": "pbakaus/impeccable"
-      }
+      },
+      "autoUpdate": true
     },
     "frontend-slides": {
       "source": {
         "source": "git",
         "url": "https://github.com/zarazhangrui/frontend-slides.git"
-      }
+      },
+      "autoUpdate": true
     },
     "vue-development-marketplace": {
       "source": {
         "source": "github",
         "repo": "alexanderop/claude-skill-vue-development"
-      }
+      },
+      "autoUpdate": true
+    },
+    "swiftui-expert-skill": {
+      "source": {
+        "source": "github",
+        "repo": "AvdLee/SwiftUI-Agent-Skill"
+      },
+      "autoUpdate": true
     }
   },
   "effortLevel": "xhigh",
