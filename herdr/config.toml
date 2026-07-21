@@ -23,6 +23,16 @@ command = "lazygit"
 width = "90%"
 height = "90%"
 
+[[keys.command]]              # reviewr: toggle code-review sidebar (persiyanov.reviewr plugin)
+key = "prefix+shift+v"
+type = "plugin_action"
+command = "persiyanov.reviewr.toggle"
+
+[[keys.command]]              # fzf command palette — fuzzy-run any plugin action (jt.command-palette)
+key = "prefix+shift+p"
+type = "plugin_action"
+command = "jt.command-palette.open"
+
 [ui]
 accent = "#7aa2f7"            # tokyo-night blue for borders/highlights/nav
 agent_panel_sort = "priority" # attention queue: blocked/done agents float to the top
@@ -33,7 +43,7 @@ claude = [["state_icon", "workspace", "tab"], ["terminal_title_stripped"], ["age
 codex  = [["state_icon", "workspace", "tab"], ["terminal_title_stripped"], ["agent"]]
 
 [ui.toast]
-delivery = "system"          # desktop notification when a background agent changes state
+delivery = "off"             # no toast notifications (was "system"; other values: herdr=in-app, terminal)
 
 [ui.sound]
 enabled = true               # audible cue on agent state changes in background workspaces
