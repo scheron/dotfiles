@@ -20,7 +20,7 @@
     "code-review@claude-plugins-official": true,
     "code-simplifier@claude-plugins-official": true,
     "typescript-lsp@claude-plugins-official": true,
-    "chrome-devtools-mcp@claude-plugins-official": true,
+    "chrome-devtools-mcp@claude-plugins-official": false,
     "superpowers@claude-plugins-official": true,
     "supabase@supabase-agent-skills": true,
     "postgres-best-practices@supabase-agent-skills": true,

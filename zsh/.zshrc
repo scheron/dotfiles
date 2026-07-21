@@ -108,6 +108,7 @@ alias tm=tmux
 alias vim="nvim"
 alias pn=pnpm
 alias gg=lazygit
+alias h=herdr
 
 alias g=git
 alias gc="git commit"
