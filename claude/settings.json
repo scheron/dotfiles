@@ -31,6 +31,24 @@
             "if": "Bash(git commit*)"
           }
         ]
+      },
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "$HOME/.dotfiles/claude/dev-stack/hooks/commit-guard.sh"
+          }
+        ]
+      },
+      {
+        "matcher": "Edit|MultiEdit|Write|NotebookEdit|Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "$HOME/.dotfiles/claude/dev-stack/hooks/branch-guard.sh"
+          }
+        ]
       }
     ],
     "SessionStart": [
@@ -65,8 +83,7 @@
     "swiftui-expert@swiftui-expert-skill": true,
     "impeccable@impeccable": true,
     "frontend-slides@frontend-slides": true,
-    "vue-development@vue-development-marketplace": true,
-    "dev-stack@dev-stack": true
+    "vue-development@vue-development-marketplace": true
   },
   "extraKnownMarketplaces": {
     "chrome-devtools-plugins": {
@@ -110,12 +127,6 @@
         "repo": "AvdLee/SwiftUI-Agent-Skill"
       },
       "autoUpdate": true
-    },
-    "dev-stack": {
-      "source": {
-        "source": "directory",
-        "path": "/Users/olegatosan/.dotfiles/claude/dev-stack"
-      }
     }
   },
   "effortLevel": "xhigh",
