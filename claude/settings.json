@@ -104,7 +104,7 @@
     "dev-stack": {
       "source": {
         "source": "directory",
-        "path": "/Users/olegatosan/Documents/Projects/Personal/bmox0/dev-stack"
+        "path": "/Users/olegatosan/.dotfiles/claude/dev-stack"
       }
     }
   },

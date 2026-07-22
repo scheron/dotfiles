@@ -1,0 +1,48 @@
+{
+  "name": "dev-stack",
+  "version": "0.1.0",
+  "description": "Personal engineering skill set: grill \u2192 spec \u2192 tickets \u2192 brief \u2192 execute \u2192 verify \u2192 finish, with TDD, diagnosis, domain modelling, and a router. Replaces Matt Pocock's skills and the superpowers plugin as one coherent set.",
+  "author": {
+    "name": "bmox0"
+  },
+  "license": "MIT",
+  "keywords": [
+    "engineering",
+    "skills",
+    "tdd",
+    "code-review",
+    "grilling",
+    "domain-modeling"
+  ],
+  "skills": [
+    "./skills/brief",
+    "./skills/codebase-design",
+    "./skills/cold-read",
+    "./skills/commit-work",
+    "./skills/diagnose",
+    "./skills/domain-modeling",
+    "./skills/execute-tickets",
+    "./skills/finish-branch",
+    "./skills/git-guardrails-claude-code",
+    "./skills/grill-with-docs",
+    "./skills/grilling",
+    "./skills/handoff",
+    "./skills/improve-codebase-architecture",
+    "./skills/new-branch",
+    "./skills/prototype",
+    "./skills/receiving-code-review",
+    "./skills/research",
+    "./skills/resolving-merge-conflicts",
+    "./skills/route-me",
+    "./skills/setup-matt-pocock-skills",
+    "./skills/setup-pre-commit",
+    "./skills/tdd",
+    "./skills/to-spec",
+    "./skills/to-tickets",
+    "./skills/using-git-worktrees",
+    "./skills/verification-before-completion",
+    "./skills/verified-review",
+    "./skills/wayfinder",
+    "./skills/writing-great-skills"
+  ]
+}
