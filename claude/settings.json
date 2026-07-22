@@ -32,6 +32,16 @@
           }
         ]
       }
+    ],
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"$HOME/.dotfiles/claude/dev-stack/install.sh\" >/dev/null 2>&1 || true"
+          }
+        ]
+      }
     ]
   },
   "statusLine": {
