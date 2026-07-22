@@ -32,8 +32,8 @@ fi
 # 3) Conventional Commits subject — only when a -m message is cleanly extractable.
 msg="$(printf '%s' "$cmd" | grep -oE "\-m[[:space:]]+\"[^\"]*\"|\-m[[:space:]]+'[^']*'" | head -1 | sed -E "s/^-m[[:space:]]+[\"']//; s/[\"']$//" 2>/dev/null || true)"
 if [ -n "$msg" ]; then
-  if ! printf '%s' "$msg" | grep -qE '^(feat|fix|docs|style|refactor|perf|test|build|ci|chore|revert)(\([a-zA-Z0-9._/-]+\))?!?: .+'; then
-    deny "Blocked by commit-work: subject is not Conventional Commits ('$msg'). Use 'type(scope): summary' — type in feat|fix|docs|style|refactor|perf|test|build|ci|chore|revert."
+  if ! printf '%s' "$msg" | grep -qE '^(([A-Z][A-Z0-9]*-[0-9]+|#[0-9]+):?[[:space:]]+)?(feat|fix|docs|style|refactor|perf|test|build|ci|chore|revert)(\([a-zA-Z0-9._/-]+\))?!?: .+'; then
+    deny "Blocked by commit-work: subject is not Conventional Commits ('$msg'). Use 'type(scope): summary' (an optional leading ticket prefix like 'ABC-123:' or '#123' is allowed) — type in feat|fix|docs|style|refactor|perf|test|build|ci|chore|revert."
   fi
 fi
 
