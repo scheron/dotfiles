@@ -11,6 +11,52 @@
     "defaultMode": "auto"
   },
   "model": "opus[1m]",
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "$HOME/.claude/rtk-rewrite.sh"
+          }
+        ]
+      },
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "jq -r '.tool_input.command // \"\"' | grep -q 'Claude-Session:' && printf '%s' '{\"hookSpecificOutput\":{\"hookEventName\":\"PreToolUse\",\"permissionDecision\":\"deny\",\"permissionDecisionReason\":\"Blocked: this git commit contains a Claude-Session: line. Remove the session trailer and retry.\"}}' || true",
+            "if": "Bash(git commit*)"
+          }
+        ]
+      },
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "$HOME/.claude/commit-guard.sh"
+          }
+        ]
+      },
+      {
+        "matcher": "Edit|MultiEdit|Write|NotebookEdit|Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "$HOME/.claude/branch-guard.sh"
+          }
+        ]
+      }
+    ]
+  },
+  "statusLine": {
+    "type": "command",
+    "command": "~/.claude/statusline.sh",
+    "padding": 0
+  },
   "enabledPlugins": {
     "swift-lsp@claude-plugins-official": true,
     "frontend-design@claude-plugins-official": true,
@@ -21,13 +67,14 @@
     "code-simplifier@claude-plugins-official": true,
     "typescript-lsp@claude-plugins-official": true,
     "chrome-devtools-mcp@claude-plugins-official": false,
-    "superpowers@claude-plugins-official": true,
+    "superpowers@claude-plugins-official": false,
     "supabase@supabase-agent-skills": true,
     "postgres-best-practices@supabase-agent-skills": true,
     "swiftui-expert@swiftui-expert-skill": true,
     "impeccable@impeccable": true,
     "frontend-slides@frontend-slides": true,
-    "vue-development@vue-development-marketplace": true
+    "vue-development@vue-development-marketplace": true,
+    "dev-stack@dev-stack": true
   },
   "extraKnownMarketplaces": {
     "chrome-devtools-plugins": {
@@ -71,39 +118,17 @@
         "repo": "AvdLee/SwiftUI-Agent-Skill"
       },
       "autoUpdate": true
+    },
+    "dev-stack": {
+      "source": {
+        "source": "directory",
+        "path": "/Users/olegatosan/Documents/Projects/Personal/bmox0/dev-stack"
+      }
     }
   },
   "effortLevel": "xhigh",
   "tui": "fullscreen",
   "remoteControlAtStartup": true,
   "agentPushNotifEnabled": true,
-  "skipAutoPermissionPrompt": true,
-  "hooks": {
-    "PreToolUse": [
-      {
-        "matcher": "Bash",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "$HOME/.claude/rtk-rewrite.sh"
-          }
-        ]
-      },
-      {
-        "matcher": "Bash",
-        "hooks": [
-          {
-            "type": "command",
-            "if": "Bash(git commit*)",
-            "command": "jq -r '.tool_input.command // \"\"' | grep -q 'Claude-Session:' && printf '%s' '{\"hookSpecificOutput\":{\"hookEventName\":\"PreToolUse\",\"permissionDecision\":\"deny\",\"permissionDecisionReason\":\"Blocked: this git commit contains a Claude-Session: line. Remove the session trailer and retry.\"}}' || true"
-          }
-        ]
-      }
-    ]
-  },
-  "statusLine": {
-    "type": "command",
-    "command": "~/.claude/statusline.sh",
-    "padding": 0
-  }
+  "skipAutoPermissionPrompt": true
 }
