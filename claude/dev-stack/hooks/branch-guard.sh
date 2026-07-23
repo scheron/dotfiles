@@ -36,7 +36,7 @@ fi
 
 if [ "$branch" = "$def" ]; then
   jq -cn --arg b "$branch" \
-    '{hookSpecificOutput:{hookEventName:"PreToolUse",permissionDecision:"deny",permissionDecisionReason:("Blocked: on default branch (" + $b + ") in a dev-stack repo. Create a dedicated branch before any work — /new-branch (Tier 1) or /using-git-worktrees (Tier 2/3). Enforced, not advised.")}}' \
+    '{hookSpecificOutput:{hookEventName:"PreToolUse",permissionDecision:"deny",permissionDecisionReason:("Blocked: on default branch (" + $b + ") in a dev-stack repo. Isolate before any work — /using-git-worktrees (every tier, Tier 1 included); /new-branch is the in-place fallback. Enforced, not advised.")}}' \
     2>/dev/null
 fi
 exit 0

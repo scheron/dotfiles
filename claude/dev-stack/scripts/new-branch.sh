@@ -1,16 +1,27 @@
 #!/usr/bin/env bash
-# Create a dedicated working branch off the default branch — the Tier 1
-# isolation floor. Tier 2/3 use a worktree (/using-git-worktrees) instead.
+# Fallback isolation — cut a dedicated working branch in place. The primary
+# path for every tier (Tier 1 included) is a worktree (/using-git-worktrees);
+# reach here only when a worktree can't be made (sandbox denial) or is declined.
 #
-# Usage: new-branch.sh <type> <slug>
-#   type  fix | feat | chore | refactor | docs | perf  (default: chore)
-#   slug  short description; sanitised to kebab-case
+# Usage: new-branch.sh <type> <slug> [--from-here]
+#   type        fix | feat | chore | refactor | docs | perf  (default: chore)
+#   slug        short description; sanitised to kebab-case
+#   --from-here branch off the CURRENT branch instead of refusing when it
+#               isn't the default (ask the user before passing this)
 set -euo pipefail
 
-type="${1:-chore}"
-raw="${2:-}"
+from_here=0
+positional=()
+for a in "$@"; do
+  case "$a" in
+    --from-here) from_here=1 ;;
+    *) positional+=("$a") ;;
+  esac
+done
+type="${positional[0]:-chore}"
+raw="${positional[1]:-}"
 if [ -z "$raw" ]; then
-  echo "usage: new-branch.sh <type> <slug>" >&2
+  echo "usage: new-branch.sh <type> <slug> [--from-here]" >&2
   exit 2
 fi
 
@@ -30,6 +41,15 @@ if [ -z "$def" ]; then
   else def="$(git rev-parse --abbrev-ref HEAD)"; fi
 fi
 
+# Branch-origin guard: refuse to branch off a non-default base unless told to.
+cur="$(git rev-parse --abbrev-ref HEAD 2>/dev/null || true)"
+if [ "$cur" != "$def" ] && [ "$from_here" -ne 1 ]; then
+  echo "refused: you are on '$cur', not the default branch '$def'." >&2
+  echo "  ask the user: branch from here, or switch to '$def' first?" >&2
+  echo "  then either 'git switch $def' and re-run, or re-run with --from-here." >&2
+  exit 3
+fi
+
 if ! git diff --quiet || ! git diff --cached --quiet; then
   echo "note: uncommitted changes will move onto $branch" >&2
 fi
@@ -40,4 +60,4 @@ else
   git switch -c "$branch"
 fi
 
-echo "on branch: $branch (base: $def)"
+echo "on branch: $branch (base: $cur)"

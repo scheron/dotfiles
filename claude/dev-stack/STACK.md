@@ -14,12 +14,15 @@ This file is the *why*. For the roster of skills and how to install, see [README
 
 The tier is chosen at the start of the work. Both toolkits assumed "every change passes the full gate" — that was the source of the friction, because a trivial fix had to pay the full price.
 
+The tier scales *process*, never *care*. Every tier gates on an **approved plan before code** — what differs is the weight of the plan, not whether there is one. Tier 1's gate is a few lines in chat and a "go" (never a spec doc or artifact — that lightness is the point); Tier 2 earns the spec + tickets chain; Tier 3 the wayfinder map. What §8 rejects in `brainstorming` is a *heavy artifact* gate on a trivial fix — not this lightweight in-chat gate.
+
 ```
 TIER 1 — FIX                                              minutes–hour
+  gate IN:   plan inline + approval BEFORE any edit  (in chat, never an artifact)
   bug / crashing / slow   ->  /diagnose
-  small change            ->  straight to work
-                          ->  /verified-review
-  no spec, no tickets, no .scratch/
+  small change            ->  plan -> approval -> work
+  gate OUT:  /verified-review — mandatory, reviewer runs Verify itself
+  no spec, no tickets, no .scratch/ — but approved IN and reviewed OUT
 
 TIER 2 — FEATURE                                          one–two sessions
   the full chain, see section 2
@@ -29,6 +32,8 @@ TIER 3 — EFFORT                                           won't fit one sessio
   1 ticket = 1 session;  a decision -> an ADR
   each resolved ticket -> Tier 2
 ```
+
+**Isolation floor — all tiers.** No tier works on the default branch. Every tier isolates in a worktree (`/using-git-worktrees`) — Tier 1 included, so a batch of simple fixes runs in parallel instead of fighting over one working copy. `/new-branch` (a dedicated branch in place) is the fallback when a worktree can't be made. Before either branches, it checks the current branch: off the default, it asks whether to branch from here or switch to the default first.
 
 ---
 
@@ -156,6 +161,8 @@ Exception — the **wide refactor** (rename or retype of a shared symbol): it ca
 
 ## 5. Definition of Done
 
+Every tier clears this — a Tier 1 one-line fix is reviewed on the same bar as a Tier 2 ticket. There is no "too small to review": the tier scales the *process* in front of the change, never the gate behind it.
+
 ```
 spec axis         matches the spec
 Verify green      red BEFORE, green AFTER — RAN THE VERIFIER ITSELF
@@ -239,7 +246,7 @@ The full roster is in [README.md](README.md). What matters here is what was deli
 
 | Skill | Why |
 |---|---|
-| `brainstorming` | a HARD GATE on any trivial thing; `grill-with-docs` is sharper and keeps ADRs |
+| `brainstorming` | a heavy *artifact* gate on any trivial thing (the lightweight in-chat gate in §1 is a different animal); `grill-with-docs` is sharper and keeps ADRs |
 | `test-driven-development` | Iron Law -> implementation-coupled tests |
 | `systematic-debugging` | see section 7 |
 | `requesting-code-review` | replaced by the two-axis Pocock review |

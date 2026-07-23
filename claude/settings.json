@@ -59,6 +59,25 @@
             "command": "bash \"$HOME/.dotfiles/claude/dev-stack/install.sh\" >/dev/null 2>&1 || true"
           }
         ]
+      },
+      {
+        "matcher": "startup|clear|compact",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "$HOME/.dotfiles/claude/dev-stack/hooks/session-gate.sh"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "$HOME/.dotfiles/claude/dev-stack/hooks/review-guard.sh"
+          }
+        ]
       }
     ]
   },

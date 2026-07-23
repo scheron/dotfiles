@@ -118,6 +118,16 @@ All three, or it isn't done:
 
 Plus: no discrepancy between the implementer's report and what you observed.
 
+### On a clean pass — record it
+
+When all three pass with no blocking findings, mark this exact working state as reviewed so the `review-guard` Stop hook knows the change was reviewed and won't nag at turn end:
+
+```
+"${CLAUDE_PLUGIN_ROOT:-$HOME/.dotfiles/claude/dev-stack}/hooks/review-mark.sh" || true
+```
+
+Best-effort — it fingerprints `HEAD` + the working diff, so any later edit re-arms the gate and needs a fresh review. If findings remain, do **not** mark: address them (or hand them back) and re-review first.
+
 ## Why the reviewer runs it
 
 Upstream `subagent-driven-development` says the opposite:

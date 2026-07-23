@@ -8,7 +8,11 @@ description: Router over the dev-stack skills — names each skill and when to r
 
 The map of this skill set: pick a **tier**, then follow its chain. This skill only routes — each skill it names carries its own detail, and STACK.md carries the *why*.
 
-**Before any tier — open a TodoWrite plan.** Every change, down to a one-line fix, starts by naming its steps in TodoWrite. This is not ceremony and it is not optional: an explicit plan is how the model holds the whole change in view and stops dropping steps. The tier decides how much *process* rides on top — spec, tickets, `.scratch/` — never whether you plan. If the session doesn't expose TodoWrite, track the same steps inline in text; the plan is the obligation, the tool is just where it lives.
+<HARD-GATE>
+No tier writes code before its gate is cleared — and the gate is **presented and approved**, not just thought through. Tier 1: a plan inline in this session, approved. Tier 2: the spec + tickets chain, approved. Tier 3: the wayfinder map. Dropping to a lighter tier to dodge a heavier gate is the one failure this whole map exists to prevent — the tier is set by what the *code* demands, never by what's convenient. "Too small to plan" is exactly where a wrong assumption costs the most.
+</HARD-GATE>
+
+**Before any tier — open a TodoWrite plan.** Every change, down to a one-line fix, starts by naming its steps in TodoWrite. This is not ceremony and it is not optional: an explicit plan is how the model holds the whole change in view and stops dropping steps. The tier decides how much *process* rides on top — spec, tickets, `.scratch/` — never whether you plan. If the session doesn't expose TodoWrite, track the same steps inline in text; the plan is the obligation, the tool is just where it lives. TodoWrite is your *own* tracking — it is **not** the plan the user approves at the gate above; presenting the plan and getting a "go" is a separate, non-skippable step.
 
 ## Step 0 — scout first (you can't tier without it)
 
@@ -34,18 +38,27 @@ Never skip the scout to "save time": mis-tiering is the expensive mistake, a sco
    minutes–hour        one–two sessions      won't fit one session
 ```
 
-**Then get off the default branch — before any edit.** The moment the tier is picked, move to a dedicated branch: Tier 1 → `/new-branch`; Tier 2/3 → `/using-git-worktrees` (a worktree already branches). In a dev-stack repo a `branch-guard` hook denies edits and commits on `main`/`master`, so this is enforced, not advised — the chain simply won't let you work on the default branch.
+**Then isolate — before any edit.** The moment the tier is picked, move into an isolated worktree via `/using-git-worktrees` — **every** tier, Tier 1 included, so a batch of simple fixes can run in parallel without fighting over one working copy. `/new-branch` (a dedicated branch in place) is the fallback for when a worktree can't be made — sandbox denial, or you decline one. **Before either branches it checks where you are:** off the default branch it stops and asks whether to branch from here or switch to the default first — branching off the wrong base is silent and expensive. In a dev-stack repo a `branch-guard` hook denies edits and commits on `main`/`master`, so isolation is enforced, not advised.
 
 ### Tier 1 — FIX
 
+<HARD-GATE>
+Tier 1 is still gated. Before you edit a single line — present the plan inline, in this session, and wait for the user's explicit "go". This holds no matter how trivial the fix looks: "too small to plan" is exactly where a wrong assumption costs the most. Lightweight means lightweight — a few lines in chat (what changes, which files, how you'll verify), NOT a spec, NOT a `.scratch/` doc, NOT an artifact, NOT a written file. TodoWrite is your own tracking, not the plan the user approves. Touch code only after the user says go.
+</HARD-GATE>
+
 ```
-routed to Tier 1        ──►  /new-branch          (off the default branch)
+routed to Tier 1        ──►  /using-git-worktrees  (isolate; /new-branch = fallback)
+plan                    ──►  present inline → get approval  (before any edit)
 bug / throwing / slow   ──►  /diagnose
-small change            ──►  TodoWrite plan, then work
+small change            ──►  work the approved plan
                         ──►  /verified-review
 ```
 
-No spec, no tickets, no `.scratch/` — but still a TodoWrite plan first.
+No spec, no tickets, no `.scratch/` — but the plan is presented and approved before any edit, and every fix gets its own worktree, so a batch of them runs in parallel.
+
+<HARD-GATE>
+Tier 1 is gated at the *exit* too — even a one-line fix. It is not done until `/verified-review` has run: the reviewer runs the Verify command **itself** (red before, green after) and checks the Standards + Spec axes. "It's small, I'll eyeball it" is not review. Do not report the fix complete until the review has run and its findings are addressed.
+</HARD-GATE>
 
 ### Tier 3 — EFFORT
 
@@ -113,7 +126,7 @@ auto-invokes:   /diagnose (on a bug report)  ·  /brief /verified-review
 So you memorise **one** command — `/route-me` — and it reprints the map and cheat sheet whenever you're lost. Then per tier:
 
 ```
-Tier 1   bug → /diagnose fires → work → /verified-review  (both auto-invoke)
+Tier 1   plan inline + approval → work (bug? /diagnose fires) → /verified-review
 Tier 2   front by hand:         /grill-with-docs → /to-spec → /to-tickets → /cold-read
          then ONE driver:       /execute-tickets loops the frontier
                                  (brief → implementer → verified-review → next)
@@ -123,6 +136,8 @@ Tier 3   start with the map:    /wayfinder → each resolved ticket drops into T
 Remember `/route-me` + your tier's entry (`/diagnose`, `/grill-with-docs`, or `/wayfinder`). The map and the driver carry the rest — the full chain is never yours to memorise.
 
 ## Definition of Done
+
+**Every tier — Tier 1 included — a change is not done until `/verified-review` has run.** There is no "too small to review"; a one-line fix meets the same bar as a Tier 2 ticket.
 
 ```
 Verify green    red BEFORE, green AFTER — the reviewer ran it
@@ -150,7 +165,8 @@ no Verify command exists                    = a FINDING → /improve-codebase-ar
 | `/tdd` | build one behaviour test-first |
 | `/verified-review` | after a ticket, a branch, a PR |
 | `/finish-branch` | everything green, time to integrate |
-| `/new-branch` | routed to Tier 1 — get off the default branch |
+| `/using-git-worktrees` | isolate before any tier's work — Tier 1 included |
+| `/new-branch` | worktree fallback — a dedicated branch in place |
 | `/diagnose` | something broke or went slow |
 | `/wayfinder` | the shape of the work is unclear, need a map |
 | `/improve-codebase-architecture` | a finding arrived |

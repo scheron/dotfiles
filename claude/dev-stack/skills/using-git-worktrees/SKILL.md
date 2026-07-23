@@ -3,8 +3,8 @@ name: using-git-worktrees
 description: Use when starting feature work that needs isolation from current workspace or before executing implementation plans - ensures an isolated workspace exists via native tools or git worktree fallback
 ---
 
-> Verbatim port of superpowers' `using-git-worktrees` (MIT, Copyright (c) 2025 Jesse Vincent).
-> Unmodified — adopted as-is by `dev-stack`. See ../../NOTICE.md.
+> Ported from superpowers' `using-git-worktrees` (MIT, Copyright (c) 2025 Jesse Vincent).
+> Adapted by `dev-stack`: this is the isolation step for **every** tier (Tier 1 fixes included, so a batch runs in parallel), with a plan-gate reminder and a base-commit check (Step 0.5) added below. See ../../NOTICE.md.
 
 # Using Git Worktrees
 
@@ -13,6 +13,10 @@ description: Use when starting feature work that needs isolation from current wo
 Ensure work happens in an isolated workspace. Prefer your platform's native worktree tools. Fall back to manual git worktrees only when no native tool is available.
 
 **Core principle:** Detect existing isolation first. Then use native tools. Then fall back to git. Never fight the harness.
+
+> **dev-stack — two rules ride on top of the port below:**
+> 1. **Plan gate.** Don't reach this skill to *start coding* until your tier's plan is presented and approved (Tier 1: a few lines in chat + a "go"; Tier 2/3: the spec / wayfinder gate). The worktree is where approved work goes — not a way around the gate.
+> 2. **Base commit.** Before creating the worktree, confirm the *commit* you're branching off — right branch, and local not silently behind origin — Step 0.5 below.
 
 **Announce at start:** "I'm using the using-git-worktrees skill to set up an isolated workspace."
 
@@ -46,6 +50,45 @@ Has the user already indicated their worktree preference in your instructions? I
 > "Would you like me to set up an isolated worktree? It protects your current branch from changes."
 
 Honor any existing declared preference without asking. If the user declines consent, work in place and skip to Step 2.
+
+## Step 0.5: Confirm the base commit (dev-stack)
+
+A worktree's base is a **commit you choose and then verify** — not a default you accept. Two silent traps put it on the wrong commit; check both before creating, and verify after.
+
+Resolve the default branch and where you are:
+
+```bash
+DEF=$(git symbolic-ref --quiet --short refs/remotes/origin/HEAD 2>/dev/null | sed 's#^origin/##')
+[ -z "$DEF" ] && { git show-ref -q refs/heads/main && DEF=main || DEF=master; }
+CUR=$(git branch --show-current)
+```
+
+**Trap 1 — wrong branch.** If `CUR != DEF`, STOP and ask before creating anything:
+> "You're on `<CUR>`, not the default `<DEF>`. Branch this worktree from here, or from `<DEF>`?"
+
+Set `BASE` to their choice (`$CUR` or `$DEF`).
+
+**Trap 2 — local ahead of origin.** Native worktree tools (e.g. `EnterWorktree`) often default to branching from **`origin/<DEF>`** (a `worktree.baseRef=fresh`-style default), NOT your local branch. If your local base carries unpushed commits, that base silently drops them — including the foundation you're building on.
+
+```bash
+git rev-list --count "origin/$DEF..$DEF" 2>/dev/null   # >0 → local $DEF is ahead of origin
+git rev-list --count "@{u}..HEAD"        2>/dev/null   # >0 → current HEAD has unpushed commits
+```
+
+If either is non-zero, choose the base deliberately:
+- **keep the unpushed foundation** → base off **local** (`EnterWorktree`: set `worktree.baseRef=head`; git fallback: pass the local ref as the start point in Step 1b).
+- **want a clean base off the pushed tip** → base off **origin** — only if nothing local is load-bearing.
+
+**Then verify — do NOT trust the config.** A `baseRef` setting can silently fail to apply, so the tool may still branch from origin after you asked for local. After the worktree exists (Step 3), confirm it sits on the base you intended:
+
+```bash
+# FOUND = a commit that MUST be present (your foundation). Fails if the base was wrong.
+git merge-base --is-ancestor "$FOUND" HEAD && echo "base ok" || echo "WRONG BASE — re-point"
+```
+
+If the base is wrong and the worktree has no commits of its own, re-point its branch onto the intended base (`git reset --hard <local-base>`), then re-verify.
+
+Branching off the wrong commit is silent — the worktree looks fine and quietly carries the wrong history. This check is the cheap insurance.
 
 ## Step 1: Create Isolated Workspace
 
@@ -96,7 +139,7 @@ git check-ignore -q .worktrees 2>/dev/null || git check-ignore -q worktrees 2>/d
 # Determine path based on chosen location
 path="$LOCATION/$BRANCH_NAME"
 
-git worktree add "$path" -b "$BRANCH_NAME"
+git worktree add "$path" -b "$BRANCH_NAME" "${BASE:-$DEF}"   # BASE chosen in Step 0.5
 cd "$path"
 ```
 
@@ -122,6 +165,8 @@ if [ -f go.mod ]; then go mod download; fi
 ```
 
 ## Step 3: Verify Clean Baseline
+
+**Base check first (dev-stack).** Before trusting any baseline, confirm the worktree is founded on the intended commit — run Step 0.5's `git merge-base --is-ancestor "$FOUND" HEAD` check. A wrong base is the most common silent worktree failure: a green test suite on the wrong foundation still ships the wrong history.
 
 Run tests to ensure workspace starts clean:
 
@@ -190,6 +235,8 @@ Ready to implement <feature-name>
 
 **Never:**
 - Create a worktree when Step 0 detects existing isolation
+- Create a worktree off a non-default branch without asking first (Step 0.5)
+- Trust a native worktree tool's default base — it may branch from `origin`, behind your local commits. Verify the base (Step 0.5), don't assume it.
 - Use `git worktree add` when you have a native worktree tool (e.g., `EnterWorktree`). This is the #1 mistake — if you have it, use it.
 - Skip Step 1a by jumping straight to Step 1b's git commands
 - Create worktree without verifying it's ignored (project-local)

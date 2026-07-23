@@ -8,7 +8,7 @@ MIT. Source: the `superpowers` Claude Code plugin, version 6.1.1.
 
 | File here | Upstream | Change |
 |---|---|---|
-| `skills/using-git-worktrees/SKILL.md` | `skills/using-git-worktrees/SKILL.md` | verbatim; attribution line added |
+| `skills/using-git-worktrees/SKILL.md` | `skills/using-git-worktrees/SKILL.md` | adapted: serves all tiers, plan-gate reminder + branch-origin check (Step 0.5) added |
 | `skills/verification-before-completion/SKILL.md` | `skills/verification-before-completion/SKILL.md` | verbatim; attribution line added |
 | `skills/execute-tickets/SKILL.md` | `skills/subagent-driven-development/SKILL.md` | substantially rewritten — see below |
 | `skills/execute-tickets/implementer-prompt.md` | `skills/subagent-driven-development/implementer-prompt.md` | adapted: brief-based, `/tdd`, Verify in the report contract |
