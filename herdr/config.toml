@@ -12,7 +12,8 @@ new_cwd = "follow"            # new panes inherit the source pane/workspace cwd
 
 [keys]
 prefix = "ctrl+g"             # aerospace owns alt-*/cmd-* → prefix stays on ctrl, no conflicts
-new_worktree = "prefix+shift+o"  # moved off default shift+g (freed for reviewr below)
+new_worktree = "prefix+shift+o"  # moved off default shift+g (now used by goto below)
+goto = "prefix+shift+g"          # moved off default prefix+g (freed for reviewr below)
 toggle_sidebar = "prefix+e"      # sidebar toggle, moved off default prefix+b (freed for agents below)
 edit_scrollback = ""             # disabled — frees prefix+e for the sidebar toggle above
 next_agent = "prefix+b"          # jump to next agent (1st press → top of priority-sorted list), wraps
@@ -22,7 +23,7 @@ previous_agent = "prefix+shift+b" # jump to previous agent (step back up the lis
 #   tabs   prefix+c new · prefix+n/p next/prev · prefix+1..9 · zoom prefix+z
 
 [[keys.command]]              # reviewr: toggle code-review sidebar (persiyanov.reviewr plugin)
-key = "prefix+shift+g"
+key = "prefix+g"
 type = "plugin_action"
 command = "persiyanov.reviewr.toggle"
 
