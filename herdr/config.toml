@@ -1,3 +1,4 @@
+onboarding = false
 # herdr configuration — managed in ~/.dotfiles/herdr/config.toml
 # Reload:  herdr server reload-config   (or prefix+shift+r inside Herdr)
 # Check:   herdr config check
