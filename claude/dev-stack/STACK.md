@@ -1,204 +1,228 @@
 # My development stack
 
-The decision record from the grilling session of 2026-07-20 (finalized 2026-07-22).
+The decision record from the grilling sessions of 2026-07-20 (finalized 2026-07-22) and **2026-07-23 — the two-tier redesign**.
 
-Starting problem: I had both Superpowers and Matt Pocock's skills installed; they partly conflicted, and I also sometimes work through specs. I needed one coherent setup.
+Starting problem (2026-07-20): I had both Superpowers and Matt Pocock's skills installed; they partly conflicted, and I also sometimes work through specs. I needed one coherent setup.
+
+The 2026-07-23 redesign: three tiers collapsed into two; driving skills became model-invocable behind STOP-gates; execution moved into one engine (`to-implementation`) that runs every ticket as a subagent in its own worktree.
 
 **The dividing principle:** Pocock owns the conversation, the documents, and the judgement. Superpowers provides the parallel-execution machinery.
+
+**The packaging principle (2026-07-23):** a skill earns its file by being an *addressable unit of logic* — edited in one known place, dispatched by reference rather than pasted inline, or invoked conditionally ("if X → `/skill`"). A skill must never duplicate an entity that already lives elsewhere; when logic already has a home, other skills point at it with one line.
 
 This file is the *why*. For the roster of skills and how to install, see [README.md](README.md); for the operational map, run `/route-me`.
 
 ---
 
-## 1. Three tiers
+## 1. Two tiers
 
-The tier is chosen at the start of the work. Both toolkits assumed "every change passes the full gate" — that was the source of the friction, because a trivial fix had to pay the full price.
-
-The tier scales *process*, never *care*. Every tier gates on an **approved plan before code** — what differs is the weight of the plan, not whether there is one. Tier 1's gate is a few lines in chat and a "go" (never a spec doc or artifact — that lightness is the point); Tier 2 earns the spec + tickets chain; Tier 3 the wayfinder map. What §8 rejects in `brainstorming` is a *heavy artifact* gate on a trivial fix — not this lightweight in-chat gate.
+The tier is chosen by the scout, never from the armchair. The criterion is binary: **does this fit an inline solution right now?** Yes → Tier 1. No → Tier 2.
 
 ```
-TIER 1 — FIX                                              minutes–hour
+TIER 1 — FIX                     fits an inline solution right now
   gate IN:   plan inline + approval BEFORE any edit  (in chat, never an artifact)
   bug / crashing / slow   ->  /diagnose
-  small change            ->  plan -> approval -> work
+  body:      to-implementation with ONE unit (the plan from chat)
   gate OUT:  /verified-review — mandatory, reviewer runs Verify itself
-  no spec, no tickets, no .scratch/ — but approved IN and reviewed OUT
 
-TIER 2 — FEATURE                                          one–two sessions
-  the full chain, see section 2
-
-TIER 3 — EFFORT                                           won't fit one session
-  /wayfinder — a map of decision-tickets
-  1 ticket = 1 session;  a decision -> an ADR
-  each resolved ticket -> Tier 2
+TIER 2 — FEATURE                 everything else
+  the full chain, section 4
+  body:      to-implementation over the tickets
 ```
 
-**Isolation floor — all tiers.** No tier works on the default branch. Every tier isolates in a worktree (`/using-git-worktrees`) — Tier 1 included, so a batch of simple fixes runs in parallel instead of fighting over one working copy. `/new-branch` (a dedicated branch in place) is the fallback when a worktree can't be made. Before either branches, it checks the current branch: off the default, it asks whether to branch from here or switch to the default first.
+**The recursion is the model:** Tier 1 *is* the execution of one unit. Tier 2 is orchestration over Tier 1 runs — split the feature into tickets, run each as a Tier 1 lifecycle in its own worktree. One engine, two entry weights.
+
+**Tier 3 is gone.** `wayfinder`'s essence survives in two places: the scout's *list of open decisions* (§2) and the `/decision-map` phase (§4) — an optional front phase of Tier 2 that `route-me` *proposes* (never launches) when the fog exceeds one grill session. A decision map is not a tier; it is how Tier 2 opens when decisions outnumber a session.
+
+**Isolation floor — all tiers.** No tier works on the default branch. Every unit of work isolates in a worktree (`/using-git-worktrees`; its in-place branch fallback covers sandbox denial). In a dev-stack repo the `branch-guard` hook denies edits and commits on `main`/`master`, so isolation is enforced, not advised.
 
 ---
 
-## 2. The Tier 2 chain
+## 2. The scout
+
+Always runs, read-only, on the current branch, before any tier talk — it is the first act of `/route-me`. It returns three things and keeps the file dumps in its own context:
 
 ```
-/grill-with-docs        Pocock
-  = /grilling + /domain-modeling at once
-  interview one question at a time; facts I look up, decisions are mine
-  CONTEXT.md and ADRs written INLINE as we go, not after the fact
-      -> GATE 1   "shared understanding?"
-
-seams + verify
-  "cut here, prove it with this"
-      -> GATE 2   nothing to verify with -> a FINDING, not "I'll check by hand"
-
-/to-spec                Pocock
-  spec: Problem / Solution / User Stories / Implementation Decisions /
-        Testing Decisions / Out of Scope
-  NO paths, NO code — a human reads it
-  carries Global Constraints for the tickets that follow
-      -> GATE 3   proofread
-
-/to-tickets             Pocock
-  vertical tracer bullets + blocking edges
-  each: a narrow but COMPLETE path through every layer, demoable on its own,
-        sized to one fresh context window
-  NO paths, NO code
-      -> quiz     granularity and edges
-
-brief                   (generated when a ticket is picked up)
-  Files / Interfaces / Verify / Run as
-  ALWAYS .scratch/, always ephemeral
-
-execute                 (superpowers-derived)
-  subagent-driven, one implementer per ticket
-  Run as: [inline] | [subagent:cheap] | [subagent:standard]
-
-/verified-review        forked from Pocock
-  after EVERY ticket, a subagent with a CLEAN context
-  Standards and Spec axes in parallel + RUNS Verify itself
+1. map of the code        where it lives, how far it spreads, what constrains it
+2. tier signal            "does this fit an inline solution right now?"
+3. open decisions         questions the code cannot answer — decisions are the user's
 ```
+
+The third output is new (2026-07-23) and does double duty:
+
+- **few decisions** (fit one grill session) → `/grilling` starts with a **pre-seeded agenda** — the grill is a consequence of data, not a ritual to remember;
+- **many decisions** (exceed one session) → `route-me` proposes `/decision-map` first.
+
+The scout *measures* fog; it never resolves it. Facts are looked up, decisions are put to the user — the same contract the grill runs on.
 
 ---
 
-## 3. Artifacts
+## 3. Invocation policy — STOP-gates instead of flags
 
-The single rule: **volatile lives in the ephemeral, stable lives in the durable.**
+`disable-model-invocation` is removed from the driving skills. The flag was the crudest possible implementation of "the wheel stays in the user's hand": not "the model must ask" but "the model physically cannot". It broke legitimate chains — a `/tier-2` driver that cannot raise `/grilling` degrades to *describing* what it would do (the exact failure the 2026-07-22 vendoring pass caught in three skills).
 
-This is the cure for spec-rot. The spec has no paths because a human reads it and volatile detail gets in the way. The brief has paths because it will be dead in a day and precision there is free.
+What replaces it:
+
+- **Every driving skill opens with a STOP-gate.** First act: present intent, wait for the explicit "go". Not mid-way, not after the fact — the first line of the skill. ("Scout says Tier 2, four open decisions — start the grill?")
+- **The lint is repurposed.** `check-upstream.sh` no longer checks "no skill invokes a user-invoked skill"; it checks **"every driving skill opens with a STOP-gate"** — a mechanical check of the textual contract.
+- **`user-invocable: false` marks the internal five** — `brief`, `codebase-design`, `domain-modeling`, `resolving-merge-conflicts`, `receiving-code-review` — hidden from the `/` menu, reachable by skills and the model. Criterion: internal = meaningless without the context another skill provides.
+- **Mechanical enforcement is unchanged** and carries the real weight: `branch-guard`, `commit-guard`, `session-gate` (gate contract survives compaction), `review-guard` (unreviewed changes block wrap-up). Text gates steer; hooks enforce.
+
+The risk ledger of lifting the flag: a self-started grill is harmless (a grill's first act is a question — it cannot run away); an unasked-for spec costs tokens and is caught at its approval gate; unasked-for *code* is the real hazard and stays hook-blocked.
+
+---
+
+## 4. One engine, thin drivers
+
+```
+/route-me        scout → "Tier N, here's why + open decisions. Launch /tier-N?" ⏸
+/tier-1          plan inline ⏸ → to-implementation(chat plan, one unit)
+/tier-2          [/decision-map ⏸ if the scout flagged fog]
+                 → /grilling + /domain-modeling   (agenda from the scout;
+                     CONTEXT.md and ADRs written inline, committed to the branch)
+                 → /to-spec ⏸ → /to-tickets ⏸ → /cold-read
+                 → to-implementation(tickets)
+/to-implementation   THE ENGINE — input: spec | ticket | tickets | nothing (chat)
+```
+
+`/decision-map` (replaces `wayfinder`): materialize the scout's open-decision list as decision tickets on the tracker; burn them down — `/research` subagents in parallel, `/prototype` where a question needs a runnable answer, a grill where it needs the user; every resolution → an ADR. When the fog clears, the chain continues into the normal grill.
+
+Per unit, the engine runs the Tier 1 lifecycle:
+
+```
+subagent in its own worktree  ←  writes its own brief there  ←  /tdd
+  → runner sweep (§6) → DONE
+  → /verified-review  (stage 0 → axes → adr-candidate, §8–9)
+  → integration STOP-gate ⏸  (merge + ADR + next wave, §5)
+```
+
+The grill itself remains open (never had the flag): `/grill-with-docs` is deleted — the tier-2 driver composes `/grilling` + `/domain-modeling` directly.
+
+---
+
+## 5. Execution topology — hub and spoke
+
+The feature branch is the **hub**. Every unit is a spoke.
+
+```
+feature (hub) ──o──────────m──────────m────────►
+                \         /  \       /
+      ticket-01  o──o──o─┘    \     /    ← worktree: brief, tdd, runner, review
+      ticket-02   (same tip)   o──o┘        merge only when green, then teardown
+```
+
+- **Branch first, then ephemera.** Durable docs (ADRs, `CONTEXT.md`) are committed to the hub *before* dispatch — every spoke sees them through git for free. Ephemera (`brief`, `report`, `.scratch/`) are born *inside* the ticket worktree, after branching, by the implementer itself.
+- **All spokes of a batch start from one point** — the hub tip the user approved. The starting point is always the user's call.
+- **The paper interface chain is dead.** The old rule carried ticket N's `Produces` into N+1's `Consumes` verbatim — a crutch for subagents that cannot see each other. Now a dependent ticket launches *from the merged code*: its `Consumes` is read from reality, not from paper. The contract is the code.
+- **Batch overlap is the user's risk.** Briefs are born inside the spokes, so no disjoint-files check exists at dispatch time. Conflicts surface at merge into the hub and are handled by `/resolving-merge-conflicts` — the honest price of the simpler topology.
+- **Integration rides a STOP-gate.** The orchestrator proposes, the user approves: "01 and 02 are green. Merge into the hub and launch 03 from the new tip? Plus one adr-candidate — record it?" Merges, ADRs, and the next wave all share the same pause — no extra interrupts.
+- **A failed spoke is discarded with its worktree.** The hub stays clean; no resets, no pollution.
+- The **ledger** stays with the orchestrator (its `.scratch/<feature>/ledger.md`): one line per closed ticket carrying all three verdicts. Per-spoke ephemera dies with the spoke; the ledger line is what survives. After compaction, trust the ledger and `git log` over recollection.
+
+---
+
+## 6. The implementer's inner loop
+
+Context hygiene is the design driver: a full-suite failure dump is thousands of stacktrace lines that would sit in the implementer's window and be re-read every turn.
+
+```
+/tdd at the agreed seams — focused tests run INLINE
+    (tiny output; a subagent per red-green cycle would kill the tempo)
+full sweep → dispatch the test-runner AGENT        tests + lint + typecheck
+    returns a SUMMARY: counts, failing test names, one line per failure
+    — never stacktraces
+red → fix → runner again → …
+    ⛔ 3 red rounds in a row → BLOCKED, escalate to the orchestrator
+       (the three-fix breaker of /diagnose, same principle)
+green → DONE → the orchestrator raises /verified-review
+```
+
+The runner is an **agent definition**, not a skill and not an inline prompt — its cheap model is pinned once in its frontmatter, and dispatches reference it in one line (the packaging principle at work). `install.sh` links `agents/` alongside `skills/`.
+
+**A green runner is a working signal, not evidence.** The only receipt is the Verify command run by the review itself (§8). STACK's oldest rule is untouched: the implementer's report is a hypothesis.
+
+---
+
+## 7. Artifacts
+
+The single rule stands: **volatile lives in the ephemeral, stable lives in the durable.**
 
 ### Durable — in the repo, outlives the task
 
 ```
-CONTEXT.md        glossary. TERMS ONLY. No decisions, no implementations.
-                  maintained inline via /domain-modeling
+CONTEXT.md        glossary. TERMS ONLY. Maintained inline via /domain-modeling
 docs/adr/         decisions + rejected alternatives
                   test: irreversible + surprising + a real trade-off
+                  written DURING the run (adr-candidate, §9), not only at harvest
 AGENTS.md         the project constitution
-                  ## Build & run    what the repo can honestly run,
-                                    holes included  <- the verification contract
+                  ## Build & run    the verification contract
                   ## Known issues   "no seam" findings, if there's no tracker
 ```
 
-### Ephemeral — dies at merge
+### Ephemeral — dies at merge (or with its spoke)
 
 ```
-.scratch/<feature>/
-  brief-NN.md     Files / Interfaces / Verify / Run as
-  review/
+hub  .scratch/<feature>/     spec, tickets (if no tracker), ledger.md
+spoke .scratch/              brief-NN.md, report-NN.md — born and dying with
+                             the ticket worktree; the ledger line survives
 ```
 
-`.scratch/` is in `.gitignore`.
+The brief is generated **by the implementer, inside its worktree, at pickup** — it cannot be stale by construction: it is written against the exact commit the spoke branched from. Its `Run as` block is gone (every unit is a subagent in a worktree — there is nothing to choose); what remains is `Model:` — `cheap` when the brief leaves nothing to decide, `standard` otherwise. Turn count beats token price.
 
-### Where tickets live — the repo decides
-
-Follows `docs/agents/issue-tracker.md`, as Pocock intends.
-
-```
-TICKET and SPEC   what we build, acceptance criteria, blocking edges
-                  -> Linear / GitHub / .scratch/  — the repo's choice
-                  -> paths and code NEVER
-
-BRIEF             the technical bottom
-                  -> ALWAYS .scratch/, always local
-```
-
-The technical bottom physically cannot reach a tracker — so paths and signatures won't start lying six months later.
-
-An example in both modes:
-
-```
-Chelsea (Linear)                    GrammarDiff (no tracker)
-  SCH-291       spec                  .scratch/dedupe/spec.md
-  SCH-292..295  tickets               .scratch/dedupe/issues/01..04.md
-  .scratch/SCH-292/brief.md           .scratch/dedupe/brief-01.md
-```
-
-There is no separate `verification.md` — it would rot on its own, and the commands already live in `AGENTS.md ## Build & run`, which the agent reads first.
+Tickets and specs live where `docs/agents/issue-tracker.md` says — tracker or `.scratch/` — and carry **no paths, no code**, as before. If `issue-tracker.md` is missing, the tier-2 driver asks once at preflight (the one live duty inherited from `setup-matt-pocock-skills`).
 
 ---
 
-## 4. The unit of work
+## 8. Definition of Done
 
-A vertical tracer bullet. A horizontal task has nothing to verify e2e — "add a validator" has no observable behaviour. A through-and-through slice is verifiable by definition, and only for that reason does the gate in section 5 work at all.
+Every tier clears this — a Tier 1 one-line fix is reviewed on the same bar as a Tier 2 ticket. The tier scales the *process* in front of the change, never the gate behind it.
+
+`/verified-review` runs in the ticket's worktree, in two stages:
 
 ```
-TICKET  (wherever issue-tracker.md says)
-  What to build   behaviour from the user's perspective, through every layer
-  Acceptance      acceptance criteria
-  Blocked by      numbers/links of the blocking tickets
+STAGE 0 — cheap, early-exit                     (2026-07-23)
+  runs Verify + lint + typecheck ITSELF
+  red → return immediately; the command output is the only finding;
+        the Standards/Spec axes never launch on broken code
+  red where the implementer reported green → that discrepancy is a
+        finding in its own right; the report's other claims are suspect
 
-BRIEF  (.scratch/, ephemeral)
-  Files       exact paths
-  Interfaces  Consumes / Produces with signatures
-  Verify      a named agent-runnable command
-  Run as      [inline] | [subagent:cheap] | [subagent:standard]
+STAGE 1 — the axes, in parallel
+  spec axis         matches the ticket
+  standards axis    matches the repo's conventions
+  + the adr-candidate check (§9)
 ```
 
-The `Interfaces` block is mandatory: a subagent sees **only its own task**. Without it, slice 3 names a function `clearLayers` and slice 7 calls `clearFullLayers`, and nothing catches it.
+The agent-runnable-command contract is unchanged:
 
-Exception — the **wide refactor** (rename or retype of a shared symbol): it can't be squeezed into a vertical slice, because one correct commit breaks thousands of call sites. The sequence is expand -> migrate in batches -> contract, each batch its own ticket, `Verify: build` (behaviour doesn't change by definition).
+```
+one command you have ALREADY RUN at least once (paste invocation and output)
+  red-capable / deterministic / fast (per-repo floor) / agent-runnable
+no Verify command exists  =  a FINDING → /improve-codebase-architecture
+                             never "verify manually"
+```
+
+**A ticket is closed by `/verified-review` passing — nothing else.** The ledger line carries all three verdicts or the ticket isn't closed. When the frontier is empty: one `/verified-review` over the whole branch (fixed point = merge-base, strongest model), then `/finish-branch`.
+
+Fix dispatches carry one conditional line: *findings received → follow `/receiving-code-review`* — verify a finding against the code before implementing it; a finding is a hypothesis too. One fixer per findings list, never one per finding.
 
 ---
 
-## 5. Definition of Done
+## 9. ADR mid-flight — adr-candidate
 
-Every tier clears this — a Tier 1 one-line fix is reviewed on the same bar as a Tier 2 ticket. There is no "too small to review": the tier scales the *process* in front of the change, never the gate behind it.
+Harvest-at-the-end was the chain's only silent failure: nothing breaks, you just pay again in three weeks — and it was the *only* moment ADRs got written. Now:
 
-```
-spec axis         matches the spec
-Verify green      red BEFORE, green AFTER — RAN THE VERIFIER ITSELF
-standards axis    matches the repo's conventions
-
-discrepancy with the implementer's report  = a finding
-no Verify command exists                    = a finding -> /improve-codebase-architecture
-                                              NOT "I'll check by hand"
-```
-
-**The main departure from both toolkits.** In theirs, the reviewer audits the report and is explicitly forbidden to re-run tests:
-
-> superpowers, `subagent-driven-development/SKILL.md:166` —
-> *"Do not ask a reviewer to re-run tests the implementer already ran on the
-> same code — the implementer's report carries the test evidence."*
-
-Here it runs them itself. The implementer's report is a hypothesis, not proof. The contradiction is already inside superpowers: `verification-before-completion` names "trusting agent success reports" a red flag, and SDD is built on exactly that trust.
-
-The agent-runnable-command criterion is taken from `diagnosing-bugs`, Phase 1, and lifted from the debugging level to a standing contract:
-
-```
-one command you have ALREADY RUN at least once (paste the invocation and output)
-  red-capable      drives the real path, asserts the exact symptom
-  deterministic    the same verdict every run
-  fast             the tightest loop this repo's toolchain allows
-  agent-runnable   runs unattended
-```
-
-**On `fast`:** the floor is per-repo, not an absolute. A pnpm/vitest suite is seconds; a compiled iOS target on a warm simulator is tens of seconds, and that is the honest floor there. "Fast" means "as tight as this toolchain permits, and no slower than necessary" — not a fixed second-count. What it rules out is a minutes-long or flaky loop, in any repo.
+- `/verified-review` carries one conditional line: **the change passes the ADR test from `/domain-modeling`** (irreversible + surprising + a real trade-off) **→ finding class `adr-candidate`**. The criteria live once, where ADRs live; the review points at them.
+- Candidates ride the **integration STOP-gate** (§5) — zero extra interrupts.
+- Approved → `/domain-modeling` writes the ADR into the hub → later spokes see it through git, by construction.
+- `finish-branch`'s harvest becomes the **final sweep** for what slipped through, no longer the only chance.
 
 ---
 
-## 6. TDD — the Pocock way
+## 10. TDD — the Pocock way
 
 ```
-tests only at AGREED seams — agreed at Gate 2
+tests only at AGREED seams — agreed at the grill's seams+verify gate
 the ideal number of seams is one, the highest reachable
 red -> green;  REFACTORING OUTSIDE THE LOOP, it goes to /verified-review
 vertical slices, not a horizontal cut
@@ -209,78 +233,74 @@ anti-patterns:
   horizontal slicing      all tests first, then all implementation
 ```
 
-The superpowers Iron Law (*no line of production code without a failing test; code written earlier is deleted*) is rejected: it produces tests against internals — exactly the first anti-pattern.
+The superpowers Iron Law (*no line of production code without a failing test*) stays rejected: it produces tests against internals — exactly the first anti-pattern.
 
 ---
 
-## 7. Debugging — diagnosing-bugs + grafts
+## 11. Debugging — diagnosing-bugs + grafts
 
 ```
-P1   build a feedback loop         <- GATE, criterion from section 5
-                                      no command -> no Phase 2
+P1   build a feedback loop         <- GATE, criterion from section 8
 P2   reproduce + MINIMISE
-       cut until every remaining element is load-bearing
 P2.5 PATTERN ANALYSIS              <- grafted from superpowers
-       find a working analogue in this repo, list EVERY difference
 P3   3–5 RANKED hypotheses, each falsifiable with a prediction
-       show me before testing
 P4   instrument; one probe per prediction; debugger > logs
-       tag [DEBUG-xxxx] — cleanup later by one grep
-       perf: measure first, then bisect
-P5   fix + regression test
-       no correct seam -> THAT IS ITSELF THE FINDING
-       3+ failed fixes -> STOP, architectural conversation  <- grafted
-P6   cleanup + post-mortem: the correct hypothesis into the commit,
-       "what would have prevented this?"
+P5   fix + regression test;  3+ failed fixes -> STOP, architectural conversation
+P6   cleanup + post-mortem
 ```
 
-`systematic-debugging` is rejected as a whole: one hypothesis instead of ranked ones (anchoring on the first plausible idea), no Phase 1 completion criterion, no minimisation, and it drags in the rejected Iron Law.
-
-Grafted from it: Pattern Analysis and the three-fix breaker — Pocock has neither.
+`systematic-debugging` stays rejected as a whole; Pattern Analysis and the three-fix breaker are the grafts kept.
 
 ---
 
-## 8. What's rejected, and why
+## 12. What's rejected, and why
 
-The full roster is in [README.md](README.md). What matters here is what was deliberately left out.
+The 2026-07-20 rejections stand (see git history for the full original table): `brainstorming` (heavy artifact gate on trivial work), `test-driven-development` (Iron Law), `systematic-debugging` (§11), `requesting-code-review`, `executing-plans`, `writing-plans`, `dispatching-parallel-agents`, `using-superpowers` and its SessionStart hook, the superpowers plugin as a whole.
+
+Added 2026-07-23 — retired from dev-stack itself:
 
 | Skill | Why |
 |---|---|
-| `brainstorming` | a heavy *artifact* gate on any trivial thing (the lightweight in-chat gate in §1 is a different animal); `grill-with-docs` is sharper and keeps ADRs |
-| `test-driven-development` | Iron Law -> implementation-coupled tests |
-| `systematic-debugging` | see section 7 |
-| `requesting-code-review` | replaced by the two-axis Pocock review |
-| `executing-plans` | replaced by `execute-tickets` |
-| `writing-plans` | `to-spec` + `to-tickets` cover it |
-| `dispatching-parallel-agents` | baked into `verified-review` and `wayfinder` |
-| `using-superpowers` + the SessionStart hook | its mandate fights everything decided above |
-| the superpowers plugin as a whole | kept only for the hook; the needed skills are ported |
+| `wayfinder` | Tier 3 is gone; the essence split into the scout's open-decisions list (§2) and `/decision-map` (§4) |
+| `execute-tickets` | superseded by `to-implementation` — one engine for both tiers (§4–5) |
+| `grill-with-docs` | a one-liner; the tier-2 driver composes `/grilling` + `/domain-modeling` directly now that the flag is gone (§3) |
+| `new-branch` | not a separate logic unit — the in-place fallback path of `/using-git-worktrees`; folded in, script kept |
+| `setup-matt-pocock-skills` | dead in a self-contained setup; its one live duty (missing `issue-tracker.md` → ask once) moved to the tier-2 preflight (§7) |
+| `verification-before-completion` | its job became structural: `verified-review` runs Verify itself, `review-guard` blocks unreviewed wrap-up. Prose duplicating the DoD — deleted |
 
-The hook lives inside the plugin (`hooks/hooks.json`, matcher `startup|clear|compact`) and injects `using-superpowers/SKILL.md` whole, wrapped in `<EXTREMELY_IMPORTANT>`. It can't be edited without being overwritten on update. So the plugin is disabled.
+`receiving-code-review` was on the kill list and came back — the packaging principle overruled: it is conditionally-invoked logic ("findings received → follow it"), not a duplicate. It lives as an internal skill, referenced by fix dispatches (§8).
 
-Ported from superpowers instead: `execute-tickets` (from `subagent-driven-development`, dropping the `task-brief` awk script — every ticket is already its own file), `finish-branch`, `using-git-worktrees`, `verification-before-completion`, `receiving-code-review`.
+Kept deliberately: `handoff` (the only tool for context exhaustion mid-grill), `improve-codebase-architecture` and `codebase-design` (an act and a vocabulary — merging them would blur roles, not save an entity).
 
 ---
 
-## 9. Remaining work
+## 13. Roster delta (2026-07-23)
 
-The stack itself is built and ships as the `dev-stack` plugin (§1–§8 realized; the ports, the `.scratch/` patches, `verified-review` running Verify, the `diagnose` grafts, and the `route-me` router are all in place). What remains is repo-side and obkatka.
+```
+retired  (6)   execute-tickets, wayfinder, grill-with-docs, new-branch,
+               setup-matt-pocock-skills, verification-before-completion
+new      (4)   to-implementation, tier-1, tier-2, decision-map
+new agent (1)  test-runner — cheap model pinned in its frontmatter;
+               install.sh links agents/ alongside skills/
+internal (5)   user-invocable: false — brief, codebase-design,
+               domain-modeling, resolving-merge-conflicts, receiving-code-review
+```
 
-### Obkatka (first real exercise)
+The repo layout stays flat — one level under `skills/`; visibility is frontmatter's job, not the filesystem's.
 
-Run **GrammarDiff first**, then Chelsea. GrammarDiff (Electron/Vue/TS) has clean agent-runnable checks (`pnpm test`, three typechecks, lint, `madge --circular`), so a first-run failure implicates the stack, not the substrate. Chelsea has no agent-runnable Verify today (see §9.4 below) — it goes second.
+The memorised surface after the redesign: **`/route-me`** — plus `/tier-1` and `/tier-2` for the impatient. Everything else is either raised by a driver behind a STOP-gate or reachable "the old way" by hand: `/grilling`, `/to-spec`, `/to-tickets`, `/cold-read`, `/to-implementation`, `/diagnose`, `/verified-review`, `/finish-branch`, `/tdd`, `/using-git-worktrees`, `/prototype`, `/research`, `/handoff`, `/decision-map`, `/improve-codebase-architecture`, `/commit-work` + the setup utilities.
 
-### Per repo
+---
 
-1. `## Build & run` in `AGENTS.md` — currently only Chelsea has it. GrammarDiff needs its `## Commands` renamed and a `CONTEXT.md` + `docs/adr/` created.
-2. Chelsea: `AGENTS.md` describes Tier 1 as the whole process — rewrite.
-3. Chelsea: 135 files under `docs/superpowers/{specs,plans}` — decide separately.
-4. **Chelsea, the A11yID finding — reframed.** `A11yID.swift` is 183 lines of identifiers mandated by `AGENTS.md`, with no consumer: there is no UITests target that reads them. This is not a dead end — it's a half-built bridge. The identifiers are already written and maintained; a single UITests target lights up all of that infrastructure and gives every later Chelsea ticket a real `Verify`. **The first Chelsea feature is to stand up that target.** Until it exists, Chelsea's Verify ceiling is `xcodebuild build` plus an OSLog assertion (AppLogger mirrors to a known path, 11 categories) — real but limited; the one thing it can't cover is "looks and taps right", which is Chelsea's default acceptance shape.
+## 14. Remaining work
+
+1. **Rewrite the skills to this record** — the redesign itself is the first Tier 2 exercise: spec in `.scratch/`, tickets, `to-implementation` built by the flow it implements (bootstrapped manually the first time).
+2. `README.md`, `INSTALL.md`, `route-me`'s map and cheat sheet — re-point at the two-tier model.
+3. `check-upstream.sh` — swap the invocation lint for the STOP-gate lint (§3); drop retired skills from the drift list.
+4. Obkatka order unchanged: **GrammarDiff first** (clean agent-runnable checks — a failure implicates the stack, not the substrate), then Chelsea. Chelsea's first feature is still the UITests target that lights up `A11yID.swift` — until then its Verify ceiling is `xcodebuild build` + OSLog assertions.
 
 ---
 
 ## Why it converges
 
-Vertical tickets make `Verify` possible. Gate 2 catches its absence before time is spent on the spec and the briefs. A finding goes to the architecture skill. The decision from there becomes an ADR that outlives the next spec.
-
-And the spec and the briefs die at merge — so they don't lie to the next agent.
+Vertical tickets make `Verify` possible. The scout catches missing decisions before the grill; the grill's seams gate catches a missing Verify before the spec. A finding goes to the architecture skill; the decision becomes an ADR — now *during* the run, where the next spoke can see it. And the spec and the briefs die at merge — so they don't lie to the next agent.
