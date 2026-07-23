@@ -28,6 +28,7 @@ Run **`/route-me`** for the map — the tiers, the Tier 2 chain, and which skill
 | [`execute-tickets`](skills/execute-tickets/SKILL.md) | Port of `subagent-driven-development`: ticket+brief as the unit, review delegated to `verified-review`, `task-brief` script dropped |
 | [`finish-branch`](skills/finish-branch/SKILL.md) | Port of `finishing-a-development-branch` + Step 1 **Harvest** — durable knowledge extracted before `.scratch/` is deleted |
 | [`receiving-code-review`](skills/receiving-code-review/SKILL.md) | Verify a review finding against the code before implementing it — a finding is a hypothesis too. Invoked from the `execute-tickets` fix step |
+| [`using-git-worktrees`](skills/using-git-worktrees/SKILL.md) | Port + dev-stack additions: the isolation step for **every** tier (Tier 1 too), a base-commit check (wrong-branch + local-ahead-of-origin traps), and the plan/review gate reminder. `new-branch` is the in-place fallback |
 | [`to-spec`](skills/to-spec/SKILL.md) | Patched: publishes to `.scratch/` as well as a tracker. STACK.md §9.2 |
 | [`to-tickets`](skills/to-tickets/SKILL.md) | Patched: points at `/brief` + `/execute-tickets` instead of `/implement`, and says explicitly not to write briefs at planning time |
 
@@ -54,6 +55,24 @@ Three rules fall out of it, and they're the three most likely to be violated und
 1. **A brief is generated at pickup, never earlier.** Staleness scales with depth in the dependency graph. A stale brief is worse than none — the implementer trusts it.
 2. **The reviewer runs the verification command.** An implementer's report is a hypothesis, not evidence.
 3. **Harvest before `.scratch/` is deleted.** The only silent failure in the chain: nothing breaks, you just pay again in three weeks.
+
+## Gates & enforcement
+
+Every tier is bracketed by two gates — **Tier 1 included**:
+
+- **Plan in.** Present the plan and get an explicit "go" before any edit. A few lines in chat for Tier 1; the spec / wayfinder chain for Tier 2/3.
+- **Review out.** A change is not done until `/verified-review` has run — the reviewer runs `Verify` itself.
+
+Four hooks back this as far as git state allows. The two `SessionStart`/`Stop` gates are **opt-in per repo** via an empty `.branch-guard` file at the repo root (the same marker `branch-guard` already uses):
+
+| Hook | Event | Does |
+|---|---|---|
+| `branch-guard` | PreToolUse | denies edits/commits on the default branch — isolate first (`/using-git-worktrees`, or `/new-branch` fallback) |
+| `commit-guard` | PreToolUse | Conventional Commits, no banned trailers, no blanket `git add` |
+| `session-gate` | SessionStart | re-injects the gate contract on `startup\|clear\|compact` so it survives compaction |
+| `review-guard` | Stop | blocks wrapping-up unreviewed changes on a fix branch; kill-switch `~/.claude/.dev-stack-no-review-guard` |
+
+Gate **in** (plan approval) can't be git-checked — "did the user approve?" leaves no unforgeable trace — so it rides on the re-injected text (`session-gate`) and native plan mode. Gate **out** *is* enforced in code (`review-guard`), because "unreviewed changes exist on a fix branch" is git state. See [INSTALL.md](INSTALL.md) for wiring and [STACK.md](STACK.md) §1/§5 for the why.
 
 ## Install
 
