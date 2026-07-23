@@ -78,8 +78,8 @@ The risk ledger of lifting the flag: a self-started grill is harmless (a grill's
 /route-me        scout → "Tier N, here's why + open decisions. Launch /tier-N?" ⏸
 /tier-1          plan inline ⏸ → to-implementation(chat plan, one unit)
 /tier-2          [/decision-map ⏸ if the scout flagged fog]
-                 → /grilling + /domain-modeling   (agenda from the scout;
-                     CONTEXT.md and ADRs written inline, committed to the branch)
+                 → /grill-with-docs   (= /grilling + /domain-modeling; agenda from
+                     the scout; CONTEXT.md and ADRs written inline, committed)
                  → /to-spec ⏸ → /to-tickets ⏸ → /cold-read
                  → to-implementation(tickets)
 /to-implementation   THE ENGINE — input: spec | ticket | tickets | nothing (chat)
@@ -96,7 +96,7 @@ subagent in its own worktree  ←  writes its own brief there  ←  /tdd
   → integration STOP-gate ⏸  (merge + ADR + next wave, §5)
 ```
 
-The grill itself remains open (never had the flag): `/grill-with-docs` is deleted — the tier-2 driver composes `/grilling` + `/domain-modeling` directly.
+**The drivers are a convenience, never a requirement.** The classic chain stays drivable by hand — `/grill-with-docs` → `/to-spec` → `/to-tickets` → `/to-implementation` — which is also why `/grill-with-docs` survives: it is the one addressable home of the grill+docs composition, referenced by the tier-2 driver and typed by the hand-driver, never re-composed in two places.
 
 ---
 
@@ -263,12 +263,11 @@ Added 2026-07-23 — retired from dev-stack itself:
 |---|---|
 | `wayfinder` | Tier 3 is gone; the essence split into the scout's open-decisions list (§2) and `/decision-map` (§4) |
 | `execute-tickets` | superseded by `to-implementation` — one engine for both tiers (§4–5) |
-| `grill-with-docs` | a one-liner; the tier-2 driver composes `/grilling` + `/domain-modeling` directly now that the flag is gone (§3) |
 | `new-branch` | not a separate logic unit — the in-place fallback path of `/using-git-worktrees`; folded in, script kept |
 | `setup-matt-pocock-skills` | dead in a self-contained setup; its one live duty (missing `issue-tracker.md` → ask once) moved to the tier-2 preflight (§7) |
 | `verification-before-completion` | its job became structural: `verified-review` runs Verify itself, `review-guard` blocks unreviewed wrap-up. Prose duplicating the DoD — deleted |
 
-`receiving-code-review` was on the kill list and came back — the packaging principle overruled: it is conditionally-invoked logic ("findings received → follow it"), not a duplicate. It lives as an internal skill, referenced by fix dispatches (§8).
+Two skills were on the kill list and came back — the packaging principle overruled both. `receiving-code-review` is conditionally-invoked logic ("findings received → follow it"), not a duplicate; it lives as an internal skill, referenced by fix dispatches (§8). `grill-with-docs` is the one addressable home of the grill+docs composition — deleting it would have re-composed the same pair in two places, the driver and the hand-driven chain (§4).
 
 Kept deliberately: `handoff` (the only tool for context exhaustion mid-grill), `improve-codebase-architecture` and `codebase-design` (an act and a vocabulary — merging them would blur roles, not save an entity).
 
@@ -277,7 +276,7 @@ Kept deliberately: `handoff` (the only tool for context exhaustion mid-grill), `
 ## 13. Roster delta (2026-07-23)
 
 ```
-retired  (6)   execute-tickets, wayfinder, grill-with-docs, new-branch,
+retired  (5)   execute-tickets, wayfinder, new-branch,
                setup-matt-pocock-skills, verification-before-completion
 new      (4)   to-implementation, tier-1, tier-2, decision-map
 new agent (1)  test-runner — cheap model pinned in its frontmatter;
@@ -288,7 +287,7 @@ internal (5)   user-invocable: false — brief, codebase-design,
 
 The repo layout stays flat — one level under `skills/`; visibility is frontmatter's job, not the filesystem's.
 
-The memorised surface after the redesign: **`/route-me`** — plus `/tier-1` and `/tier-2` for the impatient. Everything else is either raised by a driver behind a STOP-gate or reachable "the old way" by hand: `/grilling`, `/to-spec`, `/to-tickets`, `/cold-read`, `/to-implementation`, `/diagnose`, `/verified-review`, `/finish-branch`, `/tdd`, `/using-git-worktrees`, `/prototype`, `/research`, `/handoff`, `/decision-map`, `/improve-codebase-architecture`, `/commit-work` + the setup utilities.
+The memorised surface after the redesign: **`/route-me`** — plus `/tier-1` and `/tier-2` for the impatient. Everything else is either raised by a driver behind a STOP-gate or reachable "the old way" by hand — the classic chain `/grill-with-docs` → `/to-spec` → `/to-tickets` → `/to-implementation` included: `/grilling`, `/cold-read`, `/diagnose`, `/verified-review`, `/finish-branch`, `/tdd`, `/using-git-worktrees`, `/prototype`, `/research`, `/handoff`, `/decision-map`, `/improve-codebase-architecture`, `/commit-work` + the setup utilities.
 
 ---
 
