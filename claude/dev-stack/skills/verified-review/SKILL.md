@@ -33,7 +33,7 @@ Confirm the ref resolves (`git rev-parse <fixed-point>`) and the diff is non-emp
 
 Find the Verify command, in this order:
 
-1. The `Verify` block of the ticket's brief (`.scratch/<feature>/brief-NN.md`).
+1. The `Verify` block of the ticket's brief (`.scratch/brief-NN.md` in the worktree under review — the spoke writes its brief locally).
 2. `AGENTS.md` → `## Build & run`.
 3. Ask the user.
 
@@ -104,7 +104,7 @@ Do not pre-judge findings for either sub-agent. If the prompt you're writing con
 
 #### 6. The adr-candidate check
 
-One conditional, applied by you while reading the diff and the axes' reports: **the change passes the ADR test owned by `/domain-modeling` (irreversible + surprising + a real trade-off) → emit a finding of class `adr-candidate`**, carrying a one-sentence statement of the decision and its trade-off. The criteria live in `/domain-modeling`; this skill only points at them.
+One conditional, applied by you while reading the diff and the axes' reports: **the change passes the ADR test owned by `/domain-modeling` → emit a finding of class `adr-candidate`**, carrying a one-sentence statement of the decision and its trade-off. The criteria live in `/domain-modeling`; this skill only points at them.
 
 `adr-candidate` is **informational**: it never blocks the ticket and is never dispatched for fixing. The orchestrator presents it at the integration gate, where approval sends it to `/domain-modeling` to be written up.
 

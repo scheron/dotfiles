@@ -8,7 +8,7 @@ MIT. Source: the `superpowers` Claude Code plugin, version 6.1.1.
 
 | File here | Upstream | Change |
 |---|---|---|
-| `skills/using-git-worktrees/SKILL.md` | `skills/using-git-worktrees/SKILL.md` | adapted: serves all tiers, plan-gate reminder + branch-origin check (Step 0.5) added |
+| `skills/using-git-worktrees/SKILL.md` | `skills/using-git-worktrees/SKILL.md` | adapted: serves all tiers, plan-gate reminder + branch-origin check (Step 0.5) + in-place branch fallback (Step 1c, absorbing the retired `new-branch` skill) added |
 | `skills/verification-before-completion/SKILL.md` | `skills/verification-before-completion/SKILL.md` | verbatim; attribution line added |
 | `skills/execute-tickets/SKILL.md` | `skills/subagent-driven-development/SKILL.md` | substantially rewritten — see below |
 | `skills/execute-tickets/implementer-prompt.md` | `skills/subagent-driven-development/implementer-prompt.md` | adapted: brief-based, `/tdd`, Verify in the report contract |
@@ -44,7 +44,7 @@ Each patch is marked in-file with an `<!-- dev-stack: … -->` comment.
 
 ### Vendored verbatim
 
-`grill-with-docs`, `grilling`, `domain-modeling`, `tdd`, `wayfinder`, `codebase-design`, `improve-codebase-architecture`, `prototype`, `research`, `handoff`, `setup-matt-pocock-skills`, `writing-great-skills`, `resolving-merge-conflicts`, `setup-pre-commit`, `git-guardrails-claude-code` — copied unmodified, including their supporting files (`CONTEXT-FORMAT.md`, `ADR-FORMAT.md`, `DEEPENING.md`, `DESIGN-IT-TWICE.md`, `tests.md`, `mocking.md`, `LOGIC.md`, `UI.md`, `HTML-REPORT.md`, `GLOSSARY.md`, the `issue-tracker-*.md` templates, and `git-guardrails-claude-code/scripts/`).
+`grill-with-docs`, `grilling`, `domain-modeling`, `tdd`, `codebase-design`, `improve-codebase-architecture`, `prototype`, `research`, `handoff`, `setup-matt-pocock-skills`, `writing-great-skills`, `resolving-merge-conflicts`, `setup-pre-commit`, `git-guardrails-claude-code` — copied unmodified, including their supporting files (`CONTEXT-FORMAT.md`, `ADR-FORMAT.md`, `DEEPENING.md`, `DESIGN-IT-TWICE.md`, `tests.md`, `mocking.md`, `LOGIC.md`, `UI.md`, `HTML-REPORT.md`, `GLOSSARY.md`, the `issue-tracker-*.md` templates, and `git-guardrails-claude-code/scripts/`).
 
 The upstream `agents/openai.yaml` harness metadata is **not** carried — this set is Claude-only (STACK.md §7).
 

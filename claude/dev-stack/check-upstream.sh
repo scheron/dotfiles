@@ -12,7 +12,7 @@ trap 'rm -rf "$TMP"' EXIT
 POCOCK=(
   codebase-design domain-modeling grill-with-docs grilling handoff
   improve-codebase-architecture prototype research setup-matt-pocock-skills
-  tdd to-spec to-tickets wayfinder writing-great-skills
+  tdd to-spec to-tickets writing-great-skills
   resolving-merge-conflicts setup-pre-commit git-guardrails-claude-code
 )
 # Intentionally patched — diff is expected, shown separately.

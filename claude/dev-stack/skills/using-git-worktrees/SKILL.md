@@ -15,7 +15,7 @@ Ensure work happens in an isolated workspace. Prefer your platform's native work
 **Core principle:** Detect existing isolation first. Then use native tools. Then fall back to git. Never fight the harness.
 
 > **dev-stack — three rules ride on top of the port below:**
-> 1. **Plan gate.** Don't reach this skill to *start coding* until your tier's plan is presented and approved (Tier 1: a few lines in chat + a "go"; Tier 2/3: the spec / wayfinder gate). The worktree is where approved work goes — not a way around the gate.
+> 1. **Plan gate.** Don't reach this skill to *start coding* until your tier's plan is presented and approved (Tier 1: a few lines in chat + a "go"; Tier 2: the spec + tickets chain). The worktree is where approved work goes — not a way around the gate.
 > 2. **Base commit.** Before creating the worktree, confirm the *commit* you're branching off — right branch (in a `to-implementation` run: the approved hub tip), and local not silently behind origin — Step 0.5 below.
 > 3. **No worktree ≠ no isolation.** When a worktree can't be made (sandbox denial) or the user declines one, fall back to a dedicated in-place branch — Step 1c. Never work on the default branch.
 
