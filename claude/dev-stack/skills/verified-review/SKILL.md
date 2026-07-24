@@ -174,4 +174,4 @@ A change can pass one and fail the other:
 
 Reporting them separately stops one from masking the other. Stage 0 is not a third axis — it's the gate both axes stand on.
 
-**Related:** `/brief` names the `Verify` command · `/execute-tickets` calls this after every ticket · `/domain-modeling` owns the ADR test behind `adr-candidate` · `/receiving-code-review` governs the fixer's handling of findings · `/improve-codebase-architecture` receives the "no Verify command" finding
+**Related:** `/brief` names the `Verify` command · `/to-implementation` calls this after every ticket · `/domain-modeling` owns the ADR test behind `adr-candidate` · `/receiving-code-review` governs the fixer's handling of findings · `/improve-codebase-architecture` receives the "no Verify command" finding
