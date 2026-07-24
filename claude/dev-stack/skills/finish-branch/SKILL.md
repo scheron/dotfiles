@@ -3,6 +3,18 @@ name: finish-branch
 description: Complete development work — harvest durable knowledge into ADRs and CONTEXT.md, verify the build, present integration options (merge, PR, keep, discard), execute the choice, and clean up the worktree and .scratch/. Use when implementation is complete and tests pass.
 ---
 
+<STOP-GATE>
+Implementation is complete and the tree is green. I'll harvest the durable layer (ADRs, CONTEXT.md, the verify contract) and re-run verification, then integrate — how should this land?
+
+1. Merge back to the base branch locally
+2. Push and open a Pull Request
+3. Keep the branch as-is
+4. Discard this work
+
+Detached HEAD drops the merge — three options. The exact menu is confirmed after environment detection (Step 3).
+</STOP-GATE>
+<!-- dev-stack: STOP-gate prepended — the integration menu becomes the gate (invocation-contract pass). -->
+
 # Finish Branch
 
 **Core principle:** Harvest → Verify → Detect environment → Present options → Execute → Clean up.

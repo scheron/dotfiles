@@ -1,8 +1,11 @@
 ---
 name: cold-read
 description: Read a finished spec and its tickets from the position the implementer will occupy — no planning context — and report what was understood. Surfaces drift between what you meant and what the artifact says, while fixing is still free. Use after /to-tickets and before any implementation.
-disable-model-invocation: true
 ---
+
+<STOP-GATE>
+The tickets are ready; I'll dispatch a cold, context-free reader over the spec and tickets and report the drift — go?
+</STOP-GATE>
 
 # Cold Read
 

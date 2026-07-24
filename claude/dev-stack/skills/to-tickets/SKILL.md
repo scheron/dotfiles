@@ -1,8 +1,12 @@
 ---
 name: to-tickets
 description: Break a plan, spec, or the current conversation into a set of tracer-bullet tickets, each declaring its blocking edges, published to the configured tracker — edges as text in one file per ticket locally, or native blocking links on a real tracker.
-disable-model-invocation: true
 ---
+
+<STOP-GATE>
+The spec is ready; I'll cut it into tracer-bullet tickets with blocking edges — go?
+</STOP-GATE>
+<!-- dev-stack: STOP-gate prepended and the model-invocation flag dropped — invocation moves from flag to gate (invocation-contract pass). -->
 
 # To Tickets
 

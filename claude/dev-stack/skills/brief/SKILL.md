@@ -1,6 +1,7 @@
 ---
 name: brief
 description: Write the technical brief for one unit at pickup, inside the unit's worktree — Files, Interfaces, Verify. For the brief-writer subagent the engine dispatches before the implementer; written to the spoke's .scratch/, ephemeral, dies with the worktree.
+user-invocable: false
 ---
 
 # Brief
