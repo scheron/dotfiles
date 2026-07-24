@@ -1,6 +1,6 @@
 ---
-name: grilling
-description: Grill the user relentlessly about a plan, decision, or idea. Use when the user wants to stress-test their thinking, or uses any 'grill' trigger phrases.
+name: grill
+description: Grill the user relentlessly about a plan, decision, or idea — a lightweight interview that writes no docs. Use for stress-testing thinking inline, or on any 'grill' trigger; for a feature grill that also writes CONTEXT.md and ADRs, use /grill-me.
 ---
 
 Interview me relentlessly about every aspect of this until we reach a shared understanding. Walk down each branch of the decision tree, resolving dependencies between decisions one-by-one. For each question, provide your recommended answer.

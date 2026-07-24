@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 # SessionStart hook (opt-in via .branch-guard): re-inject the tier gate contract
 # so the plan-in / review-out discipline survives startup, /clear and compaction
-# (matcher startup|clear|compact). Superpowers' one real trick — text that gets
-# re-pasted after the window resets instead of fading. Silent outside opt-in repos.
+# (matcher startup|clear|compact) — the contract is text re-pasted after the
+# window resets instead of fading. Silent outside opt-in repos.
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"

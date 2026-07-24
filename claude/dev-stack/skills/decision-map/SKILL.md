@@ -34,7 +34,7 @@ The ticket's shape decides its route:
 
 - **Research** — the decision waits on a fact from documentation, an API, or a knowledge base. Resolved by `/research` subagents, fired first and **in parallel** — the one type that batches — so the grills consume their findings.
 - **Prototype** — the question needs a runnable answer: "how should it look", "does this state model feel right". Resolved via `/prototype`; the artifact is linked from the ticket.
-- **Grill** — the resolution is a decision. The default shape. Resolved via `/grilling`, one question at a time. **Facts are looked up; decisions are always the user's** — a grill that answers its own questions has broken the contract.
+- **Grill** — the resolution is a decision. The default shape. Resolved via `/grill`, one question at a time. **Facts are looked up; decisions are always the user's** — a grill that answers its own questions has broken the contract.
 
 Apart from the research batch, resolve **one ticket per session**. A resolution that surfaces a new decision adds a ticket — propose it with the resolution; a resolution that invalidates a ticket closes it.
 
@@ -44,4 +44,4 @@ Close a ticket by recording its answer on the ticket, then write the ADR via `/d
 
 ## When the fog clears
 
-Open tickets: zero, and no new decision graduating. The chain continues into `/grill-with-docs`, arriving with the big decisions already on record as ADRs.
+Open tickets: zero, and no new decision graduating. The chain continues into `/grill-me`, arriving with the big decisions already on record as ADRs.

@@ -2,19 +2,40 @@
 # PreToolUse guard: in opt-in repos (a `.branch-guard` file at the repo root),
 # deny file mutations and git commits while on the default branch, forcing a
 # dedicated branch/worktree first. Fail-open on any uncertainty.
+#
+# Exception: the domain docs — CONTEXT.md and docs/adr/** — are always allowed.
+# Domain knowledge belongs on the main line (the grill and the harvest write it
+# there directly), so the guard passes those paths even on the default branch.
 
 input="$(cat 2>/dev/null || true)"
 tool="$(printf '%s' "$input" | jq -r '.tool_name // ""' 2>/dev/null || true)"
 
+# A repo-relative or absolute path that names a domain doc the guard always allows.
+is_doc_path() {
+  case "$1" in
+    CONTEXT.md|*/CONTEXT.md|docs/adr/*|*/docs/adr/*) return 0 ;;
+    *) return 1 ;;
+  esac
+}
+
 case "$tool" in
   Edit|MultiEdit|Write|NotebookEdit)
     path="$(printf '%s' "$input" | jq -r '.tool_input.file_path // .tool_input.notebook_path // ""' 2>/dev/null || true)"
+    is_doc_path "$path" && exit 0
     dir="$(dirname "$path" 2>/dev/null || true)"; [ -d "$dir" ] || dir="."
     ;;
   Bash)
     cmd="$(printf '%s' "$input" | jq -r '.tool_input.command // ""' 2>/dev/null || true)"
     printf '%s' "$cmd" | grep -qE 'git[[:space:]]+commit' || exit 0
     dir="."
+    # Allow a commit whose staged changes are all domain docs.
+    droot="$(git rev-parse --show-toplevel 2>/dev/null || true)"
+    if [ -n "$droot" ]; then
+      staged="$(git -C "$droot" diff --cached --name-only 2>/dev/null || true)"
+      if [ -n "$staged" ] && ! printf '%s\n' "$staged" | grep -qvE '(^|/)CONTEXT\.md$|(^|/)docs/adr/'; then
+        exit 0
+      fi
+    fi
     ;;
   *) exit 0 ;;
 esac
@@ -36,7 +57,7 @@ fi
 
 if [ "$branch" = "$def" ]; then
   jq -cn --arg b "$branch" \
-    '{hookSpecificOutput:{hookEventName:"PreToolUse",permissionDecision:"deny",permissionDecisionReason:("Blocked: on default branch (" + $b + ") in a dev-stack repo. Isolate before any work — /using-git-worktrees (every tier, Tier 1 included; its Step 1c is the in-place branch fallback). Enforced, not advised.")}}' \
+    '{hookSpecificOutput:{hookEventName:"PreToolUse",permissionDecision:"deny",permissionDecisionReason:("Blocked: on default branch (" + $b + ") in a dev-stack repo. Isolate before any work — /using-git-worktrees (every tier, Tier 1 included; its Step 1c is the in-place branch fallback). Enforced, not advised. (CONTEXT.md and docs/adr/ are exempt.)")}}' \
     2>/dev/null
 fi
 exit 0

@@ -1,4 +1,4 @@
-Changing code in this repo? Two gates bracket EVERY change — a one-line Tier 1 fix and a whole Tier 2 feature clear the same two gates. They are the floor, not the process. The full map is `/route-me`; the *why* is STACK.md.
+Changing code in this repo? Two gates bracket EVERY change — a one-line Tier 1 fix and a whole Tier 2 feature clear the same two gates. They are the floor, not the process. The full map is `/route-me`.
 
 **GATE IN — plan before you edit.** Present the plan and get the user's explicit "go" before touching a line. Tier 1 (it fits an inline fix): a few lines in chat — what changes, which files, how you'll verify — not a spec, not an artifact. Tier 2 (a feature): the `/to-spec` → `/to-tickets` chain, each step approved before the next. "Too small to plan" is exactly where a wrong assumption costs the most.
 

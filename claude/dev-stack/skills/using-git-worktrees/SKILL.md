@@ -3,8 +3,7 @@ name: using-git-worktrees
 description: Use when starting feature work that needs isolation from current workspace or before executing implementation plans - ensures an isolated workspace exists via native tools or git worktree fallback
 ---
 
-> Ported from superpowers' `using-git-worktrees` (MIT, Copyright (c) 2025 Jesse Vincent).
-> Adapted by `dev-stack`: this is the isolation step for **every** tier (Tier 1 fixes included, so a batch runs in parallel), with a plan-gate reminder, a base-commit check (Step 0.5), and an in-place branch fallback (Step 1c — absorbing the retired `new-branch` skill; its helper `scripts/new-branch.sh` remains) added below. See ../../NOTICE.md.
+> The isolation step for **every** tier — Tier 1 included. Three additions ride on the base worktree flow: a plan-gate reminder, a base-commit check (Step 0.5), and an in-place branch fallback (Step 1c, absorbing the retired `new-branch` skill; its helper `scripts/new-branch.sh` remains).
 
 # Using Git Worktrees
 
@@ -16,7 +15,7 @@ Ensure work happens in an isolated workspace. Prefer your platform's native work
 
 > **dev-stack — three rules ride on top of the port below:**
 > 1. **Plan gate.** Don't reach this skill to *start coding* until your tier's plan is presented and approved (Tier 1: a few lines in chat + a "go"; Tier 2: the spec + tickets chain). The worktree is where approved work goes — not a way around the gate.
-> 2. **Base commit.** Before creating the worktree, confirm the *commit* you're branching off — right branch (in a `to-implementation` run: the approved hub tip), and local not silently behind origin — Step 0.5 below.
+> 2. **Base commit.** Before creating the worktree, confirm the *commit* you're branching off — the tip of the current branch (normally the default branch, which already carries the domain docs and any merged blockers), and local not silently behind origin — Step 0.5 below.
 > 3. **No worktree ≠ no isolation.** When a worktree can't be made (sandbox denial) or the user declines one, fall back to a dedicated in-place branch — Step 1c. Never work on the default branch.
 
 **Announce at start:** "I'm using the using-git-worktrees skill to set up an isolated workspace."
@@ -55,8 +54,6 @@ Honor any existing declared preference without asking. If the user declines cons
 ## Step 0.5: Confirm the base commit (dev-stack)
 
 A worktree's base is a **commit you choose and then verify** — not a default you accept. Two silent traps put it on the wrong commit; check both before creating, and verify after.
-
-**Hub and spoke (`to-implementation` runs).** When this worktree is a ticket **spoke**, the base is not the default branch — it is the **approved hub tip**: the feature-branch commit the user approved at dispatch (STACK.md §5). Set `BASE` to that commit, and read the two traps below against it: "wrong branch" means anything that isn't the approved hub tip (the default branch included), and "local ahead of origin" bites hardest here — the hub usually lives only locally, so a tool that defaults to `origin` silently drops every hub commit. For the post-create ancestor check, `$FOUND` is the hub tip itself.
 
 Resolve the default branch and where you are:
 
@@ -164,15 +161,15 @@ Never work on the default branch — not for a one-line fix, not "just to test".
 **Confirm the branch origin first.** Branching off the wrong base is silent and expensive — Step 0.5's traps apply unchanged:
 
 - **On the default branch** — cut the branch off it, as normal.
-- **Not on the default** — STOP and ask: *"You're on `<cur>`, not `<def>`. Branch from here, or switch to `<def>` first?"* The script **refuses** in this case unless you pass `--from-here`, so ask the user before you do. In a `to-implementation` run, "here" must be the **approved hub tip** — branching a spoke from it is the one case where `--from-here` is already covered by the dispatch approval.
+- **Not on the default** — STOP and ask: *"You're on `<cur>`, not `<def>`. Branch from here, or switch to `<def>` first?"* The script **refuses** in this case unless you pass `--from-here`, so ask the user before you do.
 
 **Run:**
 
 ```
-${CLAUDE_PLUGIN_ROOT}/scripts/new-branch.sh <type> <slug> [--from-here]
+${DEV_STACK_ROOT}/scripts/new-branch.sh <type> <slug> [--from-here]
 ```
 
-If `$CLAUDE_PLUGIN_ROOT` is unset in this context, the inline equivalent is:
+If `$DEV_STACK_ROOT` is unset in this context, the inline equivalent is:
 
 ```
 git switch -c <type>/<slug>   # off the confirmed base — origin checked above

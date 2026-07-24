@@ -7,13 +7,11 @@ description: Review the changes since a fixed point along two axes — Standards
 
 Review of the diff between `HEAD` and a fixed point, in two stages:
 
-- **Stage 0 — cheap, early-exit.** The reviewer runs the brief's Verify command plus the repo's lint and type/compile checks *itself*, in the worktree under review. Any red → return immediately; the axes never launch on broken code.
+- **Stage 0 — cheap, early-exit.** The reviewer runs the brief's `Verify` command plus its `Sweep` directions (lint, type/compile checks) *itself*, in the worktree under review. Any red → return immediately; the axes never launch on broken code.
 - **Stage 1 — the axes, in parallel.** Two sub-agents so they don't pollute each other's context, reported side by side without merging:
   - **Standards** — does the code conform to this repo's documented standards?
   - **Spec** — does the code faithfully implement the originating ticket / spec?
   - plus one informational check — `adr-candidate` (step 6).
-
-> Fork of Matt Pocock's `code-review` (MIT). Substantive changes: the reviewer executes the verification gate itself — stage 0 — instead of reading the implementer's claim that it passed (see *Why the reviewer runs it*), and surfaces ADR-worthy decisions as `adr-candidate` findings.
 
 ## Process
 
@@ -31,13 +29,7 @@ Confirm the ref resolves (`git rev-parse <fixed-point>`) and the diff is non-emp
 
 #### 2. Run Verify + lint + type/compile checks — yourself
 
-Find the Verify command, in this order:
-
-1. The `Verify` block of the ticket's brief (`.scratch/brief-NN.md` in the worktree under review — the spoke writes its brief locally).
-2. `AGENTS.md` → `## Build & run`.
-3. Ask the user.
-
-Alongside it, the repo's lint and type/compile-check commands — same sources, whatever this toolchain provides (a separate type-checker, or the compiler/build itself). A repo that genuinely has neither runs Verify alone; don't invent substitutes.
+The commands are in the brief. Read `.scratch/brief-NN.md` in the worktree under review: the `Verify` block names the focused command, and the `Sweep` block names the repo's lint, type/compile, and other verification directions. Run `Verify` plus whatever `Sweep` lists. If there is no brief (a hand-driven review), ask the user for the commands. A repo that genuinely has only tests runs those alone; don't invent substitutes.
 
 **Run them yourself. Now, before dispatching anything.**
 
@@ -66,7 +58,7 @@ The brief's **Global Constraints** block, if present, travels to both sub-agents
 
 #### 4. Identify the standards sources
 
-Anything documenting how code should be written here — `CODING_STANDARDS.md`, `CONTRIBUTING.md`, `AGENTS.md`.
+Anything documenting how code should be written here — `CODING_STANDARDS.md`, `CONTRIBUTING.md`, `CLAUDE.md`.
 
 On top of that, the Standards axis always carries the **smell baseline** below — Fowler's code smells (*Refactoring*, ch.3), which apply even when a repo documents nothing. Two rules bind it:
 
@@ -106,7 +98,7 @@ Do not pre-judge findings for either sub-agent. If the prompt you're writing con
 
 One conditional, applied by you while reading the diff and the axes' reports: **the change passes the ADR test owned by `/domain-modeling` → emit a finding of class `adr-candidate`**, carrying a one-sentence statement of the decision and its trade-off. The criteria live in `/domain-modeling`; this skill only points at them.
 
-`adr-candidate` is **informational**: it never blocks the ticket and is never dispatched for fixing. The orchestrator presents it at the integration gate, where approval sends it to `/domain-modeling` to be written up.
+`adr-candidate` is **informational**: it never blocks the unit and is never dispatched for fixing. The orchestrator writes it up automatically — via `/domain-modeling`, before integrating — so it always lands on the default branch. The review only surfaces it.
 
 #### 7. Aggregate
 
@@ -121,7 +113,7 @@ One conditional, applied by you while reading the diff and the axes' reports: **
 ## Spec
 <report, verbatim or lightly cleaned>
 
-## adr-candidate (informational — rides to the integration gate)
+## adr-candidate (informational — the orchestrator writes it up automatically)
 <one sentence: the decision and its trade-off> — omit the section if none
 ```
 
@@ -142,26 +134,21 @@ All of it, or it isn't done:
 - [ ] **Standards axis** — matches the repo's conventions
 - [ ] **No discrepancy** between the implementer's report and what you observed
 
-An `adr-candidate` finding never blocks — it is presented at the integration gate, not fixed.
+An `adr-candidate` finding never blocks — the orchestrator writes it up automatically, it is not fixed here.
 
 ### On a clean pass — record it
 
 When stage 0 and both axes pass with no blocking findings (an `adr-candidate` on its own is not blocking), mark this exact working state as reviewed so the `review-guard` Stop hook knows the change was reviewed and won't nag at turn end:
 
 ```
-"${CLAUDE_PLUGIN_ROOT:-$HOME/.dotfiles/claude/dev-stack}/hooks/review-mark.sh" || true
+"${DEV_STACK_ROOT:-$HOME/.dotfiles/claude/dev-stack}/hooks/review-mark.sh" || true
 ```
 
 Best-effort — it fingerprints `HEAD` + the working diff, so any later edit re-arms the gate and needs a fresh review. If findings remain, do **not** mark: address them (or hand them back) and re-review first.
 
 ## Why the reviewer runs it
 
-Upstream `subagent-driven-development` says the opposite:
-
-> *"Do not ask a reviewer to re-run tests the implementer already ran on the same code — the implementer's report carries the test evidence."*
-> — superpowers, `subagent-driven-development/SKILL.md:166`
-
-That is a token optimisation, and it buys the saving with the one thing the review exists to establish. **An implementer's report is a hypothesis, not evidence.** The contradiction is already inside superpowers: `verification-before-completion` names "trusting agent success reports" a red flag, and SDD is built on exactly that trust.
+The tempting optimisation is to trust the implementer's report — it already carries test evidence, so why re-run? Because that buys the saving with the one thing the review exists to establish. **An implementer's report is a hypothesis, not evidence.** A report contradicted on its most checkable claim — a green it reported that comes back red under stage 0 — is not load-bearing on any of its other claims either.
 
 Running stage 0 costs seconds. Discovering at merge that the report was optimistic costs the branch.
 
@@ -174,4 +161,4 @@ A change can pass one and fail the other:
 
 Reporting them separately stops one from masking the other. Stage 0 is not a third axis — it's the gate both axes stand on.
 
-**Related:** `/brief` names the `Verify` command · `/to-implementation` calls this after every ticket · `/domain-modeling` owns the ADR test behind `adr-candidate` · `/receiving-code-review` governs the fixer's handling of findings · `/improve-codebase-architecture` receives the "no Verify command" finding
+**Related:** `/brief` names the `Verify` command and the `Sweep` directions · `/to-implement` calls this after the unit · `/domain-modeling` owns the ADR test behind `adr-candidate` · `/receiving-code-review` governs the fixer's handling of findings · `/improve-codebase-architecture` receives the "no Verify command" finding

@@ -1,18 +1,9 @@
 #!/usr/bin/env bash
-# Dev-only linker. NOT the supported install path.
-#
-# The supported install is the plugin: add this repo as a marketplace and
-# install it, so the set lives in your settings.json enabledPlugins and can't
-# be clobbered by an external skills manager.
-#
-#   claude marketplace add .      # or: /plugin marketplace add <path>
-#   claude plugin install dev-stack@dev-stack
-#
-# This script is for iterating on skills *live* — it symlinks each skills/<name>
-# into ~/.claude/skills and each agents/<name>.md into ~/.claude/agents, so an
-# edit here is picked up without reinstalling the plugin. It only ever manages
-# this repo's own skill and agent names; it never touches anything else already
-# in ~/.claude/skills or ~/.claude/agents.
+# The installer. Symlinks each skills/<name> into ~/.claude/skills and each
+# agents/<name>.md into ~/.claude/agents, so an edit in this repo is picked up
+# live — no reinstall. It only ever manages this repo's own skill and agent
+# names; it never touches anything else already in ~/.claude/skills or
+# ~/.claude/agents. Wire the hooks separately (see README).
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"

@@ -9,7 +9,7 @@ A discipline for hard bugs. Skip phases only when explicitly justified.
 
 When exploring the codebase, read `CONTEXT.md` (if it exists) for a clear mental model of the relevant modules, and check ADRs in the area you're touching.
 
-> Fork of Matt Pocock's `diagnosing-bugs` (MIT), with two grafts from superpowers' `systematic-debugging` (MIT): **Phase 2.5 Pattern Analysis** and the **three-fix breaker** in Phase 5.
+> A reproduce → hypothesise → fix loop, with two additions that catch what a linear debugger misses: **Phase 2.5 Pattern Analysis** and the **three-fix breaker** in Phase 5.
 
 ## Phase 1 — Build a feedback loop
 
@@ -34,7 +34,7 @@ Spend disproportionate effort here. **Be aggressive. Be creative. Refuse to give
 
 Treat the loop as a product. Once you have *a* loop: make it faster (cache setup, narrow scope), sharper (assert the specific symptom, not "didn't crash"), more deterministic (pin time, seed RNG, isolate filesystem, freeze network).
 
-A 30-second flaky loop is barely better than none; a 2-second deterministic one is a superpower.
+A 30-second flaky loop is barely better than none; a 2-second deterministic one is transformative.
 
 ### Non-deterministic bugs
 
@@ -72,8 +72,6 @@ Done when **every remaining element is load-bearing**: removing any one makes it
 A minimal repro shrinks the hypothesis space in Phase 3 and becomes the regression test in Phase 5. Do not proceed until you have reproduced **and** minimised.
 
 ## Phase 2.5 — Pattern analysis
-
-*Grafted from superpowers' `systematic-debugging`.*
 
 Before hypothesising, look for **something similar that works**. Almost every codebase already contains a working instance of the thing that's broken — a sibling endpoint, another consumer of the same hook, a parallel migration, the same widget on a different screen.
 
@@ -128,8 +126,6 @@ With a correct seam:
 5. Re-run the Phase 1 loop against the original, un-minimised scenario.
 
 ### The three-fix breaker
-
-*Grafted from superpowers' `systematic-debugging`.*
 
 **If three fix attempts have failed, stop fixing.** Do not attempt a fourth.
 
