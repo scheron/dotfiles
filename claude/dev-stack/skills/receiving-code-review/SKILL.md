@@ -4,6 +4,7 @@ description: Use when receiving code review feedback, before implementing sugges
 user-invocable: false
 ---
 
+<!-- dev-stack: user-invocable: false added — internal skill, reached by skills and the model, hidden from the slash menu (invocation-contract pass). -->
 # Code Review Reception
 
 ## Overview

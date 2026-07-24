@@ -16,6 +16,9 @@ Two choices, trading different costs:
 
 Pick model-invocation only when the agent must reach the skill on its own, or another skill must. If it only ever fires by hand, make it user-invoked and pay no context load.
 
+<!-- dev-stack: the frontmatter flag dropped from this file and the note below added (invocation-contract pass). -->
+> **dev-stack departure:** driving skills in this stack carry no `disable-model-invocation` — each opens with a `<STOP-GATE>` block instead: the model may raise the skill, the user still gates it. The inverse flag `user-invocable: false` marks internal skills only skills and the model reach (hidden from the slash menu). See STACK.md §3.
+
 When user-invoked skills multiply past what you can remember, that piled-up cognitive load is cured by a **router skill**: one user-invoked skill that names the others and when to reach for each.
 
 ## Writing the description
