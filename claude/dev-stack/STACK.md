@@ -1,6 +1,6 @@
 # My development stack
 
-The decision record from the grilling sessions of 2026-07-20 (finalized 2026-07-22) and **2026-07-23 — the two-tier redesign**.
+The decision record from the grilling sessions of 2026-07-20 (finalized 2026-07-22) and **2026-07-23 — the two-tier redesign**; amended 2026-07-24 (the brief-writer split and the model ladder, §6).
 
 Starting problem (2026-07-20): I had both Superpowers and Matt Pocock's skills installed; they partly conflicted, and I also sometimes work through specs. I needed one coherent setup.
 
@@ -87,13 +87,16 @@ The risk ledger of lifting the flag: a self-started grill is harmless (a grill's
 
 `/decision-map` (replaces `wayfinder`): materialize the scout's open-decision list as decision tickets on the tracker; burn them down — `/research` subagents in parallel, `/prototype` where a question needs a runnable answer, a grill where it needs the user; every resolution → an ADR. When the fog clears, the chain continues into the normal grill.
 
-Per unit, the engine runs the Tier 1 lifecycle:
+Per unit, the engine runs the Tier 1 lifecycle down the model ladder (§6):
 
 ```
-subagent in its own worktree  ←  writes its own brief there  ←  /tdd
-  → runner sweep (§6) → DONE
-  → /verified-review  (stage 0 → axes → adr-candidate, §8–9)
-  → integration STOP-gate ⏸  (merge + ADR + next wave, §5)
+spoke worktree off the approved hub tip
+  → brief-writer (top tier, fresh)   writes .scratch/brief-NN.md IN the spoke
+  → implementer (standard tier)      reads the brief, works /tdd
+  → engine: test-runner sweep        red summary → same implementer
+                                     ⛔ 3 reds in a row → BLOCKED
+  → /verified-review                 stage 0 → axes → adr-candidate  (§8–9)
+  → integration STOP-gate ⏸          merge + ADR + next wave  (§5)
 ```
 
 **The drivers are a convenience, never a requirement.** The classic chain stays drivable by hand — `/grill-with-docs` → `/to-spec` → `/to-tickets` → `/to-implementation` — which is also why `/grill-with-docs` survives: it is the one addressable home of the grill+docs composition, referenced by the tier-2 driver and typed by the hand-driver, never re-composed in two places.
@@ -111,7 +114,7 @@ feature (hub) ──o──────────m─────────�
       ticket-02   (same tip)   o──o┘        merge only when green, then teardown
 ```
 
-- **Branch first, then ephemera.** Durable docs (ADRs, `CONTEXT.md`) are committed to the hub *before* dispatch — every spoke sees them through git for free. Ephemera (`brief`, `report`, `.scratch/`) are born *inside* the ticket worktree, after branching, by the implementer itself.
+- **Branch first, then ephemera.** Durable docs (ADRs, `CONTEXT.md`) are committed to the hub *before* dispatch — every spoke sees them through git for free. Ephemera (`brief`, `report`, `.scratch/`) are born *inside* the ticket worktree, after branching — the brief by the brief-writer, the report by the implementer (§6).
 - **All spokes of a batch start from one point** — the hub tip the user approved. The starting point is always the user's call.
 - **The paper interface chain is dead.** The old rule carried ticket N's `Produces` into N+1's `Consumes` verbatim — a crutch for subagents that cannot see each other. Now a dependent ticket launches *from the merged code*: its `Consumes` is read from reality, not from paper. The contract is the code.
 - **Batch overlap is the user's risk.** Briefs are born inside the spokes, so no disjoint-files check exists at dispatch time. Conflicts surface at merge into the hub and are handled by `/resolving-merge-conflicts` — the honest price of the simpler topology.
@@ -121,25 +124,32 @@ feature (hub) ──o──────────m─────────�
 
 ---
 
-## 6. The implementer's inner loop
+## 6. The unit pipeline — the model ladder
 
-Context hygiene is the design driver: a full-suite failure dump is thousands of stacktrace lines that would sit in the implementer's window and be re-read every turn.
+Amended 2026-07-24. Two forces shape the pipeline. **Context hygiene**: the implementer's window never holds exploration (the brief-writer's job) or stacktraces (the runner's job) — it holds the brief and the build. And the **snowball rule**: a better spec makes a better plan, a better plan a better brief, a better brief a near-mechanical implementation — so intelligence sits where it compresses, and execution runs below it.
 
 ```
-/tdd at the agreed seams — focused tests run INLINE
-    (tiny output; a subagent per red-green cycle would kill the tempo)
-full sweep → dispatch the test-runner AGENT        tests + lint + typecheck
-    returns a SUMMARY: counts, failing test names, one line per failure
-    — never stacktraces
-red → fix → runner again → …
-    ⛔ 3 red rounds in a row → BLOCKED, escalate to the orchestrator
-       (the three-fix breaker of /diagnose, same principle)
-green → DONE → the orchestrator raises /verified-review
+opus    orchestrator   gates, dispatches, integration, the final review
+opus    brief-writer   one per unit, fresh context, IN the spoke: explores the
+                       code itself (it IS the walk — no Explore sub-dispatch),
+                       writes .scratch/brief-NN.md, returns only the path;
+                       the exploration dies with it
+sonnet  implementer    reads the brief, works /tdd at the agreed seams,
+                       runs focused tests inline; never the full sweep
+sonnet  test-runner    dispatched by the ORCHESTRATOR once the implementer
+                       reports done: tests + lint + typecheck → summary only
+                       (counts, failing names, one line per failure) — never
+                       stacktraces. Sonnet, not the cheapest tier: the summary
+                       IS the product, and a poor one re-imports the noise
 ```
 
-The runner is an **agent definition**, not a skill and not an inline prompt — its cheap model is pinned once in its frontmatter, and dispatches reference it in one line (the packaging principle at work). `install.sh` links `agents/` alongside `skills/`.
+The brief-writer's tier is **load-bearing, not preference**: a weak brief poisons everything downstream, and the implementer tier is affordable *because* the brief left nothing to decide. There is no per-unit model knob — the ladder is fixed by decision (the brief's old `Model:` field is gone with it).
 
-**A green runner is a working signal, not evidence.** The only receipt is the Verify command run by the review itself (§8). STACK's oldest rule is untouched: the implementer's report is a hypothesis.
+Fix rounds: a red sweep summary goes back to the **same implementer** — its context is alive, it pays only for the summary — never to a fresh dispatch. Three red rounds in a row → BLOCKED, escalate to the user (the three-fix breaker of `/diagnose`, held by the orchestrator).
+
+Every dispatched seat below the orchestrator is an **agent definition** in `agents/` — not a skill, not an inline prompt: the model is pinned once in the frontmatter, the role rides in the body, and dispatches reference the name in one line (the packaging principle at work). Where a protocol already has a skill for a home, the agent body points at it instead of restating it — the brief-writer follows `/brief`. `install.sh` links `agents/` alongside `skills/`.
+
+**A green sweep is a working signal, not evidence.** The only receipt is stage 0 of `/verified-review` (§8), run by the reviewer itself. STACK's oldest rule is untouched: the implementer's report is a hypothesis.
 
 ---
 
@@ -167,7 +177,7 @@ spoke .scratch/              brief-NN.md, report-NN.md — born and dying with
                              the ticket worktree; the ledger line survives
 ```
 
-The brief is generated **by the implementer, inside its worktree, at pickup** — it cannot be stale by construction: it is written against the exact commit the spoke branched from. Its `Run as` block is gone (every unit is a subagent in a worktree — there is nothing to choose); what remains is `Model:` — `cheap` when the brief leaves nothing to decide, `standard` otherwise. Turn count beats token price.
+The brief is written **by the brief-writer, inside the unit's worktree, at pickup** (§6) — it cannot be stale by construction: it is written against the exact commit the spoke branched from, and the implementer reads it as its first act. The `Run as` and `Model:` knobs are both gone — the ladder fixes every tier by decision.
 
 Tickets and specs live where `docs/agents/issue-tracker.md` says — tracker or `.scratch/` — and carry **no paths, no code**, as before. If `issue-tracker.md` is missing, the tier-2 driver asks once at preflight (the one live duty inherited from `setup-matt-pocock-skills`).
 
@@ -279,8 +289,9 @@ Kept deliberately: `handoff` (the only tool for context exhaustion mid-grill), `
 retired  (5)   execute-tickets, wayfinder, new-branch,
                setup-matt-pocock-skills, verification-before-completion
 new      (4)   to-implementation, tier-1, tier-2, decision-map
-new agent (1)  test-runner — cheap model pinned in its frontmatter;
-               install.sh links agents/ alongside skills/
+new agents (3) test-runner (sonnet — the summary is the product),
+               brief-writer (opus — follows /brief), implementer (sonnet);
+               models pinned in frontmatter, install.sh links agents/
 internal (5)   user-invocable: false — brief, codebase-design,
                domain-modeling, resolving-merge-conflicts, receiving-code-review
 ```
