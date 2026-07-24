@@ -43,7 +43,7 @@ Each patch is marked in-file with an `<!-- dev-stack: … -->` comment.
 
 ### Vendored verbatim
 
-`grilling`, `tdd`, `prototype`, `research`, `setup-matt-pocock-skills`, `setup-pre-commit`, `git-guardrails-claude-code` — copied unmodified.
+`grilling`, `tdd`, `prototype`, `research`, `setup-pre-commit`, `git-guardrails-claude-code` — copied unmodified.
 
 ### Vendored with the invocation-contract patch (2026-07-24)
 

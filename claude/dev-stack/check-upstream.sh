@@ -11,7 +11,7 @@ trap 'rm -rf "$TMP"' EXIT
 # Forks and originals are excluded: they are supposed to differ.
 POCOCK=(
   codebase-design domain-modeling grill-with-docs grilling handoff
-  improve-codebase-architecture prototype research setup-matt-pocock-skills
+  improve-codebase-architecture prototype research
   tdd to-spec to-tickets writing-great-skills
   resolving-merge-conflicts setup-pre-commit git-guardrails-claude-code
 )
