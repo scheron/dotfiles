@@ -37,6 +37,8 @@ command = "persiyanov.reviewr.toggle"
 [ui]
 accent = "#7aa2f7"            # tokyo-night blue for borders/highlights/nav
 agent_panel_sort = "priority" # attention queue: blocked/done agents float to the top
+sidebar_start_collapsed = false   # sidebar visible on launch; prefix+e toggles it
+prompt_new_workspace_name = true  # prefix+n asks for a name instead of auto-generating one
 
 show_agent_labels_on_pane_borders = false
 [ui.sidebar.agents.rows_by_agent]
