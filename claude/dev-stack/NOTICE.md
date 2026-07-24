@@ -49,7 +49,7 @@ Each patch is marked in-file with an `<!-- dev-stack: … -->` comment.
 
 `grill-with-docs`, `domain-modeling`, `codebase-design`, `improve-codebase-architecture`, `handoff`, `writing-great-skills`, `resolving-merge-conflicts` — copied from upstream, then patched by the invocation-contract pass (a `<STOP-GATE>` opener and/or frontmatter visibility flags); every patch is marked in-file with a `<!-- dev-stack: … -->` comment.
 
-Both groups carry their upstream supporting files unmodified (`CONTEXT-FORMAT.md`, `ADR-FORMAT.md`, `DEEPENING.md`, `DESIGN-IT-TWICE.md`, `tests.md`, `mocking.md`, `LOGIC.md`, `UI.md`, `HTML-REPORT.md`, `GLOSSARY.md`, the `issue-tracker-*.md` templates, and `git-guardrails-claude-code/scripts/`).
+Both groups carry their upstream supporting files unmodified (`CONTEXT-FORMAT.md`, `ADR-FORMAT.md`, `DEEPENING.md`, `DESIGN-IT-TWICE.md`, `tests.md`, `mocking.md`, `LOGIC.md`, `UI.md`, `HTML-REPORT.md`, `GLOSSARY.md`, and `git-guardrails-claude-code/scripts/`).
 
 The upstream `agents/openai.yaml` harness metadata is **not** carried — this set is Claude-only (STACK.md §7).
 

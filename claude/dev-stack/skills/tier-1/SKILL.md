@@ -14,7 +14,7 @@ Nothing is branched, planned, or edited until the go is given.
 
 Tier 1 *is* the execution of one unit (STACK.md §1). This driver sequences the references below and writes no code itself — the engine's lifecycle is the body of Tier 1.
 
-1. **Isolate** — `/using-git-worktrees`, Tier 1 included. The unit's worktree, branched from the default branch, *is* the hub (the engine's Tier 1 topology): no separate feature branch, integration goes straight through `/finish-branch`.
+1. **Isolate** — `/using-git-worktrees`, Tier 1 included; the worktree sits as `/to-implementation`'s "Tier 1 topology" block describes.
 2. **Bug-shaped? `/diagnose` first.** Broken, throwing, failing, or slow work runs the diagnosis loop before any plan — the plan below is the fix its diagnosis produces.
 3. **GATE IN — the inline plan.** Present the plan in chat, a few lines: what changes, which files, how to verify. Wait for the explicit approval. The plan lives in chat — never an artifact, never a written file (STACK.md §1).
 4. **Hand off** — `/to-implementation` with input **nothing**: the approved chat plan is the single unit. The engine carries the rest — implementation, the test-runner sweep, `/verified-review`, `/finish-branch`.
