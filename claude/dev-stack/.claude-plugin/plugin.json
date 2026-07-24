@@ -28,7 +28,6 @@
     "./skills/grilling",
     "./skills/handoff",
     "./skills/improve-codebase-architecture",
-    "./skills/new-branch",
     "./skills/prototype",
     "./skills/receiving-code-review",
     "./skills/research",
@@ -42,7 +41,6 @@
     "./skills/using-git-worktrees",
     "./skills/verification-before-completion",
     "./skills/verified-review",
-    "./skills/wayfinder",
     "./skills/writing-great-skills"
   ]
 }
