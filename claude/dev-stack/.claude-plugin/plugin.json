@@ -22,7 +22,6 @@
     "./skills/decision-map",
     "./skills/diagnose",
     "./skills/domain-modeling",
-    "./skills/execute-tickets",
     "./skills/finish-branch",
     "./skills/git-guardrails-claude-code",
     "./skills/grill-with-docs",
@@ -37,10 +36,10 @@
     "./skills/setup-matt-pocock-skills",
     "./skills/setup-pre-commit",
     "./skills/tdd",
+    "./skills/to-implementation",
     "./skills/to-spec",
     "./skills/to-tickets",
     "./skills/using-git-worktrees",
-    "./skills/verification-before-completion",
     "./skills/verified-review",
     "./skills/writing-great-skills"
   ]

@@ -9,12 +9,11 @@ MIT. Source: the `superpowers` Claude Code plugin, version 6.1.1.
 | File here | Upstream | Change |
 |---|---|---|
 | `skills/using-git-worktrees/SKILL.md` | `skills/using-git-worktrees/SKILL.md` | adapted: serves all tiers, plan-gate reminder + branch-origin check (Step 0.5) + in-place branch fallback (Step 1c, absorbing the retired `new-branch` skill) added |
-| `skills/verification-before-completion/SKILL.md` | `skills/verification-before-completion/SKILL.md` | verbatim; attribution line added |
-| `skills/execute-tickets/SKILL.md` | `skills/subagent-driven-development/SKILL.md` | substantially rewritten — see below |
-| `skills/execute-tickets/implementer-prompt.md` | `skills/subagent-driven-development/implementer-prompt.md` | adapted: brief-based, `/tdd`, Verify in the report contract |
+| `skills/to-implementation/SKILL.md` | `skills/subagent-driven-development/SKILL.md` | substantially rewritten, twice removed (via the retired `execute-tickets` port) — see below |
+| `agents/implementer.md` | `skills/subagent-driven-development/implementer-prompt.md` | adapted into an agent definition: brief-based, `/tdd`, report contract |
 | `skills/finish-branch/SKILL.md` | `skills/finishing-a-development-branch/SKILL.md` | Step 1 "Harvest" added; `.scratch/` cleanup added |
 | `skills/diagnose/SKILL.md` (Phase 2.5, three-fix breaker) | `skills/systematic-debugging/SKILL.md` | two sections grafted onto a Pocock skill |
-| `skills/receiving-code-review/SKILL.md` | `skills/receiving-code-review/SKILL.md` | verbatim; invoked by `/execute-tickets` when acting on review findings |
+| `skills/receiving-code-review/SKILL.md` | `skills/receiving-code-review/SKILL.md` | verbatim; referenced from `/to-implementation`'s fix dispatches |
 
 **Changes to `subagent-driven-development`:**
 
@@ -38,7 +37,7 @@ MIT. Source: <https://github.com/mattpocock/skills>.
 | File here | Change |
 |---|---|
 | `skills/to-spec/SKILL.md` | step 3 also supports publishing to `.scratch/<feature>/spec.md` when the tracker is local markdown |
-| `skills/to-tickets/SKILL.md` | closing section points at `/brief` + `/execute-tickets` instead of `/implement`, and states that briefs are generated at pickup, not at planning time |
+| `skills/to-tickets/SKILL.md` | closing section points at `/to-implementation` instead of `/implement`, and states that briefs are generated at pickup, not at planning time |
 
 Each patch is marked in-file with an `<!-- dev-stack: … -->` comment.
 

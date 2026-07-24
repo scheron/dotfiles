@@ -230,4 +230,4 @@ git worktree prune
 - Present exactly 4 options (3 on detached HEAD)
 - `cd` to the main root before removing a worktree, then `git worktree prune`
 
-**Related:** `/execute-tickets` hands off here · `/domain-modeling` owns `CONTEXT.md` and ADR writing · `/using-git-worktrees` created the workspace this removes
+**Related:** `/to-implementation` hands off here · `/domain-modeling` owns `CONTEXT.md` and ADR writing · `/using-git-worktrees` created the workspace this removes

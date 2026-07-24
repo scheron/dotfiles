@@ -114,7 +114,7 @@ Work the frontier one ticket at a time, clearing context between tickets.
 
 Then either:
 
-- `/execute-tickets` — works the whole frontier in this session, one implementer per ticket, `/verified-review` after each.
+- `/to-implementation` — works the whole frontier in this session, one implementer per unit, `/verified-review` after each.
 - Or by hand, one fresh session per ticket: `/brief` → `/tdd` → `/verified-review`.
 
 <!-- dev-stack: replaces upstream's "Work the frontier one ticket at a time with /implement". -->

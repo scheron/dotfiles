@@ -42,11 +42,11 @@ done
 # Verbatim ports differ only by one attribution line (contains "dev-stack");
 # strip it before diffing. Adapted ports carry bounded dev-stack additions and
 # forks are expected to differ — neither is diff-checked automatically.
-SP_VERBATIM=(verification-before-completion)
+SP_VERBATIM=()
 # Ported then adapted (bounded additions, not verbatim). The base still tracks
 # upstream, so it's worth a manual glance — but no automatic diff.
 SP_ADAPTED=(using-git-worktrees)
-SP_FORKS=(execute-tickets finish-branch)
+SP_FORKS=(finish-branch)
 
 echo
 echo "cloning anthropics/claude-plugins-official (superpowers)…"
