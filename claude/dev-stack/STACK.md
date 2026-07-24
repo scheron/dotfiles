@@ -137,7 +137,8 @@ opus    brief-writer   one per unit, fresh context, IN the spoke: explores the
 sonnet  implementer    reads the brief, works /tdd at the agreed seams,
                        runs focused tests inline; never the full sweep
 sonnet  test-runner    dispatched by the ORCHESTRATOR once the implementer
-                       reports done: tests + lint + typecheck → summary only
+                       reports done: the repo's verification directions →
+                       summary only
                        (counts, failing names, one line per failure) — never
                        stacktraces. Sonnet, not the cheapest tier: the summary
                        IS the product, and a poor one re-imports the noise
@@ -191,7 +192,7 @@ Every tier clears this — a Tier 1 one-line fix is reviewed on the same bar as 
 
 ```
 STAGE 0 — cheap, early-exit                     (2026-07-23)
-  runs Verify + lint + typecheck ITSELF
+  runs Verify + lint + type/compile checks ITSELF
   red → return immediately; the command output is the only finding;
         the Standards/Spec axes never launch on broken code
   red where the implementer reported green → that discrepancy is a

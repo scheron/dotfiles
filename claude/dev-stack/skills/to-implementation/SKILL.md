@@ -64,7 +64,7 @@ Once the implementer reports done, **you** dispatch the **test-runner** agent in
 
 ### 5. /verified-review — the only receipt
 
-On green, raise `/verified-review` with the fixed point set to **the spoke's branch base you recorded in step 1** — never `HEAD~1`, which silently drops all but the last commit of a multi-commit unit. It runs stage 0 (Verify + lint + typecheck, itself) then the Standards and Spec axes in parallel.
+On green, raise `/verified-review` with the fixed point set to **the spoke's branch base you recorded in step 1** — never `HEAD~1`, which silently drops all but the last commit of a multi-commit unit. It runs stage 0 (Verify + lint + type/compile checks, itself) then the Standards and Spec axes in parallel.
 
 - Findings → dispatch **one fixer per findings list** (never one per finding), carrying the conditional line: *findings received → follow `/receiving-code-review`*. Re-review after.
 - A finding that conflicts with what the unit mandates is the user's call: present the finding beside the unit text, ask which governs. Don't dismiss the finding; don't fix against the unit without asking.

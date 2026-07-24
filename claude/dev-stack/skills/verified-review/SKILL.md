@@ -7,7 +7,7 @@ description: Review the changes since a fixed point along two axes — Standards
 
 Review of the diff between `HEAD` and a fixed point, in two stages:
 
-- **Stage 0 — cheap, early-exit.** The reviewer runs the brief's Verify command plus the repo's lint and typecheck *itself*, in the worktree under review. Any red → return immediately; the axes never launch on broken code.
+- **Stage 0 — cheap, early-exit.** The reviewer runs the brief's Verify command plus the repo's lint and type/compile checks *itself*, in the worktree under review. Any red → return immediately; the axes never launch on broken code.
 - **Stage 1 — the axes, in parallel.** Two sub-agents so they don't pollute each other's context, reported side by side without merging:
   - **Standards** — does the code conform to this repo's documented standards?
   - **Spec** — does the code faithfully implement the originating ticket / spec?
@@ -29,7 +29,7 @@ Capture `git diff <fixed-point>...HEAD` (three-dot, against the merge-base) and 
 
 Confirm the ref resolves (`git rev-parse <fixed-point>`) and the diff is non-empty. A bad ref should fail here, not inside two sub-agents.
 
-#### 2. Run Verify + lint + typecheck — yourself
+#### 2. Run Verify + lint + type/compile checks — yourself
 
 Find the Verify command, in this order:
 
@@ -37,7 +37,7 @@ Find the Verify command, in this order:
 2. `AGENTS.md` → `## Build & run`.
 3. Ask the user.
 
-Alongside it, the repo's lint and typecheck commands — same sources. A repo that genuinely has neither runs Verify alone; don't invent substitutes.
+Alongside it, the repo's lint and type/compile-check commands — same sources, whatever this toolchain provides (a separate type-checker, or the compiler/build itself). A repo that genuinely has neither runs Verify alone; don't invent substitutes.
 
 **Run them yourself. Now, before dispatching anything.**
 
@@ -137,7 +137,7 @@ The dispatch carries one conditional line: **findings received → follow `/rece
 
 All of it, or it isn't done:
 
-- [ ] **Stage 0 green** — Verify (red before the change, green after) plus lint and typecheck, run by you
+- [ ] **Stage 0 green** — Verify (red before the change, green after) plus lint and type/compile checks, run by you
 - [ ] **Spec axis** — matches the ticket
 - [ ] **Standards axis** — matches the repo's conventions
 - [ ] **No discrepancy** between the implementer's report and what you observed
