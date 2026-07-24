@@ -27,8 +27,8 @@ ADRs are meant to land **mid-flight** — `/verified-review` raises them as `adr
 
 Walk the feature's `.scratch/` directory, the ledger, and the review reports, and ask three questions:
 
-**Did a decision get made that is hard to reverse, surprising without context, and the result of a real trade-off — and never make it into `docs/adr/`?**
-All three, or it's not an ADR; already recorded mid-flight, and there's nothing to do. Otherwise write it to `docs/adr/` now — including the alternatives that were rejected and why. The rejected branch is the half that stops the next agent rediscovering a dead end.
+**Did a decision get made that passes the ADR test `/domain-modeling` owns — and never make it into `docs/adr/`?**
+The test is the same one `/verified-review` applies mid-flight (hard to reverse, surprising without context, a real trade-off — all three, or it's not an ADR). Passed it and it's already recorded? Nothing to do. Otherwise write it to `docs/adr/` now — including the alternatives that were rejected and why. The rejected branch is the half that stops the next agent rediscovering a dead end.
 
 **Did a term get settled, sharpened, or disambiguated?**
 Into `CONTEXT.md`, via `/domain-modeling`. Definition only — one or two sentences, what it *is*, plus the rejected synonyms under `_Avoid_`. No implementation details; `CONTEXT.md` is a glossary and nothing else.

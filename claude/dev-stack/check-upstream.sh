@@ -220,7 +220,7 @@ network_drift() {
   local SP_VERBATIM=()
   # Ported then adapted (bounded additions, not verbatim). The base still tracks
   # upstream, so it's worth a manual glance — but no automatic diff.
-  local SP_ADAPTED=(using-git-worktrees)
+  local SP_ADAPTED=(using-git-worktrees receiving-code-review)
   local SP_FORKS=(finish-branch)
 
   echo

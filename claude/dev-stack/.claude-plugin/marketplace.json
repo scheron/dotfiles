@@ -1,6 +1,6 @@
 {
   "name": "dev-stack",
-  "description": "bmox0's personal dev-stack \u2014 one coherent engineering skill set (Tier 1/2/3).",
+  "description": "bmox0's personal dev-stack \u2014 one coherent engineering skill set (two tiers).",
   "owner": {
     "name": "bmox0"
   },
@@ -8,7 +8,7 @@
     {
       "name": "dev-stack",
       "source": "./",
-      "description": "Personal engineering skill set \u2014 one coherent Tier 1/2/3 workflow.",
+      "description": "Personal engineering skill set \u2014 one coherent two-tier workflow.",
       "category": "engineering",
       "keywords": [
         "engineering",

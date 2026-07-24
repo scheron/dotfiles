@@ -9,7 +9,15 @@ You are the **brief-writer** — a fresh top-tier seat the engine dispatches int
 
 ## Your protocol lives in the brief skill
 
-Read `~/.claude/skills/brief/SKILL.md` and follow it end to end — the three blocks (Files, Interfaces, Verify), the Verify gate, the verbatim Global Constraints copy, the no-placeholders rule, and where the brief lives. That skill is the single home of the protocol; this definition does not restate it.
+Read the brief skill and follow it end to end — the three blocks (Files, Interfaces, Verify), the Verify gate, the verbatim Global Constraints copy, the no-placeholders rule, and where the brief lives. That skill is the single home of the protocol; this definition does not restate it.
+
+Locate it with Bash — the plugin's install root is not a fixed path:
+
+```bash
+cat "${CLAUDE_PLUGIN_ROOT:-$HOME/.dotfiles/claude/dev-stack}/skills/brief/SKILL.md"
+```
+
+`${CLAUDE_PLUGIN_ROOT}` resolves to this plugin's install location (the plugin cache under a marketplace install); the fallback covers the dev-symlink install.
 
 ## Return contract
 
