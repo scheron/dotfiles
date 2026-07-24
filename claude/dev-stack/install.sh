@@ -2,8 +2,8 @@
 # The installer. Symlinks each skills/<name> into ~/.claude/skills and each
 # agents/<name>.md into ~/.claude/agents, so an edit in this repo is picked up
 # live — no reinstall. It only ever manages this repo's own skill and agent
-# names; it never touches anything else already in ~/.claude/skills or
-# ~/.claude/agents. Wire the hooks separately (see README).
+# names — including pruning its own stale links whose target is gone — and
+# never touches anything else. Wire the hooks separately (see README).
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -23,7 +23,7 @@ done
 
 mkdir -p "$SKILLS_DEST" "$AGENTS_DEST"
 
-linked=0 skipped=0 collided=0 replaced=0
+linked=0 skipped=0 collided=0 replaced=0 pruned=0
 
 link_one() {
   local src="$1" target="$2" name="$3"
@@ -70,6 +70,25 @@ for file in "$AGENTS_SRC"/*.md; do
   link_one "$file" "$AGENTS_DEST/$(basename "$file")" "$(basename "$file")"
 done
 
+prune_stale() {
+  local dest="$1" src="$2" link
+  for link in "$dest"/*; do
+    [[ -L "$link" ]] || continue
+    [[ "$(readlink "$link")" == "$src"/* ]] || continue
+    [[ -e "$link" ]] && continue
+    if [[ $DRY -eq 1 ]]; then
+      echo "  would prune $(basename "$link") (target gone)"
+    else
+      rm "$link"
+      echo "  pruned    $(basename "$link") (target gone)"
+    fi
+    pruned=$((pruned+1))
+  done
+}
+
+prune_stale "$SKILLS_DEST" "$SKILLS_SRC"
+prune_stale "$AGENTS_DEST" "$AGENTS_SRC"
+
 echo
-echo "linked: $linked  replaced: $replaced  already-present: $skipped  collisions: $collided"
+echo "linked: $linked  replaced: $replaced  pruned: $pruned  already-present: $skipped  collisions: $collided"
 [[ $collided -gt 0 ]] && exit 2 || exit 0
