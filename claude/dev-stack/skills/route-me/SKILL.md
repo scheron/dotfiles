@@ -5,8 +5,6 @@ description: The entry point to the dev-stack — scouts a task read-only, propo
 
 # Route Me
 
-The entry point. route-me scouts the task read-only, proposes a tier from what the code shows, and hands the wheel to a driver — it launches nothing on its own. Each skill it names carries its own detail; STACK.md carries the *why*.
-
 <STOP-GATE>
 route-me's first act is the **scout** — read-only, cheap, safe to run *before* this gate. Dispatch it, then gate on what it found:
 
