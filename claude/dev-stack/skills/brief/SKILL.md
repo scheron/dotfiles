@@ -1,43 +1,41 @@
 ---
 name: brief
-description: Generate the technical brief for one ticket at the moment it is picked up — Files, Interfaces, Verify, Run as. Written to .scratch/, ephemeral, dies at merge. Use when starting work on a ticket, before dispatching an implementer.
+description: Generate the technical brief for your ticket at pickup, inside your own worktree — Files, Interfaces, Verify, Model. Written to the spoke's .scratch/, ephemeral, dies with the worktree. Use as the first act after branching, before writing any code.
 ---
 
 # Brief
 
 A ticket says **what to build**. A brief says **where the code is, what it must call, and the command that proves it worked**. The ticket is durable and path-free; the brief is disposable and exact.
 
-The brief is generated **at pickup**, for **one ticket on the frontier**, and never earlier.
+You — the implementer — write the brief **yourself, at pickup, inside your own worktree**: the first act after branching, before any code.
 
 ## Why at pickup, never at planning time
 
-Write briefs for the whole feature during `/to-tickets` and ticket 07's brief is a snapshot of the codebase taken before tickets 01–06 changed it. Staleness scales with depth in the dependency graph — and a stale brief is **worse than no brief**, because the implementer trusts it and the wrong path costs more than an absent one.
+The old failure mode: an orchestrator writes briefs for the whole feature at planning time, and ticket 07's brief is a snapshot of the codebase taken before tickets 01–06 changed it. Staleness scales with depth in the dependency graph — and a stale brief is **worse than no brief**, because the implementer trusts it and the wrong path costs more than an absent one.
 
-The ticket has no paths *because* it must survive that gap. The brief carries paths *because* it won't have to.
+This topology makes that staleness impossible by construction: you write the brief against the exact commit your spoke branched from, in the same tree you are about to change. The ticket has no paths *because* it must survive the gap between planning and pickup; the brief carries paths *because* for you there is no gap.
 
-**Corollary:** never write a brief for a ticket whose blockers aren't all closed. If you want one, the ticket isn't ready — work the frontier.
+**Corollary:** everything your ticket consumes is already merged code in your tree — dependent tickets launch from the merged result of their blockers. If a signature you need is missing, the ticket was dispatched too early: escalate as BLOCKED instead of briefing against paper.
 
 ## Where it lives
 
 ```
-.scratch/<feature>/brief-NN.md          always local, always gitignored
+.scratch/brief-NN.md          in your worktree — born and dying with the spoke
 ```
 
-Never on the tracker. The technical bottom physically cannot reach a place where it would still be readable — and lying — in six months.
+Never on the tracker, never on the hub. The technical bottom physically cannot reach a place where it would still be readable — and lying — in six months.
 
 ## Process
 
 ### 1. Read the durable layer first
 
-`CONTEXT.md` for the domain vocabulary, ADRs in the area you're touching, the ticket, and its parent spec — specifically the spec's **Implementation Decisions** and **Testing Decisions** (the latter names the prior art for tests).
+It is already in your tree — durable docs are committed to the hub before dispatch. `CONTEXT.md` for the domain vocabulary, ADRs in the area you're touching, the ticket, and its parent spec — specifically the spec's **Implementation Decisions** and **Testing Decisions** (the latter names the prior art for tests).
 
 Names in the brief come from `CONTEXT.md`. If the glossary says `Order`, the interfaces say `Order` — not `Purchase`.
 
 ### 2. Delegate the walk
 
-Dispatch an `Explore` subagent to map the code. It returns the map; the raw greps and file dumps stay in its context, not yours.
-
-You are about to hand the implementer a fresh window — don't spend your own filling it with the exploration you're supposed to be compressing.
+Dispatch an `Explore` subagent to map the code. It returns the map; the raw greps and file dumps stay in its context, not yours. Your window is for building the ticket — spend it on the compression, not the exploration.
 
 ### 3. Fill the four blocks
 
@@ -55,34 +53,31 @@ Exact paths, each with one clause on what changes there. New files marked `(new)
 
 **Mandatory. Never omit this block.**
 
-`Consumes` — signatures this ticket calls that already exist or come from an earlier ticket.
-`Produces` — signatures this ticket exposes that later tickets will call.
+`Consumes` — signatures this ticket calls. Read them from the code in your tree: the real, already-merged code your spoke branched from. The contract is the code, not paper from a previous ticket — paste each signature as the file states it, with the path it came from. Recalled names drift (the code says `clearLayers`, memory offers `clearFullLayers`); pasted ones can't.
 
-A subagent sees **only its own task**. Without this block, slice 3 writes `clearLayers` and slice 7 calls `clearFullLayers`, and nothing catches it until integration. The `Produces` block of ticket N is the `Consumes` block of ticket N+1 — carry it forward verbatim.
+`Produces` — signatures this ticket exposes. Later tickets will meet them as merged code; the reviewer checks you delivered exactly this surface.
 
 ### Verify
 
 **One named command.** Not a description of testing — the command, and the evidence you already ran it.
 
-### Run as
+### Model
 
-`[inline]` — you do it in this session. Cross-cutting, or judgement-heavy.
-`[subagent:cheap]` — 1–2 files, complete spec, transcription plus tests.
-`[subagent:standard]` — multiple files, integration concerns, pattern matching.
+`cheap` | `standard` — the one dispatch knob left (every unit is a subagent in a worktree; there is nothing else to choose).
 
-Turn count beats token price: a cheap model that takes three times the turns costs more. Cheap tier only when the brief leaves nothing to decide.
+Turn count beats token price: a cheap model that takes three times the turns costs more. `cheap` only when the brief leaves nothing to decide — pure transcription plus tests; `standard` otherwise.
 
 ## Global Constraints
 
 Copy binding requirements from the spec **verbatim** — exact values, exact formats, stated relationships between components ("same layout as X", "matches Y"). Paraphrase loses the binding.
 
-These travel to every implementer and every reviewer working this feature.
+These bind you now and travel to the reviewer of this ticket.
 
 ## No placeholders
 
 Every value in the brief is the real one. No `TODO`, no `<your-value-here>`, no "something like". A placeholder in a brief becomes a placeholder in the code, and the review has to catch what the brief should have prevented.
 
-If you don't know a value, that's the finding — resolve it before dispatch, or mark the ticket blocked.
+If you don't know a value, that's the finding — resolve it before writing code, or escalate as BLOCKED.
 
 ## The Verify gate
 
@@ -104,8 +99,8 @@ Wide refactors are the exception: behaviour doesn't change by definition, so `Ve
 ```markdown
 # Brief NN — <ticket title>
 
-**Ticket:** <tracker ref or .scratch path>
-**Run as:** [inline] | [subagent:cheap] | [subagent:standard]
+**Ticket:** <tracker ref or hub .scratch path>
+**Model:** cheap | standard
 
 ## Files
 - `path/to/thing.ts` — what changes here
@@ -113,7 +108,7 @@ Wide refactors are the exception: behaviour doesn't change by definition, so `Ve
 
 ## Interfaces
 **Consumes**
-- `foo(bar: Baz): Promise<Qux>` — from ticket 03
+- `foo(bar: Baz): Promise<Qux>` — from `path/to/module.ts`
 
 **Produces**
 - `renderLayer(layer: Layer, opts: RenderOpts): void`
@@ -134,12 +129,13 @@ Already run — output:
 ## Red flags
 
 **Never:**
-- Write a brief for a ticket that still has open blockers
-- Put a brief anywhere but `.scratch/`
+- Accept a brief written for you outside the spoke, or write one before your worktree exists — only a brief born at pickup describes the commit you branched from
+- Put the brief anywhere but your worktree's `.scratch/`
 - Put paths or signatures into the ticket or the spec instead
 - Ship a brief whose `Verify` you have not personally run
 - Write "verify manually" — that's a finding for `/improve-codebase-architecture`
-- Omit `Interfaces` because "it's obvious" — the subagent cannot see the other tickets
+- Fill `Consumes` from another ticket's brief or from memory — read it from the code in your tree
+- Omit `Interfaces` because "the code is right there" — unpinned signatures get recalled, and recalled names drift
 - Paraphrase a Global Constraint
 
-**Related:** `/cold-read` checks the spec before any brief exists · `/execute-tickets` consumes briefs · `/verified-review` runs the `Verify` command this brief names
+**Related:** `/cold-read` checks the spec before any ticket is dispatched · `/to-implementation` dispatches the implementer that writes this brief · `/verified-review` runs the `Verify` command this brief names
