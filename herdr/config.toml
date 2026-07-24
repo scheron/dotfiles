@@ -18,9 +18,16 @@ toggle_sidebar = "prefix+e"      # sidebar toggle, moved off default prefix+b (f
 edit_scrollback = ""             # disabled — frees prefix+e for the sidebar toggle above
 next_agent = "prefix+b"          # jump to next agent (1st press → top of priority-sorted list), wraps
 previous_agent = "prefix+shift+b" # jump to previous agent (step back up the list)
+detach = ""                      # disabled — unused, avoid accidental session detach
+new_tab = "prefix+t"             # moved off default prefix+c, matches new_workspace naming below
+close_tab = "prefix+shift+q"     # moved off default prefix+shift+x
+next_tab = ""                    # disabled — unused
+previous_tab = ""                # disabled — unused
+new_workspace = "prefix+n"       # moved off default prefix+shift+n, frees shift+n for rename below
+rename_workspace = "prefix+shift+n" # moved off default prefix+shift+w
 # Everything else keeps Herdr's vim-flavored defaults:
 #   panes  prefix+h/j/k/l   splits  prefix+v (vert) / prefix+- (horiz)
-#   tabs   prefix+c new · prefix+n/p next/prev · prefix+1..9 · zoom prefix+z
+#   tabs   prefix+shift+t rename · prefix+1..9 switch · zoom prefix+z
 
 [[keys.command]]              # reviewr: toggle code-review sidebar (persiyanov.reviewr plugin)
 key = "prefix+g"
