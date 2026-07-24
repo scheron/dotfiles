@@ -4,7 +4,7 @@ description: Use when starting feature work that needs isolation from current wo
 ---
 
 > Ported from superpowers' `using-git-worktrees` (MIT, Copyright (c) 2025 Jesse Vincent).
-> Adapted by `dev-stack`: this is the isolation step for **every** tier (Tier 1 fixes included, so a batch runs in parallel), with a plan-gate reminder and a base-commit check (Step 0.5) added below. See ../../NOTICE.md.
+> Adapted by `dev-stack`: this is the isolation step for **every** tier (Tier 1 fixes included, so a batch runs in parallel), with a plan-gate reminder, a base-commit check (Step 0.5), and an in-place branch fallback (Step 1c — absorbing the retired `new-branch` skill; its helper `scripts/new-branch.sh` remains) added below. See ../../NOTICE.md.
 
 # Using Git Worktrees
 
@@ -14,9 +14,10 @@ Ensure work happens in an isolated workspace. Prefer your platform's native work
 
 **Core principle:** Detect existing isolation first. Then use native tools. Then fall back to git. Never fight the harness.
 
-> **dev-stack — two rules ride on top of the port below:**
+> **dev-stack — three rules ride on top of the port below:**
 > 1. **Plan gate.** Don't reach this skill to *start coding* until your tier's plan is presented and approved (Tier 1: a few lines in chat + a "go"; Tier 2/3: the spec / wayfinder gate). The worktree is where approved work goes — not a way around the gate.
-> 2. **Base commit.** Before creating the worktree, confirm the *commit* you're branching off — right branch, and local not silently behind origin — Step 0.5 below.
+> 2. **Base commit.** Before creating the worktree, confirm the *commit* you're branching off — right branch (in a `to-implementation` run: the approved hub tip), and local not silently behind origin — Step 0.5 below.
+> 3. **No worktree ≠ no isolation.** When a worktree can't be made (sandbox denial) or the user declines one, fall back to a dedicated in-place branch — Step 1c. Never work on the default branch.
 
 **Announce at start:** "I'm using the using-git-worktrees skill to set up an isolated workspace."
 
@@ -49,11 +50,13 @@ Has the user already indicated their worktree preference in your instructions? I
 
 > "Would you like me to set up an isolated worktree? It protects your current branch from changes."
 
-Honor any existing declared preference without asking. If the user declines consent, work in place and skip to Step 2.
+Honor any existing declared preference without asking. If the user declines consent, don't work on the current branch as-is — cut a dedicated branch in place (Step 1c, dev-stack), then skip to Step 2.
 
 ## Step 0.5: Confirm the base commit (dev-stack)
 
 A worktree's base is a **commit you choose and then verify** — not a default you accept. Two silent traps put it on the wrong commit; check both before creating, and verify after.
+
+**Hub and spoke (`to-implementation` runs).** When this worktree is a ticket **spoke**, the base is not the default branch — it is the **approved hub tip**: the feature-branch commit the user approved at dispatch (STACK.md §5). Set `BASE` to that commit, and read the two traps below against it: "wrong branch" means anything that isn't the approved hub tip (the default branch included), and "local ahead of origin" bites hardest here — the hub usually lives only locally, so a tool that defaults to `origin` silently drops every hub commit. For the post-create ancestor check, `$FOUND` is the hub tip itself.
 
 Resolve the default branch and where you are:
 
@@ -143,7 +146,47 @@ git worktree add "$path" -b "$BRANCH_NAME" "${BASE:-$DEF}"   # BASE chosen in St
 cd "$path"
 ```
 
-**Sandbox fallback:** If `git worktree add` fails with a permission error (sandbox denial), tell the user the sandbox blocked worktree creation and you're working in the current directory instead. Then run setup and baseline tests in place.
+**Sandbox fallback (dev-stack):** If `git worktree add` fails with a permission error (sandbox denial), tell the user the sandbox blocked worktree creation, then fall back to a dedicated in-place branch — Step 1c. Never settle for working in the current directory as-is: the current branch is not isolation.
+
+### 1c. In-Place Branch Fallback (dev-stack)
+
+No worktree, still isolation. Reach this section on exactly two triggers:
+
+- **Sandbox denial** — worktree creation failed with a permission error (Step 1a or 1b).
+- **User declined** — the user said no to a worktree (Step 0).
+
+Cut a dedicated branch in place and do the work there.
+
+<HARD-GATE>
+Never work on the default branch — not for a one-line fix, not "just to test". When a worktree can't be made, the floor is a dedicated in-place branch, cut before the first edit. The plan gate at the top of this file still applies on this path.
+</HARD-GATE>
+
+**Confirm the branch origin first.** Branching off the wrong base is silent and expensive — Step 0.5's traps apply unchanged:
+
+- **On the default branch** — cut the branch off it, as normal.
+- **Not on the default** — STOP and ask: *"You're on `<cur>`, not `<def>`. Branch from here, or switch to `<def>` first?"* The script **refuses** in this case unless you pass `--from-here`, so ask the user before you do. In a `to-implementation` run, "here" must be the **approved hub tip** — branching a spoke from it is the one case where `--from-here` is already covered by the dispatch approval.
+
+**Run:**
+
+```
+${CLAUDE_PLUGIN_ROOT}/scripts/new-branch.sh <type> <slug> [--from-here]
+```
+
+If `$CLAUDE_PLUGIN_ROOT` is unset in this context, the inline equivalent is:
+
+```
+git switch -c <type>/<slug>   # off the confirmed base — origin checked above
+```
+
+- `type` — `fix` for a bug, `feat`/`chore`/`refactor` as the task fits. Default `chore`.
+- `slug` — a short kebab description of the work; the script sanitises it.
+- `--from-here` — branch off the current branch instead of refusing when it isn't the default. Only after the user has said so.
+
+Name from the task: a crash → `fix/<slug>`, a small addition → `feat/<slug>`.
+
+A `branch-guard` PreToolUse hook denies edits and commits on the default branch in any repo carrying a `.branch-guard` marker — this fallback is the clean path the guard points to. The obligation lives in the hook, not in this text.
+
+Once on the branch, continue to Step 2 — setup and baseline run in place.
 
 ## Step 2: Project Setup
 
@@ -200,7 +243,8 @@ Ready to implement <feature-name>
 | Both exist | Use `.worktrees/` |
 | Neither exists | Check instruction file, then default `.worktrees/` |
 | Directory not ignored | Add to .gitignore + commit |
-| Permission error on create | Sandbox fallback, work in place |
+| Permission error on create | In-place branch fallback (Step 1c, dev-stack) |
+| User declines a worktree | In-place branch fallback (Step 1c, dev-stack) |
 | Tests fail during baseline | Report failures + ask |
 | No package.json/Cargo.toml | Skip dependency install |
 
@@ -236,6 +280,7 @@ Ready to implement <feature-name>
 **Never:**
 - Create a worktree when Step 0 detects existing isolation
 - Create a worktree off a non-default branch without asking first (Step 0.5)
+- Work on the default branch when a worktree falls through — the fallback is a dedicated in-place branch (Step 1c, dev-stack), never the current checkout as-is
 - Trust a native worktree tool's default base — it may branch from `origin`, behind your local commits. Verify the base (Step 0.5), don't assume it.
 - Use `git worktree add` when you have a native worktree tool (e.g., `EnterWorktree`). This is the #1 mistake — if you have it, use it.
 - Skip Step 1a by jumping straight to Step 1b's git commands
