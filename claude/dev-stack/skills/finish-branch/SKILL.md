@@ -3,20 +3,32 @@ name: finish-branch
 description: Complete development work — harvest durable knowledge into ADRs and CONTEXT.md, verify the build, present integration options (merge, PR, keep, discard), execute the choice, and clean up the worktree and .scratch/. Use when implementation is complete and tests pass.
 ---
 
+<STOP-GATE>
+Implementation is complete and the tree is green. I'll harvest the durable layer (ADRs, CONTEXT.md, the verify contract) and re-run verification, then integrate — how should this land?
+
+1. Merge back to the base branch locally
+2. Push and open a Pull Request
+3. Keep the branch as-is
+4. Discard this work
+
+Detached HEAD drops the merge — three options. The exact menu is confirmed after environment detection (Step 3).
+</STOP-GATE>
+<!-- dev-stack: STOP-gate prepended — the integration menu becomes the gate (invocation-contract pass). -->
+
 # Finish Branch
 
 **Core principle:** Harvest → Verify → Detect environment → Present options → Execute → Clean up.
 
-> Port of superpowers' `finishing-a-development-branch` (MIT, Jesse Vincent), with one step added: **Step 1, Harvest**. The branch is about to disappear along with everything ephemeral on it; whatever deserved to outlive it has to be extracted first, deliberately, while the context still exists.
+> Port of superpowers' `finishing-a-development-branch` (MIT, Jesse Vincent), with one step added: **Step 1, Harvest** — the final sweep for durable knowledge that didn't already land mid-flight. The branch is about to disappear along with everything ephemeral on it; whatever deserved to outlive it and slipped past the `adr-candidate` gate has to be extracted now, while the context still exists.
 
-## Step 1 — Harvest the durable layer
+## Step 1 — Harvest the durable layer (the final sweep)
 
-`.scratch/` is about to be deleted and the branch merged. Anything worth keeping has to move **now** — this is the last moment the knowledge and the context coexist.
+ADRs are meant to land **mid-flight** — `/verified-review` raises them as `adr-candidate` findings and they're written to the hub at the integration gate, where later spokes already see them through git (STACK.md §9). This step is the **final sweep**: the last pass for anything that slipped through before `.scratch/` is deleted and the branch merged. No longer the only chance to capture a decision — but the last.
 
 Walk the feature's `.scratch/` directory, the ledger, and the review reports, and ask three questions:
 
-**Did a decision get made that is hard to reverse, surprising without context, and the result of a real trade-off?**
-All three, or it's not an ADR. Write it to `docs/adr/` — including the alternatives that were rejected and why. The rejected branch is the half that stops the next agent rediscovering a dead end.
+**Did a decision get made that passes the ADR test `/domain-modeling` owns — and never make it into `docs/adr/`?**
+The test is the same one `/verified-review` applies mid-flight (hard to reverse, surprising without context, a real trade-off — all three, or it's not an ADR). Passed it and it's already recorded? Nothing to do. Otherwise write it to `docs/adr/` now — including the alternatives that were rejected and why. The rejected branch is the half that stops the next agent rediscovering a dead end.
 
 **Did a term get settled, sharpened, or disambiguated?**
 Into `CONTEXT.md`, via `/domain-modeling`. Definition only — one or two sentences, what it *is*, plus the rejected synonyms under `_Avoid_`. No implementation details; `CONTEXT.md` is a glossary and nothing else.
@@ -185,7 +197,7 @@ git worktree prune
 
 ## Common mistakes
 
-**Skipping harvest** — the ADR that would have saved the next feature dies with the branch. This is the failure this fork exists to prevent, and it's silent: nothing breaks, you just pay again in three weeks.
+**Skipping harvest** — the ADR that slipped past the mid-flight `adr-candidate` gate dies with the branch. Most decisions are recorded during the run now (STACK.md §9); this sweep is the last catch for the ones that weren't, and missing it is silent: nothing breaks, you just pay again in three weeks.
 
 **Harvesting the briefs** — promoting exact paths into the repo recreates spec-rot. Briefs were allowed to be precise *because* they were disposable.
 
@@ -218,4 +230,4 @@ git worktree prune
 - Present exactly 4 options (3 on detached HEAD)
 - `cd` to the main root before removing a worktree, then `git worktree prune`
 
-**Related:** `/execute-tickets` hands off here · `/domain-modeling` owns `CONTEXT.md` and ADR writing · `/using-git-worktrees` created the workspace this removes
+**Related:** `/to-implementation` hands off here · `/domain-modeling` owns `CONTEXT.md` and ADR writing · `/using-git-worktrees` created the workspace this removes

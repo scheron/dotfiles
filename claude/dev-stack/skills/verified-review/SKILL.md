@@ -5,19 +5,23 @@ description: Review the changes since a fixed point along two axes — Standards
 
 # Verified Review
 
-Three checks on the diff between `HEAD` and a fixed point:
+Review of the diff between `HEAD` and a fixed point, in two stages:
 
-- **Verify** — does the named command go green? *The reviewer runs it.* Binary.
-- **Standards** — does the code conform to this repo's documented standards?
-- **Spec** — does the code faithfully implement the originating ticket / spec?
+- **Stage 0 — cheap, early-exit.** The reviewer runs the brief's Verify command plus the repo's lint and type/compile checks *itself*, in the worktree under review. Any red → return immediately; the axes never launch on broken code.
+- **Stage 1 — the axes, in parallel.** Two sub-agents so they don't pollute each other's context, reported side by side without merging:
+  - **Standards** — does the code conform to this repo's documented standards?
+  - **Spec** — does the code faithfully implement the originating ticket / spec?
+  - plus one informational check — `adr-candidate` (step 6).
 
-Verify runs first and is a gate. The two axes then run as **parallel sub-agents** so they don't pollute each other's context, and are reported side by side without merging.
-
-> Fork of Matt Pocock's `code-review` (MIT). One substantive change: the reviewer executes the verification command instead of reading the implementer's claim that it passed. See *Why the reviewer runs it*.
+> Fork of Matt Pocock's `code-review` (MIT). Substantive changes: the reviewer executes the verification gate itself — stage 0 — instead of reading the implementer's claim that it passed (see *Why the reviewer runs it*), and surfaces ADR-worthy decisions as `adr-candidate` findings.
 
 ## Process
 
-### 1. Pin the fixed point
+### Stage 0 — early exit on broken code
+
+Run by you — the reviewer — in the worktree under review. Nothing is dispatched before this stage is green.
+
+#### 1. Pin the fixed point
 
 Whatever the user said — a commit SHA, branch, tag, `main`, `HEAD~5`. If they didn't specify, ask.
 
@@ -25,25 +29,31 @@ Capture `git diff <fixed-point>...HEAD` (three-dot, against the merge-base) and 
 
 Confirm the ref resolves (`git rev-parse <fixed-point>`) and the diff is non-empty. A bad ref should fail here, not inside two sub-agents.
 
-### 2. Run Verify — the gate
+#### 2. Run Verify + lint + type/compile checks — yourself
 
-Find the command, in this order:
+Find the Verify command, in this order:
 
-1. The `Verify` block of the ticket's brief (`.scratch/<feature>/brief-NN.md`).
+1. The `Verify` block of the ticket's brief (`.scratch/brief-NN.md` in the worktree under review — the spoke writes its brief locally).
 2. `AGENTS.md` → `## Build & run`.
 3. Ask the user.
 
-**Run it yourself. Now, before dispatching anything.**
+Alongside it, the repo's lint and type/compile-check commands — same sources, whatever this toolchain provides (a separate type-checker, or the compiler/build itself). A repo that genuinely has neither runs Verify alone; don't invent substitutes.
+
+**Run them yourself. Now, before dispatching anything.**
 
 | Outcome | Meaning |
 |---|---|
-| Green | Gate passes. Continue to step 3. |
-| Red | Stop. Report the failure. Do not spend two sub-agents reviewing code that doesn't work. |
-| No such command exists | **This is the finding.** Report it and stop — this is what `/improve-codebase-architecture` handles. Do not substitute a manual check. |
+| All green | Stage 0 passes. Continue to stage 1. |
+| Any red | Return immediately. The failing command's output is the **only** finding — the Standards/Spec axes never launch on broken code. |
+| No Verify command exists | **This is the finding.** Report it and stop — this is what `/improve-codebase-architecture` handles. Do not substitute a manual check. |
 
-**If the implementer's report said this command passed and it goes red for you, that discrepancy is itself a finding** — report it above the axes. It means the report is not load-bearing, and every other claim in it is now suspect.
+**Red here where the implementer's report claimed green is itself a finding — record it in the return, beside the command output.** A report contradicted on its most checkable claim is not load-bearing: every other claim in it is now suspect, and whoever fixes must treat the report as noise, not evidence.
 
-### 3. Identify the spec source
+### Stage 1 — the axes, in parallel
+
+Reached only on a green stage 0.
+
+#### 3. Identify the spec source
 
 In this order:
 
@@ -54,7 +64,7 @@ In this order:
 
 The brief's **Global Constraints** block, if present, travels to both sub-agents verbatim.
 
-### 4. Identify the standards sources
+#### 4. Identify the standards sources
 
 Anything documenting how code should be written here — `CODING_STANDARDS.md`, `CONTRIBUTING.md`, `AGENTS.md`.
 
@@ -78,7 +88,7 @@ Each reads *what it is* → *how to fix*:
 - **Middle Man** — a unit that mostly delegates onward. → cut it.
 - **Refused Bequest** — a subclass ignoring most of what it inherits. → composition.
 
-### 5. Spawn both sub-agents in parallel
+#### 5. Spawn both sub-agents in parallel
 
 One message, two `Agent` calls, `general-purpose` for both.
 
@@ -92,35 +102,51 @@ One message, two `Agent` calls, `general-purpose` for both.
 
 Do not pre-judge findings for either sub-agent. If the prompt you're writing contains "don't flag", "at most Minor", or "the spec chose" — stop. Let the finding surface and adjudicate it yourself.
 
-### 6. Aggregate
+#### 6. The adr-candidate check
+
+One conditional, applied by you while reading the diff and the axes' reports: **the change passes the ADR test owned by `/domain-modeling` → emit a finding of class `adr-candidate`**, carrying a one-sentence statement of the decision and its trade-off. The criteria live in `/domain-modeling`; this skill only points at them.
+
+`adr-candidate` is **informational**: it never blocks the ticket and is never dispatched for fixing. The orchestrator presents it at the integration gate, where approval sends it to `/domain-modeling` to be written up.
+
+#### 7. Aggregate
 
 ```
-## Verify
-<command> → green | red
-[report discrepancy with the implementer's report, if any]
+## Stage 0
+<verify command> → green
+<lint command> → green · <typecheck command> → green
 
 ## Standards
 <report, verbatim or lightly cleaned>
 
 ## Spec
 <report, verbatim or lightly cleaned>
+
+## adr-candidate (informational — rides to the integration gate)
+<one sentence: the decision and its trade-off> — omit the section if none
 ```
 
 Do **not** merge or rerank across axes. End with one line: findings per axis and the worst issue *within each axis*. No single winner across axes — that reranking is what the separation exists to prevent.
 
+## Fix dispatch
+
+When findings need fixing, dispatch **one fixer per findings list — never one fixer per finding**: the fixer sees the whole list, so related findings get one coherent fix instead of N colliding ones.
+
+The dispatch carries one conditional line: **findings received → follow `/receiving-code-review`** — a finding is a hypothesis too; verify it against the code before implementing it.
+
 ## Definition of Done
 
-All three, or it isn't done:
+All of it, or it isn't done:
 
-- [ ] **Verify green** — red before the change, green after, run by you
+- [ ] **Stage 0 green** — Verify (red before the change, green after) plus lint and type/compile checks, run by you
 - [ ] **Spec axis** — matches the ticket
 - [ ] **Standards axis** — matches the repo's conventions
+- [ ] **No discrepancy** between the implementer's report and what you observed
 
-Plus: no discrepancy between the implementer's report and what you observed.
+An `adr-candidate` finding never blocks — it is presented at the integration gate, not fixed.
 
 ### On a clean pass — record it
 
-When all three pass with no blocking findings, mark this exact working state as reviewed so the `review-guard` Stop hook knows the change was reviewed and won't nag at turn end:
+When stage 0 and both axes pass with no blocking findings (an `adr-candidate` on its own is not blocking), mark this exact working state as reviewed so the `review-guard` Stop hook knows the change was reviewed and won't nag at turn end:
 
 ```
 "${CLAUDE_PLUGIN_ROOT:-$HOME/.dotfiles/claude/dev-stack}/hooks/review-mark.sh" || true
@@ -137,7 +163,7 @@ Upstream `subagent-driven-development` says the opposite:
 
 That is a token optimisation, and it buys the saving with the one thing the review exists to establish. **An implementer's report is a hypothesis, not evidence.** The contradiction is already inside superpowers: `verification-before-completion` names "trusting agent success reports" a red flag, and SDD is built on exactly that trust.
 
-Running one command costs seconds. Discovering at merge that the report was optimistic costs the branch.
+Running stage 0 costs seconds. Discovering at merge that the report was optimistic costs the branch.
 
 ## Why two axes
 
@@ -146,6 +172,6 @@ A change can pass one and fail the other:
 - Follows every standard, implements the wrong thing → **Standards pass, Spec fail.**
 - Does exactly what the ticket asked, breaks the repo's conventions → **Spec pass, Standards fail.**
 
-Reporting them separately stops one from masking the other. Verify is not a third axis — it's the gate both axes stand on.
+Reporting them separately stops one from masking the other. Stage 0 is not a third axis — it's the gate both axes stand on.
 
-**Related:** `/brief` names the `Verify` command · `/execute-tickets` calls this after every ticket · `/improve-codebase-architecture` receives the "no Verify command" finding
+**Related:** `/brief` names the `Verify` command · `/to-implementation` calls this after every ticket · `/domain-modeling` owns the ADR test behind `adr-candidate` · `/receiving-code-review` governs the fixer's handling of findings · `/improve-codebase-architecture` receives the "no Verify command" finding

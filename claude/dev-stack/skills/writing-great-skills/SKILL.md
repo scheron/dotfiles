@@ -1,7 +1,6 @@
 ---
 name: writing-great-skills
 description: Reference for writing and editing skills well — the vocabulary and principles that make a skill predictable.
-disable-model-invocation: true
 ---
 
 A skill exists to wrangle determinism out of a stochastic system. **Predictability** — the agent taking the same _process_ every run, not producing the same output — is the root virtue; every lever below serves it.
@@ -16,6 +15,9 @@ Two choices, trading different costs:
 - A **user-invoked** skill strips the description from the agent's reach: only you, typing its name, can invoke it — and no other skill can. Zero context load, but it spends **cognitive load**: _you_ are the index that must remember it exists. Mechanics: set `disable-model-invocation: true`; the `description` becomes human-facing — a one-line summary, trigger lists stripped.
 
 Pick model-invocation only when the agent must reach the skill on its own, or another skill must. If it only ever fires by hand, make it user-invoked and pay no context load.
+
+<!-- dev-stack: the frontmatter flag dropped from this file and the note below added (invocation-contract pass). -->
+> **dev-stack departure:** driving skills in this stack carry no `disable-model-invocation` — each opens with a `<STOP-GATE>` block instead: the model may raise the skill, the user still gates it. The inverse flag `user-invocable: false` marks internal skills only skills and the model reach (hidden from the slash menu). See STACK.md §3.
 
 When user-invoked skills multiply past what you can remember, that piled-up cognitive load is cured by a **router skill**: one user-invoked skill that names the others and when to reach for each.
 

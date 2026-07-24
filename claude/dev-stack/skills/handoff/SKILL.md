@@ -2,8 +2,12 @@
 name: handoff
 description: Compact the current conversation into a handoff document for another agent to pick up.
 argument-hint: "What will the next session be used for?"
-disable-model-invocation: true
 ---
+
+<STOP-GATE>
+I'll compact this conversation into a handoff document for <purpose> — go?
+</STOP-GATE>
+<!-- dev-stack: STOP-gate prepended and the model-invocation flag dropped — invocation moves from flag to gate (invocation-contract pass). -->
 
 Write a handoff document summarising the current conversation so a fresh agent can continue the work. Save to the temporary directory of the user's OS - not the current workspace.
 

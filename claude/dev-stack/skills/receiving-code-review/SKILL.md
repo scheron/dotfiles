@@ -1,8 +1,10 @@
 ---
 name: receiving-code-review
 description: Use when receiving code review feedback, before implementing suggestions, especially if feedback seems unclear or technically questionable - requires technical rigor and verification, not performative agreement or blind implementation
+user-invocable: false
 ---
 
+<!-- dev-stack: user-invocable: false added — internal skill, reached by skills and the model, hidden from the slash menu (invocation-contract pass). -->
 # Code Review Reception
 
 ## Overview

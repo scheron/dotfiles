@@ -8,13 +8,12 @@ MIT. Source: the `superpowers` Claude Code plugin, version 6.1.1.
 
 | File here | Upstream | Change |
 |---|---|---|
-| `skills/using-git-worktrees/SKILL.md` | `skills/using-git-worktrees/SKILL.md` | adapted: serves all tiers, plan-gate reminder + branch-origin check (Step 0.5) added |
-| `skills/verification-before-completion/SKILL.md` | `skills/verification-before-completion/SKILL.md` | verbatim; attribution line added |
-| `skills/execute-tickets/SKILL.md` | `skills/subagent-driven-development/SKILL.md` | substantially rewritten — see below |
-| `skills/execute-tickets/implementer-prompt.md` | `skills/subagent-driven-development/implementer-prompt.md` | adapted: brief-based, `/tdd`, Verify in the report contract |
+| `skills/using-git-worktrees/SKILL.md` | `skills/using-git-worktrees/SKILL.md` | adapted: serves all tiers, plan-gate reminder + branch-origin check (Step 0.5) + in-place branch fallback (Step 1c, absorbing the retired `new-branch` skill) added |
+| `skills/to-implementation/SKILL.md` | `skills/subagent-driven-development/SKILL.md` | substantially rewritten, twice removed (via the retired `execute-tickets` port) — see below |
+| `agents/implementer.md` | `skills/subagent-driven-development/implementer-prompt.md` | adapted into an agent definition: brief-based, `/tdd`, report contract |
 | `skills/finish-branch/SKILL.md` | `skills/finishing-a-development-branch/SKILL.md` | Step 1 "Harvest" added; `.scratch/` cleanup added |
 | `skills/diagnose/SKILL.md` (Phase 2.5, three-fix breaker) | `skills/systematic-debugging/SKILL.md` | two sections grafted onto a Pocock skill |
-| `skills/receiving-code-review/SKILL.md` | `skills/receiving-code-review/SKILL.md` | verbatim; invoked by `/execute-tickets` when acting on review findings |
+| `skills/receiving-code-review/SKILL.md` | `skills/receiving-code-review/SKILL.md` | adapted: `user-invocable: false` (marked in-file); referenced from `/to-implementation`'s fix dispatches |
 
 **Changes to `subagent-driven-development`:**
 
@@ -38,13 +37,19 @@ MIT. Source: <https://github.com/mattpocock/skills>.
 | File here | Change |
 |---|---|
 | `skills/to-spec/SKILL.md` | step 3 also supports publishing to `.scratch/<feature>/spec.md` when the tracker is local markdown |
-| `skills/to-tickets/SKILL.md` | closing section points at `/brief` + `/execute-tickets` instead of `/implement`, and states that briefs are generated at pickup, not at planning time |
+| `skills/to-tickets/SKILL.md` | closing section points at `/to-implementation` instead of `/implement`, and states that briefs are generated at pickup, not at planning time |
 
 Each patch is marked in-file with an `<!-- dev-stack: … -->` comment.
 
 ### Vendored verbatim
 
-`grill-with-docs`, `grilling`, `domain-modeling`, `tdd`, `wayfinder`, `codebase-design`, `improve-codebase-architecture`, `prototype`, `research`, `handoff`, `setup-matt-pocock-skills`, `writing-great-skills`, `resolving-merge-conflicts`, `setup-pre-commit`, `git-guardrails-claude-code` — copied unmodified, including their supporting files (`CONTEXT-FORMAT.md`, `ADR-FORMAT.md`, `DEEPENING.md`, `DESIGN-IT-TWICE.md`, `tests.md`, `mocking.md`, `LOGIC.md`, `UI.md`, `HTML-REPORT.md`, `GLOSSARY.md`, the `issue-tracker-*.md` templates, and `git-guardrails-claude-code/scripts/`).
+`grilling`, `tdd`, `prototype`, `research`, `setup-pre-commit`, `git-guardrails-claude-code` — copied unmodified.
+
+### Vendored with the invocation-contract patch (2026-07-24)
+
+`grill-with-docs`, `domain-modeling`, `codebase-design`, `improve-codebase-architecture`, `handoff`, `writing-great-skills`, `resolving-merge-conflicts` — copied from upstream, then patched by the invocation-contract pass (a `<STOP-GATE>` opener and/or frontmatter visibility flags); every patch is marked in-file with a `<!-- dev-stack: … -->` comment.
+
+Both groups carry their upstream supporting files unmodified (`CONTEXT-FORMAT.md`, `ADR-FORMAT.md`, `DEEPENING.md`, `DESIGN-IT-TWICE.md`, `tests.md`, `mocking.md`, `LOGIC.md`, `UI.md`, `HTML-REPORT.md`, `GLOSSARY.md`, and `git-guardrails-claude-code/scripts/`).
 
 The upstream `agents/openai.yaml` harness metadata is **not** carried — this set is Claude-only (STACK.md §7).
 

@@ -1,12 +1,16 @@
 ---
 name: to-spec
 description: Turn the current conversation into a spec and publish it to the project issue tracker — no interview, just synthesis of what you've already discussed.
-disable-model-invocation: true
 ---
+
+<STOP-GATE>
+The conversation has settled; I'll synthesize it into a spec at <destination> — go?
+</STOP-GATE>
+<!-- dev-stack: STOP-gate prepended and the model-invocation flag dropped — invocation moves from flag to gate (invocation-contract pass). -->
 
 This skill takes the current conversation context and codebase understanding and produces a spec (you may know this document as a PRD). Do NOT interview the user — just synthesize what you already know.
 
-The issue tracker and triage label vocabulary should have been provided to you — run `/setup-matt-pocock-skills` if not.
+The tracker configuration lives in `docs/agents/issue-tracker.md`; if it's missing, ask the user once where specs and tickets live and record the answer there (the tier-2 preflight normally has done this already). <!-- dev-stack: the retired tracker-setup skill's ask-once duty lives in the tier-2 preflight now. -->
 
 ## Process
 

@@ -1,5 +1,7 @@
 .DS_Store
 *.bak
+.scratch/
+.claude/worktrees/
 
 # Never commit secrets or app-generated state, even if a symlinked app
 # writes them back into the repo tree.
