@@ -82,6 +82,8 @@ If you don't know a value, that's the finding — resolve it before handing off,
 
 `Verify` is a **named, agent-runnable command that you have already run at least once**. Paste the invocation and its output into the brief.
 
+At pickup that output is normally **red** — the unit isn't built yet, and that red paste is the review's "before" evidence: `/verified-review` reads it instead of re-running the past. A green at pickup means the command cannot fail and is no Verify — except the wide-refactor case below, where a green build is the honest verdict.
+
 - [ ] **Red-capable** — drives the real path and asserts the unit's exact acceptance criteria. Not "runs without erroring": it must be able to fail if the unit isn't done.
 - [ ] **Deterministic** — same verdict every run.
 - [ ] **Fast** — seconds, not minutes.

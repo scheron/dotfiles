@@ -1,10 +1,10 @@
 ---
 name: finish-branch
-description: Complete development work — harvest durable knowledge into ADRs and CONTEXT.md on the default branch, verify the build, present integration options, execute the choice, and clean up the worktree and .scratch/. Use when implementation is complete and tests pass.
+description: Complete development work — harvest durable knowledge into ADRs and CONTEXT.md, verify the build, present integration options, execute the choice, and clean up the worktree and .scratch/. Use when implementation is complete and tests pass.
 ---
 
 <STOP-GATE>
-Implementation is complete and the tree is green. I'll harvest the durable layer (ADRs, CONTEXT.md) to the default branch and re-run verification, then integrate — how should this land?
+Implementation is complete and the tree is green. I'll harvest the durable layer (ADRs, CONTEXT.md) and re-run verification, then integrate — how should this land?
 
 1. Merge to the base branch, then delete the branch and worktree
 2. Merge to the base branch, keep the branch and worktree
@@ -23,7 +23,7 @@ Detached HEAD drops the merge options. The exact menu is confirmed after environ
 
 ## Step 1 — Harvest the durable layer (the final sweep)
 
-ADRs are meant to land **mid-flight** — `/verified-review` raises them as `adr-candidate` findings and the orchestrator writes them straight to the default branch. This step is the **final sweep**: the last pass for anything that slipped through before `.scratch/` is deleted and the branch merged. No longer the only chance to capture a decision — but the last.
+ADRs are meant to land **mid-flight** — `/verified-review` raises them as `adr-candidate` findings and the orchestrator commits them on the unit's branch, where they merge with the work. This step is the **final sweep**: the last pass for anything that slipped through before `.scratch/` is deleted and the branch merged. No longer the only chance to capture a decision — but the last.
 
 Walk the unit's `.scratch/` directory and the review report, and ask two questions:
 
@@ -33,7 +33,7 @@ The test is the same one `/verified-review` applies mid-flight (hard to reverse,
 **Did a term get settled, sharpened, or disambiguated?**
 Into `CONTEXT.md`, via `/domain-modeling`. Definition only — one or two sentences, what it *is*, plus the rejected synonyms under `_Avoid_`. No implementation details; `CONTEXT.md` is a glossary and nothing else.
 
-**ADRs and `CONTEXT.md` go straight to the default branch** — commit them there directly (`branch-guard` passes `docs/adr/` and `CONTEXT.md`), not onto this unit's branch. Domain knowledge belongs on the main line, and committing it there means it survives even if the code below is discarded.
+**Harvested ADRs and `CONTEXT.md` commit on this branch** — they ride the merge or the PR beside the work they describe. The one exception is **Discard**: the branch is about to die, so harvest writes them straight to the default branch (`branch-guard` passes `docs/adr/` and `CONTEXT.md`) — the learning survives the code.
 
 Also carry forward, if they came up:
 
@@ -162,7 +162,7 @@ Type 'discard' to confirm.
 
 Wait for the exact word. Then `cd` to the main root, clean up (Step 7), and `git branch -D <feature-branch>`.
 
-**Harvest still ran.** Discarding the code does not discard what was learned — an ADR written in Step 1 is already on the default branch, often the entire value of an abandoned branch.
+**Harvest still ran.** Discarding the code does not discard what was learned — on Discard the harvest wrote its ADRs to the default branch, often the entire value of an abandoned branch.
 
 ## Step 7 — Clean up
 
@@ -230,7 +230,7 @@ git worktree prune
 
 **Always:**
 - Harvest before anything is deleted, and show the user what you'll write
-- Write ADRs and `CONTEXT.md` to the default branch, not the unit's branch
+- Commit harvested ADRs and `CONTEXT.md` on the unit's branch — except on Discard, where they go to the default branch to survive
 - Verify from the brief's `Verify`/`Sweep`, not memory
 - Detect the environment before presenting the menu
 - Present exactly 5 options (3 on detached HEAD)

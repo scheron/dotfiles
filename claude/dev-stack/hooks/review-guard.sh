@@ -45,6 +45,6 @@ last="$(tail -n 800 "$tp" 2>/dev/null \
   | tail -n 3)"
 printf '%s' "$last" | grep -qiE '(^|[^a-z])(done|complete|completed|finished|fixed|resolved|готов|исправ|заверш|all set|wrapped up)([^a-z]|$)|should (now )?work|passing now|ready to (commit|merge|review|ship)' || exit 0
 
-reason="dev-stack review gate — you're wrapping up unreviewed changes on '${branch}'. A change is not done until /verified-review has run: the reviewer runs the Verify command itself (red before, green after) and checks Standards + Spec. Run /verified-review now. If you are pausing mid-work and not done, say so and stop again — this fires once."
+reason="dev-stack review gate — you're wrapping up unreviewed changes on '${branch}'. A change is not done until /verified-review has run: the reviewer runs the Verify command itself — green now, red-at-pickup on file in the brief — and checks Standards + Spec. Run /verified-review now. If you are pausing mid-work and not done, say so and stop again — this fires once."
 jq -cn --arg r "$reason" '{decision:"block", reason:$r}' 2>/dev/null || exit 0
 exit 0

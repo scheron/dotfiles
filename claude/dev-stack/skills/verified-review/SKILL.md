@@ -33,6 +33,8 @@ The commands are in the brief. Read `.scratch/brief-NN.md` in the worktree under
 
 **Run them yourself. Now, before dispatching anything.**
 
+**Red is read, not re-run.** You cannot see Verify fail on the finished tree — the red lives in the brief: the brief-writer ran the command at pickup, before the unit was built, and pasted its output. Confirm that paste shows red. A green at pickup means the command cannot fail — that is a finding (the command is no Verify), except a wide refactor, where `Verify: build` is legitimately green.
+
 | Outcome | Meaning |
 |---|---|
 | All green | Stage 0 passes. Continue to stage 1. |
@@ -98,7 +100,7 @@ Do not pre-judge findings for either sub-agent. If the prompt you're writing con
 
 One conditional, applied by you while reading the diff and the axes' reports: **the change passes the ADR test owned by `/domain-modeling` → emit a finding of class `adr-candidate`**, carrying a one-sentence statement of the decision and its trade-off. The criteria live in `/domain-modeling`; this skill only points at them.
 
-`adr-candidate` is **informational**: it never blocks the unit and is never dispatched for fixing. The orchestrator writes it up automatically — via `/domain-modeling`, before integrating — so it always lands on the default branch. The review only surfaces it.
+`adr-candidate` is **informational**: it never blocks the unit and is never dispatched for fixing. The orchestrator writes it up automatically — via `/domain-modeling`, before integrating — its own commit on the unit's branch, so it merges with the work. The review only surfaces it.
 
 #### 7. Aggregate
 
@@ -129,7 +131,7 @@ The dispatch carries one conditional line: **findings received → follow `/rece
 
 All of it, or it isn't done:
 
-- [ ] **Stage 0 green** — Verify (red before the change, green after) plus lint and type/compile checks, run by you
+- [ ] **Stage 0 green** — Verify green now, run by you, with red-at-pickup on file in the brief — plus lint and type/compile checks
 - [ ] **Spec axis** — matches the ticket
 - [ ] **Standards axis** — matches the repo's conventions
 - [ ] **No discrepancy** between the implementer's report and what you observed
@@ -141,7 +143,7 @@ An `adr-candidate` finding never blocks — the orchestrator writes it up automa
 When stage 0 and both axes pass with no blocking findings (an `adr-candidate` on its own is not blocking), mark this exact working state as reviewed so the `review-guard` Stop hook knows the change was reviewed and won't nag at turn end:
 
 ```
-"${DEV_STACK_ROOT:-$HOME/.dotfiles/claude/dev-stack}/hooks/review-mark.sh" || true
+"${DEV_STACK_ROOT:-$(dirname "$(readlink "$HOME/.claude/skills/verified-review")")/..}/hooks/review-mark.sh" || true
 ```
 
 Best-effort — it fingerprints `HEAD` + the working diff, so any later edit re-arms the gate and needs a fresh review. If findings remain, do **not** mark: address them (or hand them back) and re-review first.

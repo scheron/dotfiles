@@ -50,7 +50,7 @@ Dispatch the **implementer** with the brief's path. It reads the brief first and
 - **DONE** → the sweep.
 - **DONE_WITH_CONCERNS** → read the concerns first; resolve correctness or scope before the sweep, carry observations to the review.
 - **NEEDS_CONTEXT** → supply what was missing, re-dispatch — then fix the brief so the gap doesn't recur.
-- **BLOCKED** → assess: more context needed → provide and re-dispatch; needs more reasoning → wrong seat, escalate; unit too large → the slice was wrong, split it; the unit itself is wrong → escalate to the user. Never force an unchanged retry.
+- **BLOCKED** → triage first — most "too hard" is something else in disguise: a gap the brief should have closed → treat as NEEDS_CONTEXT; an open decision with several valid answers → the user's call, never the seat's; unit too large → the slice was wrong, split it; the unit itself wrong → escalate to the user. Only when none of those fit is the seat genuinely too small: propose re-dispatching the **same implementer with a stronger model** (the Agent tool's model override) and wait for the user's go — escalation is spend, and spend sits behind a gate. Never force an unchanged retry.
 
 ### 5. The sweep — run by you
 
@@ -58,7 +58,7 @@ Dispatch the **test-runner** in the worktree, handing it the brief's **Sweep** d
 
 - **GREEN** → review.
 - **RED** → send the summary back to the **same implementer** — its context is alive, it pays only for the summary. It fixes in place and re-reports; you re-sweep.
-- **Three red rounds in a row → BLOCKED.** Escalate to the user. Never grind an unwinnable loop.
+- **Three red rounds in a row → BLOCKED.** Escalate to the user, with the same stronger-model re-dispatch on the menu. Never grind an unwinnable loop.
 
 ### 6. /verified-review — the only receipt
 

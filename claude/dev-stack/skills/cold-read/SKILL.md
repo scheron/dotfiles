@@ -43,7 +43,7 @@ This is deliberate: the implementer will have the glossary and the ADRs, but the
 
 ### 2. Dispatch the reader
 
-One `general-purpose` subagent, fresh context, on a standard model. It must not inherit this session.
+One `general-purpose` subagent, fresh context, on the session's default model — no override. It must not inherit this session.
 
 Prompt it with only the artifact paths and this:
 

@@ -8,3 +8,5 @@ I'll start a grill session with `/domain-modeling` riding along, writing CONTEXT
 </STOP-GATE>
 
 Run a `/grill` session, using the `/domain-modeling` skill.
+
+If a scout or `/decision-map` left open decisions, seed the agenda with them — those questions go first.

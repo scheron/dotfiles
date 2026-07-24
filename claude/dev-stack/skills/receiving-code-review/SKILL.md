@@ -67,6 +67,7 @@ You understand 1,2,3,6. Unclear on 4,5.
 - **Skip to action** or technical acknowledgment
 
 ### From External Reviewers
+Findings from `/verified-review` land here too — a finding is a hypothesis to verify against the code, not an order.
 ```
 BEFORE implementing:
   1. Check: Technically correct for THIS codebase?

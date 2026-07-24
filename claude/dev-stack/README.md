@@ -37,39 +37,13 @@ Each seat is a subagent: a **brief-writer** explores the code and writes the exa
 Both tiers clear the same two gates — a one-line fix and a whole feature meet the same bar:
 
 - **Plan in.** No code before an approved plan. Tier 1: a few lines in chat. Tier 2: the spec and the tickets, each approved at its gate.
-- **Review out.** No unit closes until `/verified-review` passes — the reviewer runs the verification command *itself*, red before / green after.
+- **Review out.** No unit closes until `/verified-review` passes — the reviewer runs the verification command *itself*: green now, with red-at-pickup on file in the brief.
 
 ## The skills
 
-Type any of these, or let a driver raise them behind a STOP-gate.
+The full menu — every command and when to reach for it — lives in **`/route-me`**: type it any time for the map and cheat sheet. The drivers (`/route-me`, `/tier-1`, `/tier-2`, `/to-implement`) plus `/verified-review` and `/finish-branch` carry the spine; the rest are raised by a driver or typed directly.
 
-| Command | When |
-|---|---|
-| `/route-me` | unsure which tier fits — scout and route |
-| `/tier-1` | small work that fits one execution now |
-| `/tier-2` | a feature — grill, spec, split into tickets |
-| `/diagnose` | something broke, throws, fails, or went slow |
-| `/grill` | stress-test a plan or decision — no docs written |
-| `/grill-me` | a feature grill against a codebase — grill + docs (CONTEXT.md, ADRs) |
-| `/decision-map` | open decisions exceed one grill session |
-| `/to-spec` | the conversation has settled into a spec |
-| `/to-tickets` | cut the spec into tracer-bullet tickets |
-| `/cold-read` | one context-free read of the tickets before building |
-| `/to-implement` | build one unit — a plan, a task, a spec, or one ticket |
-| `/verified-review` | close a unit, a branch, or a PR |
-| `/finish-branch` | everything green — integrate |
-| `/tdd` | build one behaviour test-first |
-| `/using-git-worktrees` | isolate before any work |
-| `/prototype` | a question needs a runnable answer |
-| `/research` | need an external fact |
-| `/handoff` | context running out — hand to a fresh session |
-| `/improve-codebase-architecture` | a finding arrived, or nothing can verify a change |
-| `/commit-work` | craft and split commits |
-| `/setup-pre-commit` | add Husky + lint-staged hooks |
-| `/git-guardrails-claude-code` | block destructive git commands |
-| `/writing-great-skills` | writing or editing a skill |
-
-Five more — `/brief`, `/codebase-design`, `/domain-modeling`, `/resolving-merge-conflicts`, `/receiving-code-review` — are **internal**: a driver or the model raises them in context, they aren't in the menu.
+Five skills — `/brief`, `/codebase-design`, `/domain-modeling`, `/resolving-merge-conflicts`, `/receiving-code-review` — are **internal**: a driver or the model raises them in context, they aren't in the menu.
 
 Three subagents in `agents/` do the building — `brief-writer`, `implementer`, `test-runner` — each with its model pinned in frontmatter. `/to-implement` dispatches them by name.
 
@@ -85,7 +59,7 @@ The single rule: **volatile lives in the ephemeral, stable lives in the durable.
 
 A spec has no paths because a human reads it and volatile detail gets in the way. A brief has exact paths because it will be dead in a day and precision there is free — and it is written **at pickup**, against the exact commit the worktree branched from, so it cannot go stale.
 
-Domain knowledge — `CONTEXT.md` and ADRs — is committed **straight to the default branch**, so it outlives any feature branch and every future unit sees it through git.
+Domain knowledge — `CONTEXT.md` and ADRs — always reaches the default branch: planning-time docs are committed there directly, a unit's ADRs ride its branch and land with the merge, and a discarded branch is harvested first — `/domain-modeling` owns the destination rules.
 
 ## Gates & enforcement
 
@@ -132,7 +106,7 @@ To wire the four hooks, add them to your `settings.json` (point the paths at you
 }
 ```
 
-Requirements: `jq` on `PATH`. The `branch-guard` and session hooks only act in repos carrying a `.branch-guard` marker — drop an empty `.branch-guard` at a repo root to opt it in. A couple of skills locate helper scripts through `$DEV_STACK_ROOT`; set it to your clone (e.g. `export DEV_STACK_ROOT=~/.dev-stack`) if you move the repo off the default path.
+Requirements: `jq` on `PATH`. The `branch-guard` and session hooks only act in repos carrying a `.branch-guard` marker — drop an empty `.branch-guard` at a repo root to opt it in. Skills that need a helper script locate the clone through the installed symlinks; set `$DEV_STACK_ROOT` only to override that. Freshly linked skills are picked up when the harness next refreshes its skill list — at the latest, the next session.
 
 ## The contract lint
 
