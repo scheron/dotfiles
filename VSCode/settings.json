@@ -1,11 +1,11 @@
 {
     "catppuccin-icons.hidesExplorerArrows": true,
-    "custom-ui-style.font.sansSerif": "Dank Mono",
-    "editor.fontFamily": "Dank Mono",
+    "custom-ui-style.font.sansSerif": "VictorMono Nerd Font Mono",
+    "editor.fontFamily": "VictorMono Nerd Font Mono",
     "terminal.integrated.fontFamily": "FiraCode Nerd Font",
     "terminal.integrated.fontSize": 12,
     "editor.fontSize": 14,
-    "editor.lineHeight": 1.7,
+    "editor.lineHeight": 1.8,
     "editor.fontWeight": 500,
     "diffEditor.ignoreTrimWhitespace": true,
     "diffEditor.renderSideBySide": true,
@@ -280,5 +280,12 @@
     },
     "typescript.experimental.useTsgo": false,
     "vue.blocks": {},
+    "chat.titleBar.signIn.enabled": false,
+    "chat.titleBar.openInAgentsWindow.enabled": false,
+    "chat.agentHost.enabled": false,
+    "chat.agent.enabled": false,
+    "workbench.activityBar.location": "top",
+    "workbench.sideBar.location": "right",
+    "workbench.browser.showInTitleBar": false,
 }
 
