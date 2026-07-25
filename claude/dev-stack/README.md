@@ -48,7 +48,7 @@ The loop over tickets is normally yours — `/to-implement <ticket>`, one per fr
 /autopilot 1,2,3          # run tickets 1, 2, 3 through the engine unattended
 ```
 
-It works the **frontier** of the dependency DAG — a ticket runs once its blockers have landed — **sequentially** (v1), spawning one fresh headless session per ticket. Each cuts its worktree from an **integration branch** (`autopilot/<feature>` by default) and lands back on it on green, so the next ticket cuts from the new tip and sees its blockers' code for free. A ticket closes only when its session leaves a **success sentinel**; anything else — no sentinel, a red review, a merge conflict — **halts the whole run** and leaves state on disk. Fix it and re-run the same command: the frontier recomputes from the sentinels, landed tickets are skipped, the run continues. There is no separate resume verb — the command is idempotent.
+It works the **frontier** of the dependency DAG — a ticket runs once its blockers have landed — **sequentially**, spawning one fresh headless session per ticket. Each cuts its worktree from an **integration branch** (`autopilot/<feature>` by default) and lands back on it on green, so the next ticket cuts from the new tip and sees its blockers' code for free. A ticket closes only when its session leaves a **success sentinel**; anything else — no sentinel, a red review, a merge conflict — **halts the whole run** and leaves state on disk. Fix it and re-run the same command: the frontier recomputes from the sentinels, landed tickets are skipped, the run continues. There is no separate resume verb — the command is idempotent.
 
 Plan-in was approved when the tickets were cut (`/to-tickets`); **review-out stays fully enforced** — `/verified-review` must go green per ticket. Every autopilot behaviour is gated on `DEV_STACK_AUTOPILOT=1`, exported only by the runner, so with it unset the interactive pipeline is byte-for-byte unchanged.
 
@@ -133,7 +133,7 @@ The stack's own invariants are checked offline by one script — its own Verify:
 ./contract-lint.sh
 ```
 
-It asserts every driving skill opens with a `<STOP-GATE>` block, no skill declares `disable-model-invocation`, exactly five skills are internal, and the retired skills are gone. Non-zero exit on any violation.
+It asserts every driving skill opens with a `<STOP-GATE>` block, no skill declares `disable-model-invocation`, exactly five skills are internal, and forbidden skill directories are absent. Non-zero exit on any violation.
 
 ## Licence
 

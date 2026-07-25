@@ -1,6 +1,6 @@
 ---
 name: autopilot
-description: Run a batch of already-cut tickets through the /to-implement engine UNATTENDED, in dependency order — one fresh headless session per ticket, advancing on green, halting on the first red. The automation layer over /to-tickets → /to-implement: instead of driving each ticket by hand in a fresh chat, hand the runner a set (e.g. 1,2,3) and it works the frontier. Sequential v1. Resumable.
+description: "Run a batch of already-cut tickets through the /to-implement engine UNATTENDED, in dependency order — one fresh headless session per ticket, advancing on green, halting on the first red. The automation layer over /to-tickets → /to-implement: instead of driving each ticket by hand in a fresh chat, hand the runner a set (e.g. 1,2,3) and it works the frontier. Runs one ticket at a time; resumable."
 ---
 
 <STOP-GATE>
@@ -13,7 +13,7 @@ Nothing is branched, spawned, or integrated until the go is given.
 
 # Autopilot
 
-The loop that `/to-tickets` and `/to-implement` deliberately left to the human — now automated, without giving up what made it manual. Each ticket still runs through the **real `/to-implement`** in a **fresh session**, so every brief stays sharp; autopilot only adds the *scheduler* around it.
+The loop that `/to-tickets` and `/to-implement` leave to the human, run for you — without giving up what makes the manual path safe. Each ticket still runs through the **real `/to-implement`** in a **fresh session**, so every brief stays sharp; autopilot only adds the *scheduler* around it.
 
 ## What it is
 
@@ -35,7 +35,7 @@ AP="${DEV_STACK_ROOT:-$(dirname "$(readlink "$HOME/.claude/skills/autopilot")")/
 
 That resolver mirrors `/verified-review`'s (`$DEV_STACK_ROOT` overrides; otherwise follow the installed symlink to the clone). Flags: `--feature <slug>` (needed only when `.scratch/*/issues` holds more than one feature), `--integration-branch <b>` (default `autopilot/<feature>`), `--base <ref>` (default the current branch).
 
-**Preconditions:** a clean working tree, and local-file tickets under `.scratch/<feature>/issues/<NN>-*.md` with a `Blocked by` line (what `/to-tickets` writes). Real-tracker batches are out of scope for v1.
+**Preconditions:** a clean working tree, and local-file tickets under `.scratch/<feature>/issues/<NN>-*.md` with a `Blocked by` line (what `/to-tickets` writes). Real-tracker batches are not supported.
 
 ## The contract (what the врезки rely on)
 
@@ -51,7 +51,7 @@ The runner sets three environment variables for each child session; the `/to-imp
 
 ## The moving base
 
-There is one **integration branch**. Ticket N's worktree cuts from its current tip; on green it merges back; the next ticket cuts from the new tip. That is what gives a dependent ticket its blockers' code for free — and because v1 is strictly sequential, merges are serialized and the runner introduces no conflicts of its own.
+There is one **integration branch**. Ticket N's worktree cuts from its current tip; on green it merges back; the next ticket cuts from the new tip. That is what gives a dependent ticket its blockers' code for free — and because the runner is strictly sequential, merges are serialized and it introduces no conflicts of its own.
 
 ## Halt & resume
 
@@ -63,7 +63,7 @@ On the first red the run stops and writes the reason to `<git-common-dir>/dev-st
 - Run with a dirty working tree — the runner refuses; commit or stash first
 - Point `--integration-branch` at the default branch — landings would fight `branch-guard`, and unreviewed history would reach the main line
 - Treat a child's chat output as the outcome — only the sentinel + branch advance close a ticket
-- Parallelize the frontier in v1 — sequential is the whole safety story; concurrent merges are a separate design
+- Parallelize the frontier — sequential execution is the whole safety story; concurrent merges are a separate design
 - Weaken review-out to make a ticket pass — a halt is the correct outcome; `/verified-review` green is not negotiable
 
 **Related:** `/to-tickets` cuts the batch this runs · `/to-implement` is the per-ticket engine (its Autopilot exception is the entry point) · `/finish-branch` lands each ticket (Option 1, driven non-interactively) · `/verified-review` still gates every ticket

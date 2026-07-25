@@ -3,7 +3,7 @@ name: using-git-worktrees
 description: Use when starting feature work that needs isolation from current workspace or before executing implementation plans - ensures an isolated workspace exists via native tools or git worktree fallback
 ---
 
-> The isolation step for **every** tier — Tier 1 included. Three additions ride on the base worktree flow: a plan-gate reminder, a base-commit check (Step 0.5), and an in-place branch fallback (Step 1c, absorbing the retired `new-branch` skill; its helper `scripts/new-branch.sh` remains).
+> The isolation step for **every** tier — Tier 1 included. The flow adds three things to a plain worktree: a plan-gate reminder, a base-commit check (Step 0.5), and an in-place branch fallback (Step 1c), backed by the helper `scripts/new-branch.sh`.
 
 # Using Git Worktrees
 

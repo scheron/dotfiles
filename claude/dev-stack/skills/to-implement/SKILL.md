@@ -1,6 +1,6 @@
 ---
 name: to-implement
-description: The execution engine — runs ONE unit (an approved chat plan, a raw task, a single-slice spec, or one ticket) through its full lifecycle in an isolated worktree: brief, verify-brief, build, sweep, review, ADR, integrate. The body of /tier-1, and directly invocable to skip the tiers; /tier-2 feeds it one ticket per fresh chat. Use to build an approved plan, a task, or a ticket.
+description: "The execution engine — runs ONE unit (an approved chat plan, a raw task, a single-slice spec, or one ticket) through its full lifecycle in an isolated worktree: brief, verify-brief, build, sweep, review, real-run verify, ADR, integrate. The body of /tier-1, and directly invocable to skip the tiers; /tier-2 feeds it one ticket per fresh chat. Use to build an approved plan, a task, or a ticket."
 ---
 
 <STOP-GATE>
@@ -62,19 +62,28 @@ Dispatch the **test-runner** in the worktree, handing it the brief's **Sweep** d
 - **RED** → send the summary back to the **same implementer** — its context is alive, it pays only for the summary. It fixes in place and re-reports; you re-sweep.
 - **Three red rounds in a row → BLOCKED.** Escalate to the user, with the same stronger-model re-dispatch on the menu. Never grind an unwinnable loop.
 
-### 6. /verified-review — the only receipt
+### 6. /verified-review — the review receipt
 
 Raise `/verified-review` with the fixed point set to **the base commit you recorded in step 1**. It runs stage 0 (Verify, lint, and type/compile checks — itself) then the Standards and Spec axes in parallel.
 
 - Findings → dispatch **one fixer per findings list** (never one per finding), carrying the line: *findings received → follow `/receiving-code-review`*. Re-review after.
 - A finding that conflicts with what the unit mandates is the user's call: present it beside the unit text and ask which governs.
-- **Green on every axis is the only thing that closes the unit.** The implementer's report is never a close condition — a green sweep is a working signal, not evidence.
+- **Green on every axis closes the review — and a green review is necessary but not sufficient (step 7).** The implementer's report is never a close condition — a green sweep is a working signal, not evidence.
 
-### 7. adr-candidate → write it
+### 7. Verify for real — drive it, don't trust green
+
+A green sweep and a green `/verified-review` prove the code is correct *as written and as exercised* — but tests are only as honest as what they touch. A unit's tests can pass on fakes, mocks, and fixtures while the real runtime path is broken by config, environment, wiring, or an external contract no test covers. Before the unit closes, run the actual thing end-to-end with `/verify`: exercise the affected flow and **observe it working** — the behaviour, not the test of it.
+
+- `/verify` self-scopes: a diff with no runtime surface to drive (docs, pure test/fixture edits) has nothing to observe and skips cleanly — but any unit touching product source has a runtime surface.
+- If the unit or its spec names a manual acceptance / "done-by-observation" script, that IS this step — run it, don't paraphrase it.
+- Fails here → the green was green on something that doesn't actually run — the highest-value catch in the whole lifecycle. Hand what you observed back to the implementer; fix, re-sweep, re-review, re-verify.
+- Necessary, not optional: a green sweep and a green review **do not close the unit** until it has been observed working for real (or `/verify` found nothing to drive).
+
+### 8. adr-candidate → write it
 
 If the review surfaced an `adr-candidate`, write the ADR **now, automatically, before integrating** — its own commit on the branch, so it merges with the work and cannot be lost. Use `/domain-modeling`'s ADR format; the candidate already carries the decision and its trade-off, so no question is asked — not losing it outweighs the gate. (`/finish-branch`'s harvest stays the final catch for anything that slipped.)
 
-### 8. Integrate
+### 9. Integrate
 
 Hand off to `/finish-branch`. It carries its own STOP-gate and the merge / PR / keep / discard menu, and asks what to do with the worktree.
 
@@ -82,6 +91,7 @@ Hand off to `/finish-branch`. It carries its own STOP-gate and the merge / PR / 
 
 **Never:**
 - Close a unit without `/verified-review` green on every axis
+- Close a unit on green tests alone — `/verify` (step 7) drives the real runtime wherever there's a flow to observe; fake/mock/fixture-backed green is a working signal, not proof the thing runs. Say "done" only after you've watched it work.
 - Use `HEAD~1` as the review fixed point — it drops all but the last commit of a multi-commit unit
 - Dispatch the implementer against a brief you haven't verified
 - Merge or integrate without the user's word
@@ -92,4 +102,4 @@ Hand off to `/finish-branch`. It carries its own STOP-gate and the merge / PR / 
 - Edit code yourself — you orchestrate; the seats build
 - Work on the default branch — the unit is always isolated
 
-**Related:** `/tier-1` drives this for one unit · `/tier-2` feeds it tickets one at a time · `/brief` is the brief-writer's protocol · `/verified-review` closes the unit · `/finish-branch` integrates · `/using-git-worktrees` isolates the worktree
+**Related:** `/tier-1` drives this for one unit · `/tier-2` feeds it tickets one at a time · `/brief` is the brief-writer's protocol · `/verified-review` reviews the diff · `/verify` drives the real runtime before the unit closes · `/finish-branch` integrates · `/using-git-worktrees` isolates the worktree

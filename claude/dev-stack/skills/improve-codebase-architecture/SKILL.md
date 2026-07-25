@@ -6,7 +6,6 @@ description: Scan a codebase for deepening opportunities, present them as a visu
 <STOP-GATE>
 I'll scan the codebase for deepening opportunities and build the HTML report — go?
 </STOP-GATE>
-<!-- dev-stack: STOP-gate prepended and the model-invocation flag dropped — invocation moves from flag to gate (invocation-contract pass). -->
 
 # Improve Codebase Architecture
 

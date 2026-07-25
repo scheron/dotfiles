@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # The invocation-contract lint (offline, deterministic). Asserts the textual
 # contract the two-tier stack stands on — STOP-gates on the driving set, no
-# model-invocation flag, exactly five internal skills, retired skills gone.
+# model-invocation flag, exactly five internal skills, forbidden dirs absent.
 # Non-zero exit on ANY violation. No network. This is the stack's own Verify.
 #
 # Usage:
@@ -23,8 +23,8 @@ DRIVING=(
 INTERNAL_FIVE=(
   brief codebase-design domain-modeling resolving-merge-conflicts receiving-code-review
 )
-# Retired: these skill directories must not exist in the tree.
-RETIRED=(
+# Forbidden: these skill directories must not exist in the tree.
+FORBIDDEN=(
   execute-tickets wayfinder new-branch setup-matt-pocock-skills verification-before-completion
 )
 
@@ -130,18 +130,18 @@ contract_lint() {
     total=$((total+1))
   fi
 
-  # [4/4] retired skills absent from the tree.
+  # [4/4] forbidden dirs absent from the tree.
   v=0; out=""
   local r
-  for r in "${RETIRED[@]}"; do
+  for r in "${FORBIDDEN[@]}"; do
     if [[ -d "$sk/$r" ]]; then
       out+="        - $r: directory still present"$'\n'; v=$((v+1))
     fi
   done
   if [[ $v -eq 0 ]]; then
-    echo "  [4/4] retired skills absent from the tree ............. PASS"
+    echo "  [4/4] forbidden dirs absent from the tree ............. PASS"
   else
-    echo "  [4/4] retired skills absent from the tree ............. FAIL"
+    echo "  [4/4] forbidden dirs absent from the tree ............. FAIL"
     printf "%s" "$out"
   fi
   total=$((total+v))

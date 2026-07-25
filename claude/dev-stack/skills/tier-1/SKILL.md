@@ -1,6 +1,6 @@
 ---
 name: tier-1
-description: The Tier 1 driver — small work that fits one execution now: a bug fix, a small feature, or a small refactor, run as a single unit through the engine. Use when the user types /tier-1 already knowing the tier, or when route-me proposes Tier 1 and the user approves. Bug-shaped work (broken, throwing, failing, slow) routes through /diagnose first.
+description: "The Tier 1 driver — small work that fits one execution now: a bug fix, a small feature, or a small refactor, run as a single unit through the engine. Use when the user types /tier-1 already knowing the tier, or when route-me proposes Tier 1 and the user approves. Bug-shaped work (broken, throwing, failing, slow) routes through /diagnose first."
 ---
 
 <STOP-GATE>

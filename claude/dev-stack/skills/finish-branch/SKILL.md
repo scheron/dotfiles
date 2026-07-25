@@ -23,7 +23,7 @@ Detached HEAD drops the merge options. The exact menu is confirmed after environ
 
 ## Step 1 — Harvest the durable layer (the final sweep)
 
-ADRs are meant to land **mid-flight** — `/verified-review` raises them as `adr-candidate` findings and the orchestrator commits them on the unit's branch, where they merge with the work. This step is the **final sweep**: the last pass for anything that slipped through before `.scratch/` is deleted and the branch merged. No longer the only chance to capture a decision — but the last.
+ADRs are meant to land **mid-flight** — `/verified-review` raises them as `adr-candidate` findings and the orchestrator commits them on the unit's branch, where they merge with the work. This step is the **final sweep**: the last pass for anything that slipped through before `.scratch/` is deleted and the branch merged. Not the only chance to capture a decision — but the last.
 
 Walk the unit's `.scratch/` directory and the review report, and ask two questions:
 

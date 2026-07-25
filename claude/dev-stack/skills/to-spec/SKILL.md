@@ -6,11 +6,10 @@ description: Turn the current conversation into a spec and publish it to the pro
 <STOP-GATE>
 The conversation has settled; I'll synthesize it into a spec at <destination> — go?
 </STOP-GATE>
-<!-- dev-stack: STOP-gate prepended and the model-invocation flag dropped — invocation moves from flag to gate (invocation-contract pass). -->
 
 This skill takes the current conversation context and codebase understanding and produces a spec (you may know this document as a PRD). Do NOT interview the user — just synthesize what you already know.
 
-The tracker configuration lives in `docs/agents/issue-tracker.md`; if it's missing, ask the user once where specs and tickets live and record the answer there (the tier-2 preflight normally has done this already). <!-- dev-stack: the retired tracker-setup skill's ask-once duty lives in the tier-2 preflight now. -->
+The tracker configuration lives in `docs/agents/issue-tracker.md`; if it's missing, ask the user once where specs and tickets live and record the answer there (the tier-2 preflight normally has done this already).
 
 ## Process
 
@@ -26,8 +25,6 @@ Check with the user that these seams match their expectations.
    - **Local markdown** → write it to `.scratch/<feature-slug>/spec.md`. The tickets from `/to-tickets` then land beside it under `.scratch/<feature-slug>/issues/`, and each references it by relative path.
 
    Either way the spec carries the **Global Constraints** that later briefs copy verbatim, and either way it contains no file paths or code snippets.
-
-<!-- dev-stack: upstream publishes to the tracker only; local .scratch/ mode added to match to-tickets. -->
 
 
 <spec-template>
@@ -72,9 +69,11 @@ Exception: if a prototype produced a snippet that encodes a decision more precis
 
 A list of testing decisions that were made. Include:
 
-- A description of what makes a good test (only test external behavior, not implementation details)
-- Which modules will be tested
-- Prior art for the tests (i.e. similar types of tests in the codebase)
+- A description of what makes a good test (only test external behavior, not implementation details).
+- Which modules will be tested, and the **prior art** for each (similar tests already in the codebase).
+- **The test that proves the feature's point — not just that it wired up.** Name the acceptance/integration test at the highest meaningful seam that exercises what the feature actually delivers. A suite of fake/mock/fixture-backed unit tests proves the framework mounts and the calls are wired; it does not prove the feature works. If the value of the slice is an integration (transport, external API, real I/O, a user-visible flow), the spec must name a test that exercises that integration, not only its fakes.
+- **End-to-end coverage, in whatever form the surface allows — when available.** e2e is not one thing: it can be a browser / computer-use flow, a `curl`/HTTP smoke against a running server, a real-client-against-mock-server integration over captured fixtures (fast and deterministic — prefer this where it fits), or a gated live smoke against a real endpoint. Choose the highest-fidelity form that stays affordable; state which and why. If no e2e is feasible, say so explicitly and name the manual acceptance that stands in — and make it a required step, not a hope.
+- **Flake-prone tests get called out.** Any test that can fail for reasons outside the code (network, external service, timing) is marked flake-tolerant and gated out of the default suite (flag / nightly), so it never red-gates CI on infra — the runner retries it a bounded number of times and reports the flake rather than failing the build on a blip.
 
 ## Out of Scope
 

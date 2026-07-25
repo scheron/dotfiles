@@ -10,7 +10,7 @@ Review of the diff between `HEAD` and a fixed point, in two stages:
 - **Stage 0 — cheap, early-exit.** The reviewer runs the brief's `Verify` command plus its `Sweep` directions (lint, type/compile checks) *itself*, in the worktree under review. Any red → return immediately; the axes never launch on broken code.
 - **Stage 1 — the axes, in parallel.** Two sub-agents so they don't pollute each other's context, reported side by side without merging:
   - **Standards** — does the code conform to this repo's documented standards?
-  - **Spec** — does the code faithfully implement the originating ticket / spec?
+  - **Spec** — does the code faithfully implement the originating ticket / spec, including the tests its Testing Decisions mandate?
   - plus one informational check — `adr-candidate` (step 6).
 
 ## Process
@@ -90,9 +90,9 @@ One message, two `Agent` calls, `general-purpose` for both.
 
 > Report — per file/hunk where relevant — (a) every place the diff violates a documented standard: cite the standard (file + rule); and (b) any baseline smell you spot: name it and quote the hunk. Distinguish hard violations from judgement calls — documented-standard breaches can be hard, baseline smells are always judgement calls, and a documented repo standard overrides the baseline. Skip anything tooling enforces. Under 400 words.
 
-**Spec prompt** — include the diff command and commit list, the spec/ticket contents, the Global Constraints verbatim, and:
+**Spec prompt** — include the diff command and commit list, the spec/ticket contents (**including its Testing Decisions**), the Global Constraints verbatim, and:
 
-> Report: (a) requirements the spec asked for that are missing or partial; (b) behaviour in the diff that wasn't asked for (scope creep); (c) requirements that look implemented but where the implementation looks wrong. Quote the spec line for each finding. Under 400 words.
+> Report: (a) requirements the spec asked for that are missing or partial; (b) behaviour in the diff that wasn't asked for (scope creep); (c) requirements that look implemented but where the implementation looks wrong; (d) **tests the spec's Testing Decisions mandate that are absent, downgraded, or quietly swapped for a weaker form** — e.g. a mandated e2e / acceptance / integration test that isn't present, or one replaced by a unit test that only exercises fakes and mocks. Judge (d) against what the Testing Decisions actually name, not your own taste — the mandate is the yardstick. Quote the spec line for each finding. Under 400 words.
 
 Do not pre-judge findings for either sub-agent. If the prompt you're writing contains "don't flag", "at most Minor", or "the spec chose" — stop. Let the finding surface and adjudicate it yourself.
 
@@ -132,7 +132,7 @@ The dispatch carries one conditional line: **findings received → follow `/rece
 All of it, or it isn't done:
 
 - [ ] **Stage 0 green** — Verify green now, run by you, with red-at-pickup on file in the brief — plus lint and type/compile checks
-- [ ] **Spec axis** — matches the ticket
+- [ ] **Spec axis** — matches the ticket, including the tests its Testing Decisions mandate (a mandated e2e/acceptance test absent or downgraded to fakes is a Spec finding)
 - [ ] **Standards axis** — matches the repo's conventions
 - [ ] **No discrepancy** between the implementer's report and what you observed
 

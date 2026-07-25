@@ -12,7 +12,7 @@ You — the **brief-writer** — are a fresh subagent dispatched into the unit's
 
 ## Why at pickup, never at planning time
 
-The old failure mode: an orchestrator writes briefs for the whole feature at planning time, and ticket 07's brief is a snapshot of the codebase taken before tickets 01–06 changed it. Staleness scales with depth in the dependency graph — and a stale brief is **worse than no brief**, because the implementer trusts it and the wrong path costs more than an absent one.
+The failure mode this avoids: an orchestrator writes briefs for the whole feature at planning time, and ticket 07's brief is a snapshot of the codebase taken before tickets 01–06 changed it. Staleness scales with depth in the dependency graph — and a stale brief is **worse than no brief**, because the implementer trusts it and the wrong path costs more than an absent one.
 
 This topology makes that staleness impossible by construction: you write the brief against the exact commit the worktree branched from, in the same tree the implementer is about to change. The ticket has no paths *because* it must survive the gap between planning and pickup; the brief carries paths *because* for you there is no gap.
 
@@ -30,7 +30,9 @@ Never on the tracker, never committed to the repo. The technical bottom physical
 
 ### 1. Read the durable layer first
 
-It is already in your tree — the domain docs live on the default branch. Read `CONTEXT.md` for the domain vocabulary and any ADRs in the area you're touching **if they exist** (a small change may have neither), plus the ticket and its parent spec — specifically the spec's **Implementation Decisions** and **Testing Decisions** (the latter names the prior art for tests).
+It is already in your tree — the domain docs live on the default branch. Read `CONTEXT.md` for the domain vocabulary and any ADRs in the area you're touching **if they exist** (a small change may have neither), plus the ticket and its parent spec — specifically the spec's **Implementation Decisions** and **Testing Decisions**.
+
+The spec's **Testing Decisions are binding**, not advisory. They name the test scope this unit must deliver — the acceptance / integration / e2e test that proves the feature works, not merely the prior art. Your job is to enumerate what tests are possible at the seams and resolve the spec's mandate into concrete commands and (new) test files. You do **not** get to decide that a mandated test — an e2e, a real-run acceptance — is unnecessary and quietly ship a couple of unit tests instead. If the mandate is unclear or seems wrong, that is a question for the user, not a licence to narrow it silently.
 
 Names in the brief come from `CONTEXT.md` when it exists. If the glossary says `Order`, the interfaces say `Order` — not `Purchase`.
 
@@ -65,6 +67,10 @@ Exact paths, each with one clause on what changes there. New files marked `(new)
 ### Sweep
 
 The repo's verification directions — the commands the orchestrator hands to the test-runner and to `/verified-review`'s stage 0, beyond the focused `Verify`. One line per direction with its exact command: test, lint, typecheck, build, e2e, a `curl` smoke — whatever this repo actually uses to prove itself. Discover them by walking the repo (package scripts, CI, Makefile), never by assuming; a repo with only tests lists only tests.
+
+**Plus every test the spec's Testing Decisions mandate** — including a gated e2e / live smoke: list it with its gate (e.g. `VIKING_LIVE=1 npm run test:e2e:live`) and mark it flake-tolerant so the runner retries rather than red-gates on a blip. A mandated test that the repo has no runnable form for yet is not a reason to drop it — it is work for this unit: name the (new) test file in `Files` and its command here, or, if the seam genuinely doesn't exist, escalate BLOCKED. Never silently narrow the mandate to whatever already runs.
+
+The focused `Verify` is the fast inner-loop gate and **may fake external dependencies** to stay deterministic and quick; that is expected. But a fast fake `Verify` does **not** discharge the acceptance/e2e mandate — that lives here in `Sweep` and is driven for real at the engine's real-run step. A quick fake `Verify` **and** a mandated e2e is the normal shape; neither substitutes for the other.
 
 ## Global Constraints
 
@@ -143,5 +149,6 @@ Already run — output:
 - Fill `Consumes` from another ticket's brief or from memory — read it from the code in the tree
 - Omit `Interfaces` because "the code is right there" — unpinned signatures get recalled, and recalled names drift
 - Paraphrase a Global Constraint
+- Drop or downgrade a test the spec's Testing Decisions mandate — you enumerate the tests and carry the spec's mandate down; deciding an e2e/acceptance test "isn't needed" is not yours to make. A missing runnable form is a finding to resolve or BLOCK on, never a silent omission.
 
 **Related:** `/cold-read` checks the spec before any ticket is dispatched · `/to-implement` dispatches you first, then the implementer that reads your brief · `/verified-review` runs the `Verify` command this brief names
