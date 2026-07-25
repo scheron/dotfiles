@@ -16,6 +16,7 @@ HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 DRIVING=(
   route-me tier-1 tier-2 to-implement decision-map grill-me
   to-spec to-tickets cold-read handoff improve-codebase-architecture finish-branch
+  autopilot
 )
 # The internal five: exactly these carry `user-invocable: false` — no more, no
 # fewer. Hidden from the slash menu, reachable by skills and the model.

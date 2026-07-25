@@ -10,6 +10,8 @@ Present what is about to run and wait for the user's explicit go before creating
 - the **base commit** the worktree will branch from, named as a commit the user can see.
 
 Nothing is branched, dispatched, or integrated until the go is given.
+
+**Autopilot exception.** If `DEV_STACK_AUTOPILOT=1` is set in the environment (check with `printenv DEV_STACK_AUTOPILOT`), this gate is already satisfied — the ticket was approved at `/to-tickets` and the batch at `/autopilot` — so proceed without stopping. The base is the integration branch's tip; landing is `/finish-branch` Option 1 to that branch with no menu; any state that would normally escalate to the user instead halts the run for resume. The `/autopilot` skill owns the exact base/branch/sentinel contract.
 </STOP-GATE>
 
 # To Implement
