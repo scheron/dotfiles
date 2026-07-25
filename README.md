@@ -35,6 +35,25 @@ linked until the script runs again — skipping it can leave a config referencin
 a not-yet-linked file (e.g. a hook pointing at a missing script). It's
 idempotent, so re-running it every time is safe.
 
+## Claude Code skills
+
+Skills are symlinked into `~/.claude/skills/` by `setup-symlinks.sh`, from two
+places under `claude/`:
+
+- **`claude/dev-stack/`** — the self-contained dev-stack engine (skills + agents
+  + hooks + scripts). Its own `install.sh` links and prunes only its own names;
+  `setup-symlinks.sh` runs it for you.
+- **`claude/skills/`** — a bucket for standalone skills (e.g.
+  `excalidraw-diagram`). Every `claude/skills/<name>/` is linked in by name.
+
+To add a skill, drop its folder into `claude/skills/` and re-run
+`setup-symlinks.sh` — the glob picks it up, no script edit needed:
+
+```sh
+cp -r some-skill ~/.dotfiles/claude/skills/some-skill
+~/.dotfiles/setup-symlinks.sh
+```
+
 ## Per-machine setup (not stored in this repo)
 
 This repo is public, so secrets and per-machine state are configured by hand:
@@ -45,6 +64,10 @@ This repo is public, so secrets and per-machine state are configured by hand:
 - **npm** — `npm login` if you publish or install private packages.
 - **GitHub CLI** — `gh auth login` (only `config.yml` is tracked; `hosts.yml` holds the token and is not).
 - **Claude Code** — sign in on first `claude` run (`~/.claude/.claude.json` is not tracked).
+- **Excalidraw skill renderer** — optional Playwright pipeline that lets the
+  agent render and visually check its diagrams:
+  `cd claude/skills/excalidraw-diagram/references && uv sync && uv run playwright install chromium`
+  (the `.venv`, `uv.lock`, and rendered PNGs are git-ignored).
 
 ## Notes
 
