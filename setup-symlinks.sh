@@ -50,7 +50,7 @@ echo "zed";       link zed/settings.json "$HOME/.config/zed/settings.json"
 echo "lazygit";   link lazygit/config.yml "$HOME/.config/lazygit/config.yml"
 echo "yazi";      link yazi "$HOME/.config/yazi"
 echo "gh";        link gh/config.yml "$HOME/.config/gh/config.yml"
-echo "claude";    for f in settings.json CLAUDE.md RTK.md statusline.sh rtk-rewrite.sh; do
+echo "claude";    for f in settings.json CLAUDE.md RTK.md statusline.sh subagent-statusline.sh rtk-rewrite.sh; do
                     link "claude/$f" "$HOME/.claude/$f"
                   done
 echo "claude dev-stack"
