@@ -52,11 +52,11 @@ fmt_reset() {
   local now diff d h m
   now=$(date +%s)
   diff=$(( $1 - now ))
-  if [ "$diff" -lt 60 ]; then printf '<1м'; return; fi
+  if [ "$diff" -lt 60 ]; then printf '<1m'; return; fi
   d=$(( diff / 86400 )); h=$(( (diff % 86400) / 3600 )); m=$(( (diff % 3600) / 60 ))
-  if [ "$d" -gt 0 ]; then printf '%dд %dч' "$d" "$h"
-  elif [ "$h" -gt 0 ]; then printf '%dч %dм' "$h" "$m"
-  else printf '%dм' "$m"; fi
+  if [ "$d" -gt 0 ]; then printf '%dd %dh' "$d" "$h"
+  elif [ "$h" -gt 0 ]; then printf '%dh %dm' "$h" "$m"
+  else printf '%dm' "$m"; fi
 }
 
 # ── line 1: project · branch · model ──────────────────────────────────
