@@ -32,6 +32,16 @@ pct_color() {
   if [ "$1" -ge 80 ]; then printf '\033[31m'; elif [ "$1" -ge 50 ]; then printf '\033[33m'; else printf '\033[32m'; fi
 }
 
+# context-specific ramp: green until 150k AND 20% (whichever comes first),
+# then yellow <50%, orange <80%, red beyond.   $1=pct(int)  $2=used tokens
+ctx_color() {
+  if   [ "$2" -lt 150000 ] && [ "$1" -lt 20 ]; then printf '\033[32m'      # green
+  elif [ "$1" -lt 50 ];                        then printf '\033[33m'      # yellow
+  elif [ "$1" -lt 80 ];                        then printf '\033[38;5;208m' # orange
+  else                                              printf '\033[31m'      # red
+  fi
+}
+
 effort_label() {
   case "$1" in
     low) printf 'Low';; medium) printf 'Medium';; high) printf 'High';;
@@ -74,7 +84,7 @@ fi
 LINE1="${BLUE}${I_PROJ} $(basename "$DIR")${RESET}${GIT_SEG}${SEP}${MODEL_SEG}"
 
 # ── line 2: context (icon used (pct)) ─────────────────────────────────
-CTXC=$(pct_color "$PCT")
+CTXC=$(ctx_color "$PCT" "$USED")
 USED_K=$((USED / 1000))
 LINE2="${CTXC}${I_CTX} ${BOLD}${USED_K}k${RESET}${CTXC} (${PCT}%)${RESET}"
 
