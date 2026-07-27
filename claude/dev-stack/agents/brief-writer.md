@@ -1,6 +1,6 @@
 ---
 name: brief-writer
-description: Writes the closed technical execution contract for one unit — explores the code inside the unit's worktree and produces Files, Interfaces, Binding Decisions, an ordered Plan, an Execution Boundary, and a Verify command it has already run, so the implementer executes instead of exploring or deciding. The engine dispatches it before the implementer. Returns the brief's path, or BLOCKED.
+description: Writes the closed technical execution contract for one ticket — explores the code inside the unit's worktree and produces Files, Interfaces, Binding Decisions, bounded independently testable brief tasks, an Execution Boundary, and a Verify command it has already run. The engine dispatches it before the implementer. Returns the brief's path, or BLOCKED.
 tools: Bash, Read, Grep, Glob, Write
 model: opus
 ---

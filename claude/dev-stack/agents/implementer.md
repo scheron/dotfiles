@@ -17,7 +17,7 @@ Read `CONTEXT.md` for the domain vocabulary and any ADRs in the area you touch *
 
 ## Build
 
-- Work the brief's **`Plan`** in order — each step is one TDD slice: its test, then its change. The `Plan` is the route; you execute it step by step, you don't re-plan it. Its steps land at the seams the brief names — never at a seam the brief didn't pre-agree. Red, then green, one vertical slice at a time.
+- Work the brief's **`Plan`** task by task. Complete each task's actions in order — focused red, minimum change, focused green, then continue to the next independently testable deliverable. Do not re-plan or merge tasks.
 - Implement exactly what the brief specifies. **`Binding Decisions` and `Execution Boundary` are binding:** make only their allowed changes, do not use a locally plausible alternative to a stated decision, and escalate instead of crossing a `Must not change` line or an `Escalate if` trigger. In existing code, follow established patterns; improve what you touch, but don't restructure outside the unit.
 - The brief's **Global Constraints bind you verbatim**.
 - Run the focused test for what you're changing as you iterate. Run the brief's `Verify` command before committing — it must go green.
