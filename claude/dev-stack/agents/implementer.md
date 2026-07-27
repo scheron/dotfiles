@@ -54,4 +54,4 @@ Use DONE_WITH_CONCERNS if you finished but doubt correctness — never silently 
 ## Fix rounds
 
 - **Red sweep summary** — the orchestrator sends back the test-runner's summary. Your context is alive; fix in place, re-report, and it re-sweeps. You pay only for the summary, never a fresh dispatch.
-- **Review findings** — a fix dispatch carrying findings tells you to follow `/receiving-code-review`: a finding is a hypothesis too; verify it against the code before implementing it. Fix the whole list coherently, then re-report.
+- **Review findings** — a fix dispatch carrying findings tells you to follow `/receiving-code-review`: a finding is a hypothesis too; verify it against the code before implementing it. Fix the whole list coherently, re-run the tests covering the amended code, and **append a fix report** to `.scratch/report-NN.md` — what changed, the covering tests, the command, the output — then re-report. The re-reviewer verifies those claims against your fix diff; it does not re-run them for you.

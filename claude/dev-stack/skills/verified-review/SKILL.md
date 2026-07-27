@@ -28,6 +28,18 @@ Capture `git diff <fixed-point>...HEAD` (three-dot, against the merge-base) and 
 
 Confirm the ref resolves (`git rev-parse <fixed-point>`) and the diff is non-empty. A bad ref should fail here, not inside two sub-agents.
 
+Then build the **review package** — once, for every reader:
+
+```
+{ git log <fixed-point>..HEAD --oneline;
+  git diff <fixed-point>...HEAD --stat;
+  git diff -U10 <fixed-point>...HEAD; } > .scratch/review-package.md
+```
+
+The package is the view of the change — the commit list, its shape, and the hunks with enough surrounding lines (`-U10`) to read them in place. Both axes receive its path instead of re-running the same git commands in two contexts. It bounds nothing: an axis walks the system beyond it as far as the axis requires.
+
+Record `git rev-parse HEAD` beside it — a fix round diffs from the head its previous round reviewed, never from the fixed point.
+
 #### 2. Run Verify + lint + type/compile checks — yourself
 
 The commands are in the brief. Read `.scratch/brief-NN.md` in the worktree under review: the `Verify` block names the focused command, and the `Sweep` block names the repo's lint, type/compile, and other verification directions. Run `Verify` plus whatever `Sweep` lists. If there is no brief (a hand-driven review), ask the user for the commands. A repo that genuinely has only tests runs those alone; don't invent substitutes.
@@ -108,15 +120,20 @@ Each reads *what it is* → *how to fix*:
 
 One message, two `Agent` calls, `general-purpose` for both.
 
-**Standards prompt** — include the diff command and commit list; the standards-source files from step 4 **plus the smell baseline pasted in full** (the sub-agent has no other access to it); and:
+**Standards prompt** — include the review package's path; the standards-source files from step 4 **plus the smell baseline pasted in full** (the sub-agent has no other access to it); and:
 
-> Report — per file/hunk where relevant — (a) every place the diff violates a documented standard: cite the standard (file + rule); and (b) any baseline smell you spot: name it and quote the hunk. Distinguish hard violations from judgement calls — documented-standard breaches can be hard, baseline smells are always judgement calls, and a documented repo standard overrides the baseline. Skip anything tooling enforces. Under 400 words.
+> The package at `<path>` is your view of the change. Judge it against the system — walk the repo wherever the axis needs it: duplication, Shotgun Surgery, and Feature Envy only show against the code around the diff. Report — per file/hunk where relevant — (a) every place the diff violates a documented standard: cite the standard (file + rule); and (b) any baseline smell you spot: name it and quote the hunk. Distinguish hard violations from judgement calls — documented-standard breaches can be hard, baseline smells are always judgement calls, and a documented repo standard overrides the baseline. Skip anything tooling enforces. Every line of your report is a verdict, a finding with file:line, or a check you ran — a walk into the system gets named: what you checked, what you found. Under 400 words.
 
-**Spec prompt** — include the diff command and commit list, the spec/ticket contents (**including its Testing Decisions**), the Global Constraints verbatim, and:
+**Spec prompt** — include the review package's path, the spec/ticket contents (**including its Testing Decisions**), the Global Constraints verbatim, and:
 
-> Report: (a) requirements the spec asked for that are missing or partial; (b) behaviour in the diff that wasn't asked for (scope creep); (c) requirements that look implemented but where the implementation looks wrong; (d) **tests the spec's Testing Decisions mandate that are absent, downgraded, or quietly swapped for a weaker form** — e.g. a mandated e2e / acceptance / integration test that isn't present, or one replaced by a unit test that only exercises fakes and mocks. Judge (d) against what the Testing Decisions actually name, not your own taste — the mandate is the yardstick. Quote the spec line for each finding. Under 400 words.
+> The package at `<path>` is your view of the change. Judge it against the system — a requirement is met, or broken, by how the diff meets the unchanged code around it. Report: (a) requirements the spec asked for that are missing or partial; (b) behaviour in the diff that wasn't asked for (scope creep); (c) requirements that look implemented but where the implementation looks wrong; (d) **tests the spec's Testing Decisions mandate that are absent, downgraded, or quietly swapped for a weaker form** — e.g. a mandated e2e / acceptance / integration test that isn't present, or one replaced by a unit test that only exercises fakes and mocks. Judge (d) against what the Testing Decisions actually name, not your own taste — the mandate is the yardstick. And (e) any requirement you could not confirm by reading: say so explicitly, with what would confirm it — never a silent pass. Quote the spec line for each finding. Every line of your report is a verdict, a finding with file:line, or a check you ran — a walk into the system gets named: what you checked, what you found. Under 400 words.
 
 Do not pre-judge findings for either sub-agent. If the prompt you're writing contains "don't flag", "at most Minor", or "the spec chose" — stop. Let the finding surface and adjudicate it yourself.
+
+Two rules bind that adjudication:
+
+- **`brief-mandated` is a label, not a defence.** The brief binds the implementer — so a defect the brief itself mandated (a test that asserts nothing, a duplication its `Plan` spelled out) comes back looking authorised. It is still a finding: label it `brief-mandated` and put it in front of the user. The brief's authorship does not grade its own work.
+- **A stated rationale never downgrades severity.** "Left it per YAGNI" in the implementer's report — or in the brief — is the work grading itself. Judge the code; the user judges the rationale.
 
 #### 7. The adr-candidate check
 
@@ -151,6 +168,24 @@ Do **not** merge or rerank across axes. End with one line: findings per axis and
 When findings need fixing, dispatch **one fixer per findings list — never one fixer per finding**: the fixer sees the whole list, so related findings get one coherent fix instead of N colliding ones.
 
 The dispatch carries one conditional line: **findings received → follow `/receiving-code-review`** — a finding is a hypothesis too; verify it against the code before implementing it.
+
+The fixer owes evidence: re-run the tests covering the amended code and **append a fix report** to the unit's `.scratch/report-NN.md` — what changed, the covering tests, the command, the output. (Hand-driven review with no report file: the final message carries it.) The re-review verifies those claims against the fix diff; it does not re-run them for the fixer.
+
+## Re-review — after a fix round
+
+The system-wide pass happens **once** — the first full review. A fix round does not get a fresh one: a fresh full review finds fresh judgement calls on code the fix never touched, and the loop stops converging. The re-review is a narrower instrument — it closes verdicts and checks the fix:
+
+- **Stage 0 re-runs in full** — Verify plus the Sweep directions, by you, every round. Cheap, and a fix breaks a build like any other change.
+- **The runtime gate re-runs only if the fix diff touches the driven flow.** Otherwise the prior `PASS` stands — the flow the runner observed is unchanged.
+- **The axes are not re-launched.** Dispatch one **re-reviewer** (`general-purpose`) instead, carrying: the findings list verbatim; the fixer's report path; and a fix package built like step 1's — `git log`, `--stat`, `diff -U10` over `<fix-base>..HEAD` into `.scratch/review-package-fix-<n>.md`, where **fix-base is the head the previous round reviewed** (recorded in step 1, updated each round) — the fix diff, never the whole unit again.
+
+The re-reviewer's contract:
+
+- **Verdict every finding**: `ADDRESSED` / `NOT ADDRESSED`, with file:line evidence. **"Attempted" is not addressed** — the specific defect must no longer exist.
+- **Inspect the fix diff for new breakage** the fix itself introduced, with severity.
+- **Anything outside the fix diff is an observation, never a finding.** It does not block the round and does not extend the loop — carry it in the aggregate; `/finish-branch`'s harvest routes it with the other unfixed minors.
+
+The round closes when every finding verdicts `ADDRESSED` and the fix diff carries no new blocking breakage — then mark the state reviewed exactly as a clean first pass does. `NOT ADDRESSED` findings go back to the same fixer with the verdicts; new blocking breakage joins its list.
 
 ## Definition of Done
 

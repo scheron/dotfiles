@@ -66,7 +66,7 @@ Dispatch the **test-runner** in the worktree, handing it the brief's **Sweep** d
 
 Raise `/verified-review` with the fixed point set to **the base commit you recorded in step 1**. It runs three gates, each standing on the one before: stage 0 (Verify, lint, type/compile checks — itself), then a **real run** that drives the actual runtime and observes it working, then the Standards and Spec axes in parallel. A broken build or a dead runtime returns before the axes ever launch — tests can be green on fakes while the real path is broken by config, environment, wiring, or an external contract no test covers.
 
-- Findings → dispatch **one fixer per findings list** (never one per finding), carrying the line: *findings received → follow `/receiving-code-review`*. Re-review after — a fix changes the tree, so the whole review re-runs, the real run included.
+- Findings → dispatch **one fixer per findings list** (never one per finding), carrying the line: *findings received → follow `/receiving-code-review`*. Re-review after — scoped, per `/verified-review`'s re-review: stage 0 re-runs, the real run only if the fix touched the driven flow, one re-reviewer verdicts each finding against the fix diff. The system-wide pass happens once; rounds converge on the findings.
 - A finding that conflicts with what the unit mandates is the user's call: present it beside the unit text and ask which governs.
 - **Green on every axis — with the runtime observed working — closes the review.** The implementer's report is never a close condition; a green sweep is a working signal, not evidence that the thing actually runs.
 
