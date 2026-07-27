@@ -140,7 +140,12 @@ git commit -m "<unit summary, Conventional Commits>"   # one commit for the whol
 <verify command>
 ```
 
-The squash collapses the whole branch — TDD slices, fix-round commits, the harvested ADR/`CONTEXT.md` commits — into this one commit. Craft its subject from the unit's ticket/plan title; if the collapsed slice subjects are worth keeping as a manifest, list them in the body.
+The squash collapses the whole branch — TDD slices, fix-round commits, the harvested ADR/`CONTEXT.md` commits — into this one commit. Write its message **from scratch**, as a single clean commit: subject from the unit's ticket/plan title, body saying what the unit changed and why — the message you'd write if the work had been one commit all along.
+
+Two things it must **not** be:
+
+- **Not the auto-generated `SQUASH_MSG`.** `git merge --squash` pre-fills `$GIT_DIR/SQUASH_MSG` with git's concatenation of every slice's message; the default editor shows it. Never accept or reuse it — that's why the commit is written with `-m`/`-F`, never the editor.
+- **Not a manifest of the collapsed commits.** No `Squashes: <sha> + <sha>` line, no list of slice subjects like "feat: smoke test / fix: drop dead state". Those SHAs stop existing the moment the branch is deleted, and the slice-by-slice diary is exactly the noise the squash exists to remove.
 
 Only after the merge succeeds and verifies: clean up (Step 7), then `git branch -D <feature-branch>`. After a squash-merge the branch is **not** an ancestor of the base, so `git branch -d` refuses it as "not fully merged" — `-D` is correct here **because the work is already integrated as the squash**, not because it's being discarded.
 
@@ -240,6 +245,7 @@ git worktree prune
 - Proceed with verification failing
 - Merge without verifying the merged result
 - Land a unit as its granular commits — the base branch is one-commit-per-unit; the slices are review surface, not product
+- Pad the squash message with a manifest of the collapsed commits (`Squashes: <sha> + <sha>`, a list of slice subjects) or reuse git's auto-generated `SQUASH_MSG` — the SHAs die with the branch and the slice diary is the noise squashing removes; write one clean message for the unit
 - Run the merge before the user has had the chance to review the diff at the gate
 - Delete `.scratch/` before harvest
 - Promote a brief or report into the repo
