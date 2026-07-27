@@ -72,7 +72,7 @@ Two tiers, one engine. Both feed `/to-implement`; Tier 2 is several Tier 1 runs,
 Both tiers are gated at the same two points; the tier scales the process between them, never the bar.
 
 - **Plan in.** No code before an approved plan. Tier 1: a few lines inline in chat — what changes, which files, how you'll verify (never an artifact). Tier 2: the spec and the tickets, each approved at its phase gate.
-- **Review out.** No unit closes until `/verified-review` passes — the reviewer runs Verify itself: green now, red-at-pickup on file in the brief. A one-line fix meets the same bar as a Tier 2 ticket.
+- **Review out.** No unit closes until `/verified-review` passes — the reviewer runs Verify itself (green now, red-at-pickup on file in the brief) and drives the real runtime. A one-line fix meets the same bar as a Tier 2 ticket.
 
 No tier works on the default branch — every unit isolates in a worktree (`/using-git-worktrees`). The contract is enforced, not advised: `branch-guard` denies edits on `main`/`master`, `review-guard` blocks unreviewed wrap-up, and every driver opens with a STOP-gate. Text gates steer; hooks enforce.
 
