@@ -179,8 +179,8 @@ while :; do
 
 AUTOPILOT RUN (you were dispatched by autopilot.sh; DEV_STACK_AUTOPILOT=1). This unit is pre-approved — the ticket was approved at /to-tickets and the batch at /autopilot, so do NOT stop for plan-in.
 - Cut the worktree from the tip of the integration branch: $INTEGRATION
-- On green /verified-review, land via /finish-branch Option 1: merge to $INTEGRATION (base branch = $INTEGRATION), delete the worktree — no menu, no questions.
-- FINAL ACTION after the merge succeeds: write the merge commit SHA to this exact path, nothing else in the file:
+- On green /verified-review, land via /finish-branch Option 1: squash-merge to $INTEGRATION (base branch = $INTEGRATION) so the ticket lands as one commit, delete the worktree — no menu, no questions.
+- FINAL ACTION after the merge succeeds: write the landed commit SHA (the squash commit on $INTEGRATION) to this exact path, nothing else in the file:
     $SENTINEL
 - If ANYTHING blocks (brief BLOCKED, implementer BLOCKED, three red sweep rounds, review not green after fixers, or a merge conflict you cannot resolve): do NOT write the sentinel. Stop and report the reason. The run will halt for a human."
 

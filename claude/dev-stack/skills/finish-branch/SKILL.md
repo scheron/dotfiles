@@ -6,8 +6,8 @@ description: Complete development work — harvest durable knowledge into ADRs a
 <STOP-GATE>
 Implementation is complete and the tree is green. I'll harvest the durable layer (ADRs, CONTEXT.md) and re-run verification, then integrate — how should this land?
 
-1. Merge to the base branch, then delete the branch and worktree
-2. Merge to the base branch, keep the branch and worktree
+1. Squash-merge to the base branch (one commit), then delete the branch and worktree
+2. Squash-merge to the base branch (one commit), keep the branch and worktree
 3. Push and open a Pull Request
 4. Keep the branch as-is
 5. Discard this work
@@ -18,6 +18,8 @@ Detached HEAD drops the merge options. The exact menu is confirmed after environ
 # Finish Branch
 
 **Core principle:** Harvest → Verify → Detect environment → Present options → Execute → Clean up.
+
+**Merge policy — squash.** A unit lands in the base branch as **one commit**. The branch's granular history — every TDD slice, every fix-round commit, the harvested ADR/`CONTEXT.md` commits — is the *review surface*, not the *product*: it stays intact on the branch right up to the merge, and collapses into a single clean commit at the merge instant. That makes the gate below the review point — the granular diffs are all there for you to inspect and fix against **before** you pull the trigger — and leaves the base branch's history at one-commit-per-unit afterward. `/verified-review` already ran inside `/to-implement`; this is the human's last look before it's irreversible.
 
 **Step 1, Harvest** is the final sweep for durable knowledge that didn't already land mid-flight. The branch is about to disappear along with everything ephemeral on it; whatever deserved to outlive it and slipped past the `adr-candidate` gate has to be extracted now, while the context still exists.
 
@@ -33,7 +35,7 @@ The test is the same one `/verified-review` applies mid-flight (hard to reverse,
 **Did a term get settled, sharpened, or disambiguated?**
 Into `CONTEXT.md`, via `/domain-modeling`. Definition only — one or two sentences, what it *is*, plus the rejected synonyms under `_Avoid_`. No implementation details; `CONTEXT.md` is a glossary and nothing else.
 
-**Harvested ADRs and `CONTEXT.md` commit on this branch** — they ride the merge or the PR beside the work they describe. The one exception is **Discard**: the branch is about to die, so harvest writes them straight to the default branch (`branch-guard` passes `docs/adr/` and `CONTEXT.md`) — the learning survives the code.
+**Harvested ADRs and `CONTEXT.md` commit on this branch** — on a squash-merge (Options 1–2) they **fold into the unit's one commit** along with the code they describe; on a PR (Option 3) they push as their own commits and land when the PR squashes. Either way they travel with the work, never separately. The one exception is **Discard**: the branch is about to die, so harvest writes them straight to the default branch (`branch-guard` passes `docs/adr/` and `CONTEXT.md`) — the learning survives the code.
 
 Also carry forward, if they came up:
 
@@ -89,8 +91,8 @@ Or ask: "This branch split from main — is that right?"
 ```
 Implementation complete. What would you like to do?
 
-1. Merge to <base-branch>, then delete the branch and worktree
-2. Merge to <base-branch>, keep the branch and worktree
+1. Squash-merge to <base-branch> (one commit), then delete the branch and worktree
+2. Squash-merge to <base-branch> (one commit), keep the branch and worktree
 3. Push and create a Pull Request
 4. Keep the branch as-is (I'll handle it later)
 5. Discard this work
@@ -112,9 +114,18 @@ Which option?
 
 Don't add explanation. Keep the options concise.
 
+**Review before the merge — the squash is one-way.** If the user picks a merge (1 or 2), the branch's granular history is still intact and this is the moment to look at it. Offer the diff before executing: the slices that will collapse, and the exact change that will land.
+
+```bash
+git log --oneline <base-branch>..HEAD    # the slices that squash into one
+git diff <base-branch>...HEAD            # the full unit diff that will land
+```
+
+The branch is still fully editable — a fix the user asks for now is committed on the branch and rides into the squash. Only run the merge on the user's explicit word.
+
 ## Step 6 — Execute
 
-### Option 1 — Merge, then delete
+### Option 1 — Squash-merge, then delete
 
 ```bash
 MAIN_ROOT=$(git -C "$(git rev-parse --git-common-dir)/.." rev-parse --show-toplevel)
@@ -122,23 +133,28 @@ cd "$MAIN_ROOT"
 
 git checkout <base-branch>
 git pull
-git merge <feature-branch>
+git merge --squash <feature-branch>
+git commit -m "<unit summary, Conventional Commits>"   # one commit for the whole unit; non-interactive (-m/-F), never the editor
 
 # verify on the merged result, not just on the branch
 <verify command>
 ```
 
-Only after the merge succeeds: clean up (Step 7), then `git branch -d <feature-branch>`.
+The squash collapses the whole branch — TDD slices, fix-round commits, the harvested ADR/`CONTEXT.md` commits — into this one commit. Craft its subject from the unit's ticket/plan title; if the collapsed slice subjects are worth keeping as a manifest, list them in the body.
 
-### Option 2 — Merge, then keep
+Only after the merge succeeds and verifies: clean up (Step 7), then `git branch -D <feature-branch>`. After a squash-merge the branch is **not** an ancestor of the base, so `git branch -d` refuses it as "not fully merged" — `-D` is correct here **because the work is already integrated as the squash**, not because it's being discarded.
 
-The same merge as Option 1 — `checkout` the base, `pull`, `merge <feature-branch>`, and verify the merged result. Then **stop**: no cleanup. The branch and worktree stay for follow-up work; do not remove the worktree or delete the branch.
+### Option 2 — Squash-merge, then keep
+
+The same squash-merge as Option 1 — `checkout` the base, `pull`, `git merge --squash <feature-branch>`, commit the one collapsed commit, and verify the merged result. Then **stop**: no cleanup. The branch and worktree stay for follow-up work — and because nothing was deleted, the branch keeps its full granular history for reference even though the base got one clean commit. Do not remove the worktree or delete the branch.
 
 ### Option 3 — Push and create a PR
 
 ```bash
 git push -u origin <feature-branch>
 ```
+
+Push the branch **with its granular commits** — the PR is where reviewers read the work commit-by-commit, so the slices earn their keep here. To keep the base at one-commit-per-unit, the PR should land via the platform's **Squash and merge** (the same policy as Options 1–2, applied at PR-merge time rather than locally).
 
 **Do not clean up the worktree** — it's needed for PR feedback. `.scratch/` also stays: review comments may need the briefs.
 
@@ -194,9 +210,9 @@ git worktree prune
 
 | Option | Harvest | Merge | Push | Keep worktree | Delete `.scratch/` | Branch |
 |---|---|---|---|---|---|---|
-| 1. Merge + delete | yes | yes | — | — | yes | delete |
-| 2. Merge + keep | yes | yes | — | yes | no | keep |
-| 3. Create PR | yes | — | yes | yes | no | — |
+| 1. Merge + delete | yes | squash | — | — | yes | force-delete (`-D`) |
+| 2. Merge + keep | yes | squash | — | yes | no | keep |
+| 3. Create PR | yes | — | yes (granular) | yes | no | — |
 | 4. Keep as-is | yes | — | — | yes | no | — |
 | 5. Discard | yes | — | — | — | yes | force-delete |
 
@@ -210,7 +226,9 @@ git worktree prune
 
 **Cleaning up for Option 2 or 3** — removing the worktree the user asked to keep, or needs for PR iteration.
 
-**Deleting the branch before removing the worktree** — `git branch -d` fails while a worktree still references it. Merge, remove worktree, then delete.
+**Deleting the branch before removing the worktree** — `git branch -d` fails while a worktree still references it. Merge, remove the worktree, then delete.
+
+**Reaching for `-d` after a squash-merge** — a squash lands the *diff*, not the *commits*, so the branch is never an ancestor of the base and `git branch -d` refuses it as "not fully merged." That refusal is expected; use `-D`. It is safe here only because the work is already integrated as the squash and verified on the merged result — never let `-D` become a reflex that skips that check.
 
 **Running `git worktree remove` from inside the worktree** — fails silently. Always `cd` to the main root first.
 
@@ -221,6 +239,8 @@ git worktree prune
 **Never:**
 - Proceed with verification failing
 - Merge without verifying the merged result
+- Land a unit as its granular commits — the base branch is one-commit-per-unit; the slices are review surface, not product
+- Run the merge before the user has had the chance to review the diff at the gate
 - Delete `.scratch/` before harvest
 - Promote a brief or report into the repo
 - Delete work without typed confirmation
@@ -229,6 +249,7 @@ git worktree prune
 - Clean up a worktree you didn't create
 
 **Always:**
+- Squash-merge a unit into the base as one commit, and keep its granular history reviewable on the branch until that merge
 - Harvest before anything is deleted, and show the user what you'll write
 - Commit harvested ADRs and `CONTEXT.md` on the unit's branch — except on Discard, where they go to the default branch to survive
 - Verify from the brief's `Verify`/`Sweep`, not memory

@@ -45,7 +45,7 @@ The runner sets three environment variables for each child session; the `/to-imp
 |---|---|
 | `DEV_STACK_AUTOPILOT=1` | the master switch — pre-authorizes plan-in, and stands the `review-guard` Stop-hook down (review-out is enforced structurally instead) |
 | `DEV_STACK_INTEGRATION_BRANCH` | the branch each worktree cuts from and lands back onto |
-| `DEV_STACK_AUTOPILOT_SENTINEL` | the exact file the child writes (the merge SHA) as its final act on a clean green→merge land |
+| `DEV_STACK_AUTOPILOT_SENTINEL` | the exact file the child writes (the landed squash-commit SHA) as its final act on a clean green→merge land |
 
 **Advance = sentinel present AND the integration branch advanced.** Anything else — no sentinel, branch unchanged, child died — is a **halt**. The child never reports its own success; the loop reads the disk. A derailed session simply leaves no sentinel, so a soft failure degrades to a safe halt, never a bad merge.
 
