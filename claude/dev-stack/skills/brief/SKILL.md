@@ -1,12 +1,12 @@
 ---
 name: brief
-description: Write the technical brief for one unit at pickup, inside the unit's worktree — Files, Interfaces, Plan, Verify, Sweep. For the brief-writer subagent the engine dispatches before the implementer; written to the worktree's .scratch/, ephemeral, dies with the worktree.
+description: Write the closed technical execution contract for one unit at pickup, inside the unit's worktree — Files, Interfaces, Binding Decisions, Plan, Execution Boundary, Verify, Sweep. For the brief-writer subagent the engine dispatches before the implementer; written to the worktree's .scratch/, ephemeral, dies with the worktree.
 user-invocable: false
 ---
 
 # Brief
 
-A ticket says **what to build**. A brief says **where the code is, what it must call, the ordered steps that build it, and the command that proves it worked** — everything the implementer needs so it *executes* instead of *exploring*. The ticket is durable and path-free; the brief is disposable and exact.
+A ticket says **what to build**. A brief says **where the code is, what it must call, the decisions already made, the ordered steps that build it, what it must not touch, and the command that proves it worked** — everything the implementer needs so it *executes* instead of *exploring* or deciding. The ticket is durable and path-free; the brief is disposable and exact.
 
 You — the **brief-writer** — are a fresh subagent dispatched into the unit's worktree at pickup: the first act after branching, before the implementer exists. You explore; the implementer builds. The walk you do is the walk the implementer must **not** have to redo — every location, name, and step you resolve here is context its window never spends. Your product is the compression that keeps its window clean — and a weak brief poisons everything downstream.
 
@@ -46,7 +46,7 @@ You **are** the walk. Explore directly — greps, file reads, whatever the map n
 
 ### 3. Fill the blocks
 
-Terrain first — `Files`, `Interfaces`, the `Global Constraints` you copy verbatim. Then turn the walk into the route: the `Plan`. This is the step that separates a half-brief from a whole one — the terrain says what exists, the `Plan` says what the implementer does with it, in order.
+Terrain first — `Files`, `Interfaces`, the `Global Constraints` you copy verbatim. Then close the semantic decisions and scope: `Binding Decisions`, `Plan`, `Execution Boundary`. This is the step that separates a half-brief from a whole one — the terrain says what exists, the `Plan` says what the implementer does with it, in order, and the boundary says where it must stop.
 
 ### 4. Run the Verify gate
 
@@ -66,6 +66,12 @@ Exact paths, each with one clause on what changes there. New files marked `(new)
 
 `Produces` — signatures this unit exposes. Later work will meet them as merged code; the reviewer checks you delivered exactly this surface.
 
+### Binding Decisions
+
+**Mandatory. Never leave a semantic choice implicit.** Record the already-settled choices that are not fully expressed by `Interfaces` or `Global Constraints`: exact behaviour, values, error/result semantics, compatibility choices, and the intended viewpoint of the change. Include a decision only when a competent implementer could otherwise make a different locally-valid choice. These are decisions, not implementation prose: `empty input maps to null, never 0`; `preserve the existing public error text`; `do not add a public API`.
+
+If `Interfaces` and `Global Constraints` genuinely settle every semantic choice, write `None — Interfaces and Global Constraints fully determine this unit's semantics.` Do not silently omit the block.
+
 ### Plan
 
 **Mandatory. This is where your walk becomes the implementer's instructions.**
@@ -80,6 +86,16 @@ Each step names:
 Steps are red-green slices: write the failing test, make it pass, move on. Keep each to one behaviour, not a whole file — a step a reviewer could point at.
 
 Pin **names, values, locations, and order** — not every line. The implementer is a competent coder working `/tdd`; paste a code snippet only where the shape is genuinely non-obvious and prose would be ambiguous. The bar is not "I wrote the code for them"; it is "no step forces a search." A step that needs a location, a signature, or an approach you left unresolved is a hole — resolve it, or, if it's an open design decision with several valid answers, escalate BLOCKED rather than guessing one into the `Plan`.
+
+### Execution Boundary
+
+**Mandatory. The route says what to do; this block says what the unit is not allowed to decide or expand.** It makes scope mechanically checkable instead of relying on an implementer's restraint.
+
+- **Allowed changes** — the exact responsibilities and files this unit may change. `Files` is the inventory; here state the permitted change at each seam, especially when a named file has adjacent responsibilities that are out of scope.
+- **Must not change** — ticket-specific non-goals and tempting adjacent surfaces: public API shape, schema, dependency set, caller behaviour, unrelated variants, formatting, or refactors, as applicable. Do not repeat generic YAGNI; name the real boundary you observed in this tree.
+- **Escalate if** — concrete facts that require `NEEDS_CONTEXT` or `BLOCKED` rather than an implementation decision: a required edit outside the allowed files, a conflict with an existing public contract, a missing interface, a new dependency/schema/public API, or an unresolved semantic choice.
+
+Every entry is specific to this unit. If a category does not apply, state that explicitly (`Must not change: no additional ticket-specific exclusions beyond the allowed changes above`), never leave the section incomplete.
 
 ### Verify
 
@@ -140,9 +156,26 @@ Wide refactors are the exception: behaviour doesn't change by definition, so `Ve
 **Produces**
 - `renderLayer(layer: Layer, opts: RenderOpts): void`
 
+## Binding Decisions
+- `clip: true` clips to the layer bounds; it does not alter the source geometry.
+- No new public API is introduced.
+
 ## Plan
 1. **<slice>** — test: `path/to/thing.test.ts` (new) asserts `renderLayer(layer, {clip:true})` clips to bounds. Change: in `path/to/thing.ts`, add `renderLayer`; call `foo(bar)` from `Consumes`, return `void` after drawing.
 2. **<slice>** — test: … asserts <behaviour with real values>. Change: in `path/to/thing.ts`, <concrete edit in terms of Interfaces>.
+
+## Execution Boundary
+**Allowed changes**
+- `path/to/thing.ts` — add only the `renderLayer` behaviour described above.
+- `path/to/thing.test.ts` — add focused coverage for that behaviour.
+
+**Must not change**
+- the `Layer` data shape, source geometry, or other rendering modes.
+- public call sites or dependencies.
+
+**Escalate if**
+- clipping requires changing a caller, a public interface, or any file outside `Files`.
+- the existing geometry contract conflicts with the binding decision above.
 
 ## Verify
 ```
@@ -173,8 +206,10 @@ Already run — output:
 - Write "verify manually" — that's a finding for `/improve-codebase-architecture`
 - Fill `Consumes` from another ticket's brief or from memory — read it from the code in the tree
 - Omit `Interfaces` because "the code is right there" — unpinned signatures get recalled, and recalled names drift
+- Omit `Binding Decisions`, or leave a semantic choice to the implementer because it seems obvious — locally plausible behaviour can still be the wrong product behaviour
 - Ship a brief with no `Plan`, or a `Plan` step that forces the implementer to search for a location, name, or approach — the walk is yours; a step it can't execute without re-exploring is a hole, not brevity
 - Encode an open design decision (several valid answers) into the `Plan` as if it were settled — that's a BLOCK, not a guess
+- Omit `Execution Boundary`, use it as a generic YAGNI reminder, or let it leave an adjacent public surface, schema, dependency, caller, or refactor decision to the implementer — name the actual unit-specific limits and escalation triggers
 - Paraphrase a Global Constraint
 - Drop or downgrade a test the spec's Testing Decisions mandate — you enumerate the tests and carry the spec's mandate down; deciding an e2e/acceptance test "isn't needed" is not yours to make. A missing runnable form is a finding to resolve or BLOCK on, never a silent omission.
 
