@@ -54,6 +54,8 @@ map("n", "<leader>g?", ":DiffviewFileHistory<CR>", { desc = "Git File History" }
 map("n", "<leader>go", ":DiffviewOpen HEAD~1<CR>", { desc = "Git Last Commit" })
 map("n", "<leader>gh", function() require("gitgraph").draw({}, { all = true, max_count = 5000 }) end, { desc = "GitGraph - Draw" })
 map("n", "<leader>gf", ":Flog<CR>", { desc = "Git Flog" })
+map("n", "<leader>gb", "<cmd>Gitsigns toggle_current_line_blame<CR>", { desc = "Git Toggle Line Blame" })
+map("n", "<leader>gB", function() require("gitsigns").blame_line { full = true } end, { desc = "Git Blame Line (popup)" })
 
 -- Diagnostics
 map("n", "<leader>d", "<cmd>lua vim.diagnostic.open_float()<CR>", { desc = "Show Diagnostics" })
