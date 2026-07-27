@@ -1,14 +1,18 @@
 ---
 name: brief
-description: Write the technical brief for one unit at pickup, inside the unit's worktree — Files, Interfaces, Verify, Sweep. For the brief-writer subagent the engine dispatches before the implementer; written to the worktree's .scratch/, ephemeral, dies with the worktree.
+description: Write the technical brief for one unit at pickup, inside the unit's worktree — Files, Interfaces, Plan, Verify, Sweep. For the brief-writer subagent the engine dispatches before the implementer; written to the worktree's .scratch/, ephemeral, dies with the worktree.
 user-invocable: false
 ---
 
 # Brief
 
-A ticket says **what to build**. A brief says **where the code is, what it must call, and the command that proves it worked**. The ticket is durable and path-free; the brief is disposable and exact.
+A ticket says **what to build**. A brief says **where the code is, what it must call, the ordered steps that build it, and the command that proves it worked** — everything the implementer needs so it *executes* instead of *exploring*. The ticket is durable and path-free; the brief is disposable and exact.
 
-You — the **brief-writer** — are a fresh subagent dispatched into the unit's worktree at pickup: the first act after branching, before the implementer exists. You explore; the implementer builds. Your product is the compression that keeps its window clean — and a weak brief poisons everything downstream.
+You — the **brief-writer** — are a fresh subagent dispatched into the unit's worktree at pickup: the first act after branching, before the implementer exists. You explore; the implementer builds. The walk you do is the walk the implementer must **not** have to redo — every location, name, and step you resolve here is context its window never spends. Your product is the compression that keeps its window clean — and a weak brief poisons everything downstream.
+
+## The brief owns discovery
+
+The implementer is weak by design — a fresh, cheap window that should *execute*, not investigate. Every location it has to grep for, every signature it has to recall, every ordering it has to infer is context spent re-doing the walk you already did — the failure mode that makes a brief only half a brief. So the rule: **you own discovery; the implementer owns typing.** If following the brief would send the implementer back into the code to find, name, or decide something, that gap is yours to close here — or, if it's an open decision with several valid answers, to escalate. A brief that describes the terrain but not the route hasn't finished the job.
 
 ## Why at pickup, never at planning time
 
@@ -42,6 +46,8 @@ You **are** the walk. Explore directly — greps, file reads, whatever the map n
 
 ### 3. Fill the blocks
 
+Terrain first — `Files`, `Interfaces`, the `Global Constraints` you copy verbatim. Then turn the walk into the route: the `Plan`. This is the step that separates a half-brief from a whole one — the terrain says what exists, the `Plan` says what the implementer does with it, in order.
+
 ### 4. Run the Verify gate
 
 Nothing leaves this skill without a verified `Verify` command. See below.
@@ -59,6 +65,21 @@ Exact paths, each with one clause on what changes there. New files marked `(new)
 `Consumes` — signatures this unit calls. Read them from the code in your tree: the real, already-merged code your worktree branched from. The contract is the code, not paper from a previous ticket — paste each signature as the file states it, with the path it came from. Recalled names drift (the code says `clearLayers`, memory offers `clearFullLayers`); pasted ones can't.
 
 `Produces` — signatures this unit exposes. Later work will meet them as merged code; the reviewer checks you delivered exactly this surface.
+
+### Plan
+
+**Mandatory. This is where your walk becomes the implementer's instructions.**
+
+The ordered build steps — the route through the change, one TDD slice per step, in the sequence the implementer executes them. `Files` and `Interfaces` are the terrain; the `Plan` is the path across it. The implementer should never open a file to decide *what* to do or *where* — only to make the edit you already scoped.
+
+Each step names:
+
+- **the test** — the file (`(new)` if new) and the behaviour it pins, with the **real assertion values**: `parse("2h") → 7200`, not "test that it parses".
+- **the change** — the exact location and what to write there, in terms of the `Interfaces` above: which function to call, what to return, where to insert. Concrete enough to type without searching.
+
+Steps are red-green slices: write the failing test, make it pass, move on. Keep each to one behaviour, not a whole file — a step a reviewer could point at.
+
+Pin **names, values, locations, and order** — not every line. The implementer is a competent coder working `/tdd`; paste a code snippet only where the shape is genuinely non-obvious and prose would be ambiguous. The bar is not "I wrote the code for them"; it is "no step forces a search." A step that needs a location, a signature, or an approach you left unresolved is a hole — resolve it, or, if it's an open design decision with several valid answers, escalate BLOCKED rather than guessing one into the `Plan`.
 
 ### Verify
 
@@ -119,6 +140,10 @@ Wide refactors are the exception: behaviour doesn't change by definition, so `Ve
 **Produces**
 - `renderLayer(layer: Layer, opts: RenderOpts): void`
 
+## Plan
+1. **<slice>** — test: `path/to/thing.test.ts` (new) asserts `renderLayer(layer, {clip:true})` clips to bounds. Change: in `path/to/thing.ts`, add `renderLayer`; call `foo(bar)` from `Consumes`, return `void` after drawing.
+2. **<slice>** — test: … asserts <behaviour with real values>. Change: in `path/to/thing.ts`, <concrete edit in terms of Interfaces>.
+
 ## Verify
 ```
 <command>
@@ -148,6 +173,8 @@ Already run — output:
 - Write "verify manually" — that's a finding for `/improve-codebase-architecture`
 - Fill `Consumes` from another ticket's brief or from memory — read it from the code in the tree
 - Omit `Interfaces` because "the code is right there" — unpinned signatures get recalled, and recalled names drift
+- Ship a brief with no `Plan`, or a `Plan` step that forces the implementer to search for a location, name, or approach — the walk is yours; a step it can't execute without re-exploring is a hole, not brevity
+- Encode an open design decision (several valid answers) into the `Plan` as if it were settled — that's a BLOCK, not a guess
 - Paraphrase a Global Constraint
 - Drop or downgrade a test the spec's Testing Decisions mandate — you enumerate the tests and carry the spec's mandate down; deciding an e2e/acceptance test "isn't needed" is not yours to make. A missing runnable form is a finding to resolve or BLOCK on, never a silent omission.
 

@@ -43,7 +43,7 @@ Dispatch the **brief-writer** into the worktree. It explores the code itself and
 
 ### 3. Verify the brief — yourself
 
-Before dispatching the implementer, read the brief and confirm it is load-bearing: the three blocks present, the `Verify` command named and shown already-run, Global Constraints copied verbatim, no placeholders. A gap here poisons everything downstream — the implementer trusts the brief and builds on it. Send a hollow brief back to the brief-writer; never dispatch the implementer against one.
+Before dispatching the implementer, read the brief and confirm it is load-bearing: the blocks present (Files, Interfaces, Plan, Verify, Sweep), the `Verify` command named and shown already-run, Global Constraints copied verbatim, no placeholders. The `Plan` is the block that most often comes back hollow — read its steps as the implementer will: does each name a test with real values and a concrete change, or would a step send the implementer back into the code to find a location, a name, or an approach? A `Plan` that describes the terrain but not the route is a hollow brief, however complete its `Files` and `Interfaces` look. A gap here poisons everything downstream — the implementer trusts the brief and builds on it. Send a hollow brief back to the brief-writer; never dispatch the implementer against one.
 
 ### 4. implementer → the build
 

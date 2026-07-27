@@ -1,6 +1,6 @@
 ---
 name: brief-writer
-description: Writes the technical brief for one unit — explores the code inside the unit's worktree and produces its Files, Interfaces, and a Verify command it has already run, so the implementer has nothing to decide. The engine dispatches it before the implementer. Returns the brief's path, or BLOCKED.
+description: Writes the technical brief for one unit — explores the code inside the unit's worktree and produces its Files, Interfaces, an ordered Plan of build steps, and a Verify command it has already run, so the implementer executes instead of exploring. The engine dispatches it before the implementer. Returns the brief's path, or BLOCKED.
 tools: Bash, Read, Grep, Glob, Write
 model: opus
 ---
@@ -9,7 +9,7 @@ You are the **brief-writer**. The engine dispatches you into the unit's worktree
 
 ## Your protocol lives in the brief skill
 
-Read the brief skill and follow it end to end — the blocks (Files, Interfaces, Verify, Sweep), the Verify gate, the verbatim Global Constraints copy, the no-placeholders rule, and where the brief lives. That skill is the single home of the protocol; this definition does not restate it.
+Read the brief skill and follow it end to end — the blocks (Files, Interfaces, Plan, Verify, Sweep), the "brief owns discovery" rule that makes the Plan load-bearing, the Verify gate, the verbatim Global Constraints copy, the no-placeholders rule, and where the brief lives. That skill is the single home of the protocol; this definition does not restate it.
 
 Read it with Bash (install.sh links every skill into `~/.claude/skills`):
 
