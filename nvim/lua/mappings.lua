@@ -52,6 +52,7 @@ map("n", "<leader>fg", "<cmd>Telescope git_commits<CR>", { desc = "Find Commit" 
 map("n", "<leader>gg", "<cmd>LazyGit<CR>", { desc = "Open Lazygit" })
 map("n", "<leader>g?", ":DiffviewFileHistory<CR>", { desc = "Git File History" })
 map("n", "<leader>go", ":DiffviewOpen HEAD~1<CR>", { desc = "Git Last Commit" })
+map("n", "<leader>gd", function() require("gitsigns").diffthis("@") end, { desc = "Git Diff (this file vs HEAD)" })
 map("n", "<leader>gh", function() require("gitgraph").draw({}, { all = true, max_count = 5000 }) end, { desc = "GitGraph - Draw" })
 map("n", "<leader>gf", ":Flog<CR>", { desc = "Git Flog" })
 map("n", "<leader>gb", "<cmd>Gitsigns toggle_current_line_blame<CR>", { desc = "Git Toggle Line Blame" })
