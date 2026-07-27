@@ -1,17 +1,18 @@
 ---
 name: verified-review
-description: Review the changes since a fixed point along two axes — Standards (does the code follow this repo's documented standards?) and Spec (does it match what the ticket asked for?) — after running the Verify command itself. Runs both axes in parallel sub-agents and reports them side by side. Use to review a ticket, branch, PR, or work-in-progress changes.
+description: Review the changes since a fixed point: run the Verify command and drive the real runtime yourself, then judge two axes — Standards (does the code follow this repo's documented standards?) and Spec (does it match what the ticket asked for?). A broken build or a dead runtime early-exits before the parallel axes launch. Use to review a ticket, branch, PR, or work-in-progress changes.
 ---
 
 # Verified Review
 
-Review of the diff between `HEAD` and a fixed point, in two stages:
+Review of the diff between `HEAD` and a fixed point, in three stages — each a gate the next stands on:
 
-- **Stage 0 — cheap, early-exit.** The reviewer runs the brief's `Verify` command plus its `Sweep` directions (lint, type/compile checks) *itself*, in the worktree under review. Any red → return immediately; the axes never launch on broken code.
+- **Stage 0 — build, cheap early-exit.** The reviewer runs the brief's `Verify` command plus its `Sweep` directions (lint, type/compile checks) *itself*, in the worktree under review. Any red → return immediately; nothing downstream launches on broken code.
+- **Stage ½ — real run, the runtime gate.** Tests are only as honest as what they touch: a unit can be green on fakes while the real path is dead from config, wiring, environment, or an external contract no test covers. A dispatched runner drives the affected flow and returns a verdict; a `HARD-FAIL` early-exits like a red stage 0 — the axes never review a unit that doesn't run.
 - **Stage 1 — the axes, in parallel.** Two sub-agents so they don't pollute each other's context, reported side by side without merging:
   - **Standards** — does the code conform to this repo's documented standards?
   - **Spec** — does the code faithfully implement the originating ticket / spec, including the tests its Testing Decisions mandate?
-  - plus one informational check — `adr-candidate` (step 6).
+  - plus one informational check — `adr-candidate` (step 7).
 
 ## Process
 
@@ -43,11 +44,32 @@ The commands are in the brief. Read `.scratch/brief-NN.md` in the worktree under
 
 **Red here where the implementer's report claimed green is itself a finding — record it in the return, beside the command output.** A report contradicted on its most checkable claim is not load-bearing: every other claim in it is now suspect, and whoever fixes must treat the report as noise, not evidence.
 
+### Stage ½ — the runtime gate
+
+Reached only on a green stage 0. The build passing is not the thing running.
+
+#### 3. Real run — drive it, don't trust green
+
+Dispatch a **runner** (`general-purpose`) into the worktree to drive the affected flow end-to-end and **observe the behaviour** — not a test of it. The flow is already named; the runner reads it, never invents it:
+
+- the brief's **`Verify`** command — the focused entry the brief-writer ran at pickup;
+- the ticket / spec's **manual-acceptance or "done-by-observation" script**, if it names one — that script *is* this gate; run it, don't paraphrase;
+- failing an explicit script, the **affected flow the diff implies** — the endpoint, screen, command, or job the change touches.
+
+The runner drives the real dependencies the flow reaches; the observation travels back, not the logs:
+
+| Verdict | Meaning | Effect |
+|---|---|---|
+| **PASS** | Driven, observed doing what the unit promised | Continue to stage 1 |
+| **HARD-FAIL** | Won't build, won't launch, crashes on entry — the runtime is dead | **Return immediately.** The observation is the only finding; the axes never launch. |
+| **SOFT-FAIL** | Runs, but the observed behaviour is wrong | **Carry as a finding** into stage 1's aggregate — the axes still run, so one hand-back carries everything |
+| **NOTHING-TO-DRIVE** | No runtime surface — docs, config-free fixtures, pure test code | Continue, recorded with the reason. Any unit touching product source has a surface; find it before claiming the exemption. |
+
 ### Stage 1 — the axes, in parallel
 
-Reached only on a green stage 0.
+Reached only on a green stage 0 and a stage ½ that did not hard-fail.
 
-#### 3. Identify the spec source
+#### 4. Identify the spec source
 
 In this order:
 
@@ -58,7 +80,7 @@ In this order:
 
 The brief's **Global Constraints** block, if present, travels to both sub-agents verbatim.
 
-#### 4. Identify the standards sources
+#### 5. Identify the standards sources
 
 Anything documenting how code should be written here — `CODING_STANDARDS.md`, `CONTRIBUTING.md`, `CLAUDE.md`.
 
@@ -82,7 +104,7 @@ Each reads *what it is* → *how to fix*:
 - **Middle Man** — a unit that mostly delegates onward. → cut it.
 - **Refused Bequest** — a subclass ignoring most of what it inherits. → composition.
 
-#### 5. Spawn both sub-agents in parallel
+#### 6. Spawn both sub-agents in parallel
 
 One message, two `Agent` calls, `general-purpose` for both.
 
@@ -96,18 +118,21 @@ One message, two `Agent` calls, `general-purpose` for both.
 
 Do not pre-judge findings for either sub-agent. If the prompt you're writing contains "don't flag", "at most Minor", or "the spec chose" — stop. Let the finding surface and adjudicate it yourself.
 
-#### 6. The adr-candidate check
+#### 7. The adr-candidate check
 
 One conditional, applied by you while reading the diff and the axes' reports: **the change passes the ADR test owned by `/domain-modeling` → emit a finding of class `adr-candidate`**, carrying a one-sentence statement of the decision and its trade-off. The criteria live in `/domain-modeling`; this skill only points at them.
 
 `adr-candidate` is **informational**: it never blocks the unit and is never dispatched for fixing. The orchestrator writes it up automatically — via `/domain-modeling`, before integrating — its own commit on the unit's branch, so it merges with the work. The review only surfaces it.
 
-#### 7. Aggregate
+#### 8. Aggregate
 
 ```
 ## Stage 0
 <verify command> → green
 <lint command> → green · <typecheck command> → green
+
+## Real run
+<verdict> — <one line: what was driven, and what was observed>
 
 ## Standards
 <report, verbatim or lightly cleaned>
@@ -132,6 +157,7 @@ The dispatch carries one conditional line: **findings received → follow `/rece
 All of it, or it isn't done:
 
 - [ ] **Stage 0 green** — Verify green now, run by you, with red-at-pickup on file in the brief — plus lint and type/compile checks
+- [ ] **Real run** — the affected flow driven and observed working (or `NOTHING-TO-DRIVE` recorded with its reason); no `HARD-FAIL`, no unresolved `SOFT-FAIL`
 - [ ] **Spec axis** — matches the ticket, including the tests its Testing Decisions mandate (a mandated e2e/acceptance test absent or downgraded to fakes is a Spec finding)
 - [ ] **Standards axis** — matches the repo's conventions
 - [ ] **No discrepancy** between the implementer's report and what you observed
@@ -161,6 +187,6 @@ A change can pass one and fail the other:
 - Follows every standard, implements the wrong thing → **Standards pass, Spec fail.**
 - Does exactly what the ticket asked, breaks the repo's conventions → **Spec pass, Standards fail.**
 
-Reporting them separately stops one from masking the other. Stage 0 is not a third axis — it's the gate both axes stand on.
+Reporting them separately stops one from masking the other. Stages 0 and ½ are not axes — they're the gates the axes stand on.
 
-**Related:** `/brief` names the `Verify` command and the `Sweep` directions · `/to-implement` calls this after the unit · `/domain-modeling` owns the ADR test behind `adr-candidate` · `/receiving-code-review` governs the fixer's handling of findings · `/improve-codebase-architecture` receives the "no Verify command" finding
+**Related:** `/brief` names the `Verify` command and the `Sweep` directions · `/to-implement` raises this as the unit's review gate · `/domain-modeling` owns the ADR test behind `adr-candidate` · `/receiving-code-review` governs the fixer's handling of findings · `/improve-codebase-architecture` receives the "no Verify command" finding

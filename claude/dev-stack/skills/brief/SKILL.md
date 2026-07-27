@@ -70,7 +70,7 @@ The repo's verification directions — the commands the orchestrator hands to th
 
 **Plus every test the spec's Testing Decisions mandate** — including a gated e2e / live smoke: list it with its gate (e.g. `VIKING_LIVE=1 npm run test:e2e:live`) and mark it flake-tolerant so the runner retries rather than red-gates on a blip. A mandated test that the repo has no runnable form for yet is not a reason to drop it — it is work for this unit: name the (new) test file in `Files` and its command here, or, if the seam genuinely doesn't exist, escalate BLOCKED. Never silently narrow the mandate to whatever already runs.
 
-The focused `Verify` is the fast inner-loop gate and **may fake external dependencies** to stay deterministic and quick; that is expected. But a fast fake `Verify` does **not** discharge the acceptance/e2e mandate — that lives here in `Sweep` and is driven for real at the engine's real-run step. A quick fake `Verify` **and** a mandated e2e is the normal shape; neither substitutes for the other.
+The focused `Verify` is the fast inner-loop gate and **may fake external dependencies** to stay deterministic and quick; that is expected. But a fast fake `Verify` does **not** discharge the acceptance/e2e mandate — that lives here in `Sweep` and is driven for real at the review's real-run gate. A quick fake `Verify` **and** a mandated e2e is the normal shape; neither substitutes for the other.
 
 ## Global Constraints
 

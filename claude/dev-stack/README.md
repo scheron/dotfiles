@@ -38,7 +38,7 @@ Each seat is a subagent: a **brief-writer** explores the code and writes the exa
 Both tiers clear the same two gates — a one-line fix and a whole feature meet the same bar:
 
 - **Plan in.** No code before an approved plan. Tier 1: a few lines in chat. Tier 2: the spec and the tickets, each approved at its gate.
-- **Review out.** No unit closes until `/verified-review` passes — the reviewer runs the verification command *itself*: green now, with red-at-pickup on file in the brief.
+- **Review out.** No unit closes until `/verified-review` passes — the reviewer runs the verification command *itself* (green now, with red-at-pickup on file in the brief) and drives the real runtime: a green built on fakes fails here, before the axes spend a pass on it.
 
 ## Autopilot — a batch, unattended
 
