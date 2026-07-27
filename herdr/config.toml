@@ -12,7 +12,7 @@ new_cwd = "follow"            # new panes inherit the source pane/workspace cwd
 
 [keys]
 prefix = "ctrl+g"             # aerospace owns alt-*/cmd-* → prefix stays on ctrl, no conflicts
-new_worktree = "prefix+shift+o"  # moved off default shift+g (now used by goto below)
+open_worktree = "prefix+shift+o" # switch to an EXISTING worktree (I don't create by hand; use `herdr worktree create` if ever needed)
 goto = "prefix+shift+g"          # moved off default prefix+g (freed for reviewr below)
 toggle_sidebar = "prefix+e"      # sidebar toggle, moved off default prefix+b (freed for agents below)
 edit_scrollback = ""             # disabled — frees prefix+e for the sidebar toggle above
