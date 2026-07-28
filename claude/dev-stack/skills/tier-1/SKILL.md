@@ -18,10 +18,21 @@ Tier 1 *is* one vertical slice — a narrow but complete path through every laye
 
 1. **Shape the work first, if it needs it.**
    - **Bug-shaped** — broken, throwing, failing, slow — run `/diagnose` before any plan. In Tier 1, diagnosis produces *understanding*, not commits: the plan below is the fix it points to, and the fix itself is built in the engine's worktree.
-   - **A small feature** — sharpen it with `/grill`, the lightweight grill that writes no docs (docs are Tier 2's job). It is a conversation; nothing is branched.
-2. **GATE IN — the inline plan (G3).** Present the plan in chat, a few lines, plus **the base commit** the worktree will branch from, named as a commit the user can see. Wait for the explicit approval. The plan lives in chat — never an artifact, never a written file.
 
-   Carrying the base commit here is what lets `/to-implement` branch without a second stop: its gate asks for exactly these two things, so asking twice buys nothing.
+     **Carry its Phase 1 command into the plan as the acceptance.** Diagnosis ends on one red-capable, deterministic, fast, agent-runnable command it has already run — the same four properties the brief's `Verify` gate demands. Naming it in the plan is what stops the brief-writer deriving it again from nothing; the brief-writer still runs it itself in the worktree, because the brief needs its own pasted output.
+   - **A small feature** — sharpen it with `/grill`, the lightweight grill that writes no docs (docs are Tier 2's job). It is a conversation; nothing is branched.
+2. **GATE IN — the inline plan (G3).** Present the plan in chat and wait for explicit approval. It lives in chat — never an artifact, never a written file.
+
+   A Tier 1 plan **is a ticket that was never written down**, so it carries what a ticket carries, and for the same reason: the brief-writer reads both and cannot work without these:
+
+   - **Observable behaviour** — what works once this lands, and *how you'll observe it*: the command, the screen, the request, the build.
+   - **Layers crossed** — the layers this slice cuts through, by their domain names. Names only.
+   - **Acceptance** — as end-to-end behaviour, never per layer.
+   - **The command that proves it** — for bug-shaped work, `/diagnose`'s Phase 1 command; otherwise the check you'd run.
+
+   Plus **the base commit** the worktree will branch from, named as a commit the user can see. Carrying it here is what lets `/to-implement` branch without a second stop: its gate asks for exactly the plan and the base, so asking twice buys nothing.
+
+   **No file paths.** They belong to the brief, which rebuilds them at pickup against the tree it is about to change; named here they are an anchor the brief-writer may trust instead of looking.
 3. **Hand off** — `/to-implement` with input **nothing**: the approved chat plan is the single unit. The engine isolates the worktree and carries the rest — the brief, the build, `/verified-review`, `/finish-branch`.
 
 ## When NOT Tier 1
