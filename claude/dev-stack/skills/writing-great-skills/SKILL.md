@@ -42,6 +42,10 @@ Push too little down and the top bloats; push too much and you hide material the
 
 **Progressive disclosure** is the move down the ladder — out of `SKILL.md` into a linked file — so the top stays legible. Mechanics: a linked `.md` file in the skill folder, named for what it holds (this skill discloses its full definitions to `GLOSSARY.md`). Some skills are used in more than one way, and each distinct way is a **branch** — different runs taking different paths through the skill. Branching is the cleanest disclosure test: inline what every branch needs, and push behind a pointer what only some branches reach. A **context pointer**'s _wording_, not its target, decides when and how reliably the agent reaches the material.
 
+**Two triggers earn a disclosed file, and nothing else does:** material only *some* branches reach, or material whose reader is *someone else* — a subagent that needs the reference the dispatching agent would otherwise have to load in order to paste it. Anything every run needs stays in `SKILL.md`; a template used on every branch is not disclosure, it is a file the agent must now go fetch.
+
+> **dev-stack convention:** a disclosed file is a **flat sibling** of `SKILL.md`, named in caps for what it holds — `GLOSSARY.md`, `ADR-FORMAT.md`, `SMELLS.md`. No `references/` subdirectory: the folder adds a path segment and buys nothing at this scale. Two skills reading the same reference point at one file rather than each carrying a copy — **duplication** costs the same inside a skill folder as anywhere else.
+
 Where the ladder decides _how far down_ a piece sits, **co-location** decides _what sits beside it_ once there: keep a concept's definition, rules, and caveats under one heading rather than scattered, so reading one part brings its neighbours with it.
 
 ## When to split

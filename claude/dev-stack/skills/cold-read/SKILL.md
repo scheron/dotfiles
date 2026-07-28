@@ -1,35 +1,31 @@
 ---
 name: cold-read
-description: Read a finished spec and its tickets from the position the implementer will occupy — no planning context — and report what was understood. Surfaces drift between what you meant and what the artifact says, while fixing is still free. Use after /to-tickets and before any implementation.
+description: Read a finished spec and its tickets from the position the brief-writer will occupy — no planning context — and report what was understood. Surfaces drift between what you meant and what the artifact says, while fixing is still free. Use after /to-tickets and before any implementation.
 ---
-
-<STOP-GATE>
-The tickets are ready; I'll dispatch a cold, context-free reader over the spec and tickets and report the drift — go?
-</STOP-GATE>
 
 # Cold Read
 
-The spec is written by an agent that sat through the whole grilling session. It carries the conversation whether or not it carries the decisions. The implementer reads it **cold**.
-
-So nobody ever reads the artifact from the position the implementer actually occupies — and decisions quietly widen or go missing somewhere between the interview and the ticket. You find out at code review, after a branch was built on the misreading.
+The spec is written by an agent that sat through the whole grilling session. It carries the conversation whether or not it carries the decisions. The **brief-writer** reads it cold — and it is the brief-writer's reading that turns the ticket into the tasks everything downstream executes.
 
 This skill puts one reader in that position on purpose, before any code exists, when the gap is free to close.
 
+**No gate.** This is the last point where fixing a spec is free, so asking whether to run it buys nothing. Run it and report.
+
 ## When
 
-After `/to-tickets`, before the first `/brief`. Once per feature.
+After `/to-tickets`, before the first `/brief`. Once per feature. **Required** on a Tier 2 spec.
 
-Skip it when the grilling was short and the decisions few — on three tickets it's overhead. It earns its cost when the interview was long, the decision tree branched, or the feature touches an area with existing ADRs.
+One rule decides the exception, not a question to the user: **skip only when the grill ran short and the tickets number three or fewer.** Below that line it is overhead. It earns its cost when the interview was long, the decision tree branched, or the feature touches an area with existing ADRs.
+
+Its counterpart one level down is the brief check in `/to-implement`: cold-read catches **spec → ticket** drift, the brief check catches **ticket → brief** drift. Same instrument, two levels — neither replaces the other.
 
 ## The construction
 
-**You know why the reader is reading. The reader must not.**
+**You know why the reader is reading. The reader must not.** Three rules, and each one changes what comes back:
 
-This skill runs the reader as a subagent with a plain comprehension prompt. Three things stay out of that prompt, because each one changes what comes back:
-
-- **It is never asked to audit, review, or find ambiguities.** Asked for problems, a model manufactures them. Asked what it understood, the ambiguities surface on their own — as the places it had to pick.
-- **It produces no verdict.** No readiness grade, no score, no "looks good to me". A verdict gives it something to justify, and justification bends the reading.
-- **It is not told why it is reading.** Not that it's a cold reader, not that its answer will be checked against a decision it cannot see. An agent that knows drift is being hunted will produce drift.
+- **Never ask it to audit, review, or find ambiguities.** Asked for problems, a model manufactures them. Asked what it understood, the ambiguities surface on their own — as the places it had to pick.
+- **Take no verdict.** No readiness grade, no score, no "looks good to me" — a verdict gives it something to justify, and justification bends the reading.
+- **Never tell it why it is reading.** An agent that knows drift is being hunted will produce drift.
 
 It reads like a comprehension task. It has no idea it is an instrument.
 
@@ -39,7 +35,7 @@ It reads like a comprehension task. It has no idea it is an instrument.
 
 The spec, every ticket, and nothing else. **Not** `CONTEXT.md`, **not** the ADRs, **not** the conversation.
 
-This is deliberate: the implementer will have the glossary and the ADRs, but they are durable and independently verified. What's under test here is whether the *feature-specific* decisions made it into the *feature-specific* artifact. Handing over the durable layer masks exactly the gap you're looking for.
+This is deliberate: the brief-writer will have the glossary and the ADRs, but they are durable and independently verified. What's under test here is whether the *feature-specific* decisions made it into the *feature-specific* artifact. Handing over the durable layer masks exactly the gap you're looking for.
 
 ### 2. Dispatch the reader
 
@@ -61,7 +57,7 @@ You hold the decisions. The subagent's report is the artifact's actual signal st
 
 Three signals, in descending order of cost:
 
-- **Section 3 is populated** — the ticket genuinely reads more than one way. This is the highest-value finding: the implementer *will* pick, and it may not pick your reading.
+- **Section 3 is populated** — the ticket genuinely reads more than one way. This is the highest-value finding: the brief-writer *will* pick, and it may not pick your reading — and its pick becomes the tasks.
 - **Section 1 misses the point** — the spec's Problem Statement is not carrying. Everything downstream inherits this.
 - **Section 2 rebuilds something you already rejected** — a decision from the grill never reached the artifact. Check whether it deserved an ADR; if it was hard to reverse, surprising, and a real trade-off, it did, and its absence is the real bug.
 
@@ -70,12 +66,6 @@ Three signals, in descending order of cost:
 Amend the spec or the tickets. Then decide whether to re-read: a second pass is worth it only if you changed something structural, not for wording.
 
 Findings that turn out to be **decisions never recorded anywhere** go to `/domain-modeling` — a term that keeps sliding belongs in `CONTEXT.md`, a trade-off that keeps being re-litigated belongs in an ADR. Fixing the spec alone means re-fixing it next feature.
-
-## Why not just re-read it yourself
-
-You can't. You were in the grilling session. You will read the intended meaning into an ambiguous sentence every time, because you know which reading is right — that's precisely the knowledge the artifact is supposed to carry and you cannot un-know it while checking whether it does.
-
-The cold reader isn't smarter than you. It's ignorant in exactly the way the implementer will be.
 
 ## Red flags
 

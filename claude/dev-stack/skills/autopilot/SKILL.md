@@ -37,7 +37,7 @@ That resolver mirrors `/verified-review`'s (`$DEV_STACK_ROOT` overrides; otherwi
 
 **Preconditions:** a clean working tree, and local-file tickets under `.scratch/<feature>/issues/<NN>-*.md` with a `Blocked by` line (what `/to-tickets` writes). Real-tracker batches are not supported.
 
-## The contract (what the врезки rely on)
+## The contract
 
 The runner sets three environment variables for each child session; the `/to-implement` **Autopilot exception** honours them:
 
@@ -53,6 +53,24 @@ The runner sets three environment variables for each child session; the `/to-imp
 
 There is one **integration branch**. Ticket N's worktree cuts from its current tip; on green it merges back; the next ticket cuts from the new tip. That is what gives a dependent ticket its blockers' code for free — and because the runner is strictly sequential, merges are serialized and it introduces no conflicts of its own.
 
+## Sequential tickets, parallel tasks
+
+Two axes, and only one of them is sequential — mixing them up is the easy mistake here.
+
+- **Tickets are strictly sequential.** One at a time, one merge at a time. That is the whole safety story, and concurrent merges are a separate design.
+- **Tasks inside a ticket run as waves**, exactly as in the interactive engine — implementer and reviewer per task, several pairs at once when the brief declares their files disjoint. Nothing about that is disabled here, and nothing about it touches the integration branch: it all happens inside one ticket's worktree, where the child session is the only committer.
+
+So a ticket's session dispatches more seats than it used to and lives longer. Two consequences worth knowing when a run halts:
+
+- **Compaction is likelier**, and there is no human watching to notice. The child recovers from `git log` and `.scratch/report-*` — the wave commits and the task reports are the run's memory, and the engine forbids re-dispatching a task whose report is on disk.
+- **A halt can now come from inside a ticket**, not just from its review: a brief that fails its verify loop, a task that exhausts its fix rounds, a finding that needs adjudication. All of them leave no sentinel, which is exactly the safe outcome.
+
+## No parking, unattended
+
+The interactive engine lets the orchestrator **park** a finding at a fix-loop cap — ruled contestable or not load-bearing — and carry it to the slice review. **Under autopilot it may not.**
+
+Parking is a judgement the human delegates by being in the room. With nobody there, a parked finding is a bar quietly lowered and a red turned green by fiat. At any cap, and on any finding that conflicts with what the brief mandates, the child **halts** instead. A halt costs one re-run; a laundered finding costs the merge.
+
 ## Halt & resume
 
 On the first red the run stops and writes the reason to `<git-common-dir>/dev-stack/autopilot/<feature>/run.json`. Fix the ticket by hand (its worktree/branch are left in place), then **re-run the same command** — the runner recomputes the frontier from the sentinels, skips what already landed, and continues. There is no separate "resume" verb; the command *is* idempotent.
@@ -63,7 +81,8 @@ On the first red the run stops and writes the reason to `<git-common-dir>/dev-st
 - Run with a dirty working tree — the runner refuses; commit or stash first
 - Point `--integration-branch` at the default branch — landings would fight `branch-guard`, and unreviewed history would reach the main line
 - Treat a child's chat output as the outcome — only the sentinel + branch advance close a ticket
-- Parallelize the frontier — sequential execution is the whole safety story; concurrent merges are a separate design
+- Parallelize the frontier — sequential *tickets* are the whole safety story; concurrent merges are a separate design. (Parallel *tasks* inside one ticket are normal and untouched — see above.)
+- Park a finding at a cap to keep the run moving — halt instead; nobody is present to have delegated that call
 - Weaken review-out to make a ticket pass — a halt is the correct outcome; `/verified-review` green is not negotiable
 
 **Related:** `/to-tickets` cuts the batch this runs · `/to-implement` is the per-ticket engine (its Autopilot exception is the entry point) · `/finish-branch` lands each ticket (Option 1, driven non-interactively) · `/verified-review` still gates every ticket

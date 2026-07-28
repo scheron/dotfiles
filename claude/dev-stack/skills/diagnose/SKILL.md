@@ -51,6 +51,8 @@ Phase 1 is done when you can name **one command** you have **already run at leas
 
 If you catch yourself reading code to build a theory before this command exists — **stop. Jumping to a hypothesis is the exact failure this skill prevents.** No red-capable command, no Phase 2.
 
+**This command outlives the diagnosis — hand it on.** Those four properties are exactly what the brief's `Verify` gate demands, so name it in whatever carries the fix forward: the Tier 1 inline plan, or the ticket. Leave it here and the brief-writer derives it again from nothing, throwing away the most expensive thing diagnosis produced. It still runs the command itself at pickup — the brief needs its own pasted output — but it no longer has to invent it.
+
 ### When you genuinely cannot build one
 
 Say so explicitly. List what you tried. Ask for: (a) access to an environment that reproduces it, (b) a captured artifact (HAR, log dump, core dump, timestamped recording), or (c) permission to add temporary production instrumentation. Do **not** hypothesise without a loop.

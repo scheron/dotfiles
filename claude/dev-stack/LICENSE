@@ -1,0 +1,41 @@
+MIT License
+
+Copyright (c) 2026 Scheron
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+---
+
+## Credits
+
+Several skills in this stack grew from **Superpowers** by Jesse Vincent
+(https://github.com/obra/superpowers, also distributed as the official
+`superpowers` Claude Code plugin) — MIT licensed. In particular
+`using-git-worktrees`, `tdd`, `receiving-code-review`, `commit-work`,
+`finish-branch`, `resolving-merge-conflicts`, and `handoff` descend from its
+skills, and the execution engine's shape — a fresh implementer per task, a
+review after each, a broad review at the end — follows its
+`subagent-driven-development`.
+
+Other material this stack leans on:
+
+- **John Ousterhout**, *A Philosophy of Software Design* — the deep-module
+  vocabulary and "Design It Twice" in `codebase-design`.
+- **Martin Fowler**, *Refactoring* (ch. 3) — the code-smell baseline the
+  Standards axis and the task reviewer carry.

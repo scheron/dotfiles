@@ -9,4 +9,6 @@ Ask the questions one at a time, waiting for feedback on each question before co
 
 If a *fact* can be found by exploring the environment (filesystem, tools, etc.), look it up rather than asking me. The *decisions*, though, are mine — put each one to me and wait for my answer.
 
+**Where a question has genuine alternatives, put 2-3 of them on the table** — each with its trade-offs — then lead with the one you recommend and say why. A single recommended answer walks us down one branch of the tree without ever showing that the others existed; that is how a plan comes out solid and still wrong. Be opinionated: I want a strong read, not a menu.
+
 Do not act on it until I confirm we have reached a shared understanding.
