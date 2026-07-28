@@ -18,7 +18,9 @@ Nothing is branched, dispatched, or integrated until the go is given.
 
 Typed directly with a raw task, the gate is live.
 
-**Autopilot exception.** If `DEV_STACK_AUTOPILOT=1` is set in the environment (check with `printenv DEV_STACK_AUTOPILOT`), this gate is already satisfied — the ticket was approved at `/to-tickets` and the batch at `/autopilot`. The base is the integration branch's tip; landing is `/finish-branch` Option 1 to that branch with no menu; any state that would normally escalate to the user instead halts the run for resume. The `/autopilot` skill owns the exact base/branch/sentinel contract.
+**Autopilot exception.** If `DEV_STACK_AUTOPILOT=1` is set in the environment (check with `printenv DEV_STACK_AUTOPILOT`), this gate is already satisfied — the ticket was approved at `/to-tickets` and the batch at `/autopilot`. The base is the integration branch's tip; landing is `/finish-branch` Option 1 to that branch with no menu; any state that would normally escalate to the user instead halts the run for resume.
+
+Waves run unchanged — tickets are sequential, tasks inside one are not. **One rule is stricter:** you may not park a finding at a cap. Parking is a judgement the user delegates by being present, and unattended it is a bar quietly lowered — so at any cap, and on any finding that conflicts with the brief, halt without writing the sentinel. The `/autopilot` skill owns the exact base/branch/sentinel contract.
 </STOP-GATE>
 
 # To Implement

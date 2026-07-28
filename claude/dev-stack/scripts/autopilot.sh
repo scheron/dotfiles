@@ -182,7 +182,10 @@ AUTOPILOT RUN (you were dispatched by autopilot.sh; DEV_STACK_AUTOPILOT=1). This
 - On green /verified-review, land via /finish-branch Option 1: squash-merge to $INTEGRATION (base branch = $INTEGRATION) so the ticket lands as one commit, delete the worktree — no menu, no questions.
 - FINAL ACTION after the merge succeeds: write the landed commit SHA (the squash commit on $INTEGRATION) to this exact path, nothing else in the file:
     $SENTINEL
-- If ANYTHING blocks (brief BLOCKED, implementer BLOCKED, three red sweep rounds, review not green after fixers, or a merge conflict you cannot resolve): do NOT write the sentinel. Stop and report the reason. The run will halt for a human."
+- Waves run as normal: the brief's tasks, implementer+reviewer per task, you the only committer. Tickets are sequential; tasks inside this ticket are not.
+- If ANYTHING blocks, do NOT write the sentinel — stop and report the reason, and the run halts for a human. Specifically: brief BLOCKED, or its verify loop hitting the 5-round cap; an implementer BLOCKED, or a task's fix loop hitting the 5-round cap; a finding that needs adjudication or conflicts with the brief; /verified-review not green after the fixer; a merge conflict you cannot resolve.
+- Do NOT park a finding to keep going. Parking is a judgement the human delegates by being present, and nobody is present: at any cap, halt instead.
+- If your context is compacted mid-run, recover from git log and .scratch/report-* — never re-dispatch a task whose report is already on disk."
 
   DEV_STACK_AUTOPILOT=1 \
   DEV_STACK_INTEGRATION_BRANCH="$INTEGRATION" \
