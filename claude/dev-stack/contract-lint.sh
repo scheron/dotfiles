@@ -1,8 +1,9 @@
 #!/usr/bin/env bash
 # The invocation-contract lint (offline, deterministic). Asserts the textual
-# contract the two-tier stack stands on — STOP-gates on the driving set, no
-# model-invocation flag, exactly five internal skills, forbidden dirs absent.
-# Non-zero exit on ANY violation. No network. This is the stack's own Verify.
+# contract the two-tier stack stands on — gates present where they belong and
+# conditional where a driver already asked, no reason grown into its own
+# section, no model-invocation flag, exactly five internal skills, forbidden
+# dirs absent. Non-zero exit on ANY violation. No network. The stack's own Verify.
 #
 # Usage:
 #   contract-lint.sh [DIR]   run the contract lint over DIR (default: this dir).
@@ -12,12 +13,26 @@ set -euo pipefail
 HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 # ── the contract's fixed rosters ─────────────────────────────────────────────
-# The driving set: every one must open its body with a <STOP-GATE> block.
-DRIVING=(
-  route-me tier-1 tier-2 to-implement decision-map grill-me
-  to-spec to-tickets cold-read handoff improve-codebase-architecture finish-branch
-  autopilot
+# Self-gated: the gate is live every run. Entry points and irreversible acts.
+SELF_GATED=(
+  route-me decision-map handoff improve-codebase-architecture finish-branch autopilot
 )
+# Chain-gated: the gate is live when the skill is typed, and already satisfied
+# when a driver reached it — so each must carry the `**Satisfied when**` clause
+# inside its gate. Without it a seven-link chain asks permission seven times.
+CHAIN_GATED=(
+  tier-1 tier-2 grill-me to-spec to-tickets to-implement
+)
+# Every gated skill opens its body with a <STOP-GATE> block.
+DRIVING=("${SELF_GATED[@]}" "${CHAIN_GATED[@]}")
+# Deliberately ungated: asking whether to run these buys nothing. Asserted as a
+# regression guard — a gate creeping back in is the violation.
+UNGATED=(
+  cold-read
+)
+# Headings that mean a reason grew its own section. A reason belongs in the
+# sentence it sharpens; one that needs a section belongs in README.md.
+RATIONALE_HEADING='^#{1,6}[[:space:]]+(Why|Rationale|Background|The idea)\b'
 # The internal five: exactly these carry `user-invocable: false` — no more, no
 # fewer. Hidden from the slash menu, reachable by skills and the model.
 INTERNAL_FIVE=(
@@ -43,6 +58,20 @@ gate_ok() {
     { if ($0 ~ /^<STOP-GATE>/) rc=0; else rc=1; done=1 }      # first substantive line
     END { if (done==1) exit rc; else exit 1 }                 # empty body = no gate
   ' "$1"
+}
+
+# gate_conditional FILE — 0 if the gate block carries the `**Satisfied when**`
+# clause that names the driver whose gate already asked. Scoped to the block on
+# purpose: the clause has to be inside the gate the agent reads, not elsewhere.
+gate_conditional() {
+  awk '/^<STOP-GATE>/{in_gate=1} in_gate{print} /^<\/STOP-GATE>/{if(in_gate) exit}' "$1" \
+    | grep -q '\*\*Satisfied when\*\*'
+}
+
+# has_rationale_heading FILE — 0 if the file carries a heading that turns a
+# reason into its own section.
+has_rationale_heading() {
+  grep -Eq "$RATIONALE_HEADING" "$1"
 }
 
 # fm_has_flag FILE — 0 if the frontmatter DECLARES disable-model-invocation.
@@ -71,7 +100,7 @@ contract_lint() {
   echo "target: $root"
   echo
 
-  # [1/4] STOP-gate opens each driving skill's body.
+  # [1/6] STOP-gate opens each gated skill's body; the ungated carry none.
   local v=0 s f
   local out=""
   for s in "${DRIVING[@]}"; do
@@ -83,15 +112,58 @@ contract_lint() {
       out+="        - $s: body does not open with <STOP-GATE>"$'\n'; v=$((v+1))
     fi
   done
+  for s in "${UNGATED[@]}"; do
+    f="$sk/$s/SKILL.md"
+    if [[ ! -f "$f" ]]; then
+      out+="        - $s: SKILL.md missing"$'\n'; v=$((v+1)); continue
+    fi
+    if grep -q '^<STOP-GATE>' "$f"; then
+      out+="        - $s: carries a <STOP-GATE> but is deliberately ungated"$'\n'; v=$((v+1))
+    fi
+  done
   if [[ $v -eq 0 ]]; then
-    printf "  [1/4] STOP-gate opens each driving skill (%d) .......... PASS\n" "${#DRIVING[@]}"
+    printf "  [1/6] STOP-gate opens each gated skill (%d), none on the ungated (%d) .. PASS\n" \
+      "${#DRIVING[@]}" "${#UNGATED[@]}"
   else
-    printf "  [1/4] STOP-gate opens each driving skill (%d) .......... FAIL\n" "${#DRIVING[@]}"
+    printf "  [1/6] STOP-gate opens each gated skill (%d), none on the ungated (%d) .. FAIL\n" \
+      "${#DRIVING[@]}" "${#UNGATED[@]}"
     printf "%s" "$out"
   fi
   total=$((total+v))
 
-  # [2/4] disable-model-invocation declared by no skill.
+  # [2/6] every chain-gated skill's gate carries the `**Satisfied when**` clause.
+  v=0; out=""
+  for s in "${CHAIN_GATED[@]}"; do
+    f="$sk/$s/SKILL.md"
+    [[ -f "$f" ]] || continue                                # missing: reported by [1/6]
+    if ! gate_conditional "$f"; then
+      out+="        - $s: gate has no **Satisfied when** clause"$'\n'; v=$((v+1))
+    fi
+  done
+  if [[ $v -eq 0 ]]; then
+    printf "  [2/6] chain-gated gates are conditional (%d) ........... PASS\n" "${#CHAIN_GATED[@]}"
+  else
+    printf "  [2/6] chain-gated gates are conditional (%d) ........... FAIL\n" "${#CHAIN_GATED[@]}"
+    printf "%s" "$out"
+  fi
+  total=$((total+v))
+
+  # [3/6] no reason has grown its own section.
+  v=0; out=""
+  while IFS= read -r f; do
+    if has_rationale_heading "$f"; then
+      out+="        - ${f#"$sk"/}: $(grep -En "$RATIONALE_HEADING" "$f" | head -1)"$'\n'; v=$((v+1))
+    fi
+  done < <(find "$sk" -name '*.md' | sort)
+  if [[ $v -eq 0 ]]; then
+    echo "  [3/6] no rationale-section headings in skills .......... PASS"
+  else
+    echo "  [3/6] no rationale-section headings in skills .......... FAIL"
+    printf "%s" "$out"
+  fi
+  total=$((total+v))
+
+  # [4/6] disable-model-invocation declared by no skill.
   v=0; out=""
   for f in "$sk"/*/SKILL.md; do
     [[ -f "$f" ]] || continue
@@ -100,14 +172,14 @@ contract_lint() {
     fi
   done
   if [[ $v -eq 0 ]]; then
-    echo "  [2/4] no skill declares disable-model-invocation ....... PASS"
+    echo "  [4/6] no skill declares disable-model-invocation ....... PASS"
   else
-    echo "  [2/4] no skill declares disable-model-invocation ....... FAIL"
+    echo "  [4/6] no skill declares disable-model-invocation ....... FAIL"
     printf "%s" "$out"
   fi
   total=$((total+v))
 
-  # [3/4] exactly the five internals carry user-invocable: false.
+  # [5/6] exactly the five internals carry user-invocable: false.
   local actual=()
   for f in "$sk"/*/SKILL.md; do
     [[ -f "$f" ]] || continue
@@ -119,9 +191,9 @@ contract_lint() {
   expected_sorted="$(printf '%s\n' "${INTERNAL_FIVE[@]}" | sort)"
   actual_sorted="$(printf '%s\n' ${actual[@]+"${actual[@]}"} | sort)"
   if [[ "$expected_sorted" == "$actual_sorted" ]]; then
-    echo "  [3/4] exactly the five internals are user-invocable ... PASS"
+    echo "  [5/6] exactly the five internals are user-invocable ... PASS"
   else
-    echo "  [3/4] exactly the five internals are user-invocable ... FAIL"
+    echo "  [5/6] exactly the five internals are user-invocable ... FAIL"
     local extra missing
     extra="$(comm -13 <(printf '%s\n' "$expected_sorted") <(printf '%s\n' "$actual_sorted") | grep -v '^$' || true)"
     missing="$(comm -23 <(printf '%s\n' "$expected_sorted") <(printf '%s\n' "$actual_sorted") | grep -v '^$' || true)"
@@ -130,7 +202,7 @@ contract_lint() {
     total=$((total+1))
   fi
 
-  # [4/4] forbidden dirs absent from the tree.
+  # [6/6] forbidden dirs absent from the tree.
   v=0; out=""
   local r
   for r in "${FORBIDDEN[@]}"; do
@@ -139,9 +211,9 @@ contract_lint() {
     fi
   done
   if [[ $v -eq 0 ]]; then
-    echo "  [4/4] forbidden dirs absent from the tree ............. PASS"
+    echo "  [6/6] forbidden dirs absent from the tree ............. PASS"
   else
-    echo "  [4/4] forbidden dirs absent from the tree ............. FAIL"
+    echo "  [6/6] forbidden dirs absent from the tree ............. FAIL"
     printf "%s" "$out"
   fi
   total=$((total+v))

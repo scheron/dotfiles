@@ -11,7 +11,11 @@ Run **`/route-me`** any time for the live map. This file is the overview.
 - **Tier 1** — small work that fits a single execution: a bug fix, a small feature, a small refactor. Plan it inline, build it, review it, integrate.
 - **Tier 2** — a feature too large for one pass. Grill it into a spec, cut the spec into tracer-bullet tickets, then build each ticket as its own Tier 1.
 
-The tier is never chosen from the armchair. `/route-me` sends a read-only **scout** over the code first, and the tier falls out of five questions: is the scope clear, how wide is the blast radius, does it introduce domain vocabulary, does one context window suffice, and does a `CONTEXT.md` exist yet. Anything unclear, wide, or novel → Tier 2.
+The tier is never chosen from the armchair. `/route-me` sends a read-only **scout** over the code first, and the tier falls out of **one** question: *how many vertical slices is this?* One → Tier 1. More than one → Tier 2. Unclear scope means you cannot count them, and a wide blast radius means no single slice lands green — both answer "more than one".
+
+A **vertical slice** cuts a narrow but complete path through every layer it touches and ends in behaviour you can observe. The spec exists to hold several of them together across sessions, so a single slice has no use for one.
+
+Domain vocabulary sits on a **second axis**, not this one: new terms, or a repo with no `CONTEXT.md` yet, raise `/domain-modeling` alongside either tier. One slice that introduces one term is Tier 1 plus a glossary entry — it does not buy a spec and a ticket breakdown to record a word.
 
 **One engine.** Both tiers execute through `/to-implement`, which runs a single unit start to finish in an isolated worktree:
 
@@ -23,17 +27,7 @@ Each seat is a subagent: a **brief-writer** explores the code and writes the exa
 
 ## The map
 
-```
-/route-me     scout → "Tier N because …; open decisions …; launch /tier-N?" ⏸
-/tier-1       [ /diagnose if bug ] · [ /grill if a small feature ]
-              → plan inline ⏸ → /to-implement (the chat plan, one unit)
-/tier-2       [ /decision-map ⏸  when open decisions exceed one grill session ]
-              → /grill-me (grill + docs)
-              → /to-spec ⏸ → /to-tickets ⏸ → /cold-read
-              → /to-implement (one ticket per fresh chat)  ·  or /autopilot <batch> for the set, unattended
-/to-implement  the engine — one unit: a plan, a task, a spec, or one ticket
-/autopilot    batch runner — works the DAG frontier, one fresh /to-implement session per ticket, halt-on-red, resumable ⏸
-```
+The map lives in **one place — `/route-me`.** Type it for the live chain, the gates, and the cheat sheet; this file describes the idea, that skill draws the shape. Nothing else in the stack carries a second copy.
 
 Both tiers clear the same two gates — a one-line fix and a whole feature meet the same bar:
 
@@ -88,6 +82,63 @@ Four hooks back the two gates as far as git state allows. The `SessionStart`/`St
 | `review-guard` | Stop | blocks wrapping up unreviewed changes on a fix branch; kill-switch `~/.claude/.dev-stack-no-review-guard`, and stands down under `DEV_STACK_AUTOPILOT=1` (autopilot enforces review-out structurally) |
 
 Gate **in** (plan approval) can't be git-checked, so it rides on the re-injected text (`session-gate`) and native plan mode. Gate **out** *is* enforced in code (`review-guard`), because "unreviewed changes on a fix branch" is git state.
+
+### Gates vs conversations
+
+A **gate** is one stop with one decision. A **grill** is a conversation — turn by turn, a question at a time — and marking a whole grill as "a gate" says nothing operational, so the two are named differently throughout.
+
+Gates come in two kinds, and the difference is mechanical:
+
+- **Self-gated** — the gate is live every time: `route-me`, `decision-map`, `finish-branch`, `handoff`, `improve-codebase-architecture`, `autopilot`. These are entry points or irreversible actions.
+- **Chain-gated** — the gate is live when you type the skill's name, and **already satisfied** when a driver reached it, because the driver's own gate just asked the same question: `tier-1`, `tier-2`, `grill-me`, `to-spec`, `to-tickets`, `to-implement`.
+
+Without that split, a seven-link chain makes every link ask permission to do what the previous gate authorised — Tier 1 collected four or five stops before a line of code. The bar never moves; only the asking does.
+
+`cold-read` carries no gate at all: it is the last point where fixing a spec is free, so asking whether to run it buys nothing. Whether it is worth running on a *small* feature is a rule (few tickets, short grill), not a question.
+
+## Design notes — why the stack is shaped this way
+
+Decisions that keep needing an explanation live here, not in the skills. A skill is a prompt loaded into a working context: a reason belongs in the same sentence as the instruction it sharpens, and a reason that needs its own section belongs on this page.
+
+### The brief is rebuilt at pickup — always
+
+A ticket carries no paths. A brief carries exact paths, exact signatures, and the commands that prove the work — and it is written at pickup, in the unit's worktree, against the commit that worktree branched from.
+
+Nothing seeds it. Not the scout, not a previous brief, not memory. The scout runs on the current branch *before* any worktree exists; between the scout and pickup, blockers merge, symbols get renamed, files move. A seed is worse than no seed, because the brief-writer will trust it and not look again.
+
+The two readings do different jobs and have different lifetimes:
+
+- the **scout** answers *how wide, and how clear* — that decides the tier, and it is decided once;
+- the **brief** answers *where exactly, and what is it called* — that must be rebuilt on every pickup.
+
+Corollary: everything a unit consumes is already merged code in the tree. If a signature the unit needs is missing, the ticket was picked up too early — that is `BLOCKED`, not a brief written against paper.
+
+### Why the reviewer runs the checks itself
+
+The tempting saving is to trust the implementer's report — it already carries test evidence, so why re-run? Because that spends the one thing the review exists to establish. **An implementer's report is a hypothesis, not evidence.** A report contradicted on its most checkable claim — a green it reported that comes back red — is not load-bearing on any of its other claims either.
+
+Running the checks costs seconds. Discovering at merge that the report was optimistic costs the branch.
+
+### Why the review has two axes
+
+A change can pass one and fail the other:
+
+- follows every standard, implements the wrong thing → **Standards pass, Spec fail**;
+- does exactly what the ticket asked, breaks the repo's conventions → **Spec pass, Standards fail**.
+
+Reported separately, neither masks the other. The build and runtime stages are not axes — they are the gates the axes stand on.
+
+### Why a cold reader, instead of re-reading it yourself
+
+You can't. You sat through the grilling session, so you will read the intended meaning into an ambiguous sentence every time — that is precisely the knowledge the artifact is supposed to carry, and you cannot un-know it while checking whether it does.
+
+The cold reader isn't smarter than you. It is ignorant in exactly the way the next reader will be.
+
+### Why planning is allowed to be slow
+
+Planning error compounds. Something missed in the spec grows into the tickets, travels from the tickets into implementation, and the blast radius widens at every step — worst case the whole spec's output is thrown away, and that is usually discovered on the *last* slice, not the first.
+
+So the length of a Tier 2 planning conversation is an investment, not an overhead. What gets cut on the way in is **ceremony** — gates that ask permission twice — never the thinking. Implementation stops being the hard part once the slice is written well; a slice written well enough runs unattended.
 
 ## Install
 

@@ -41,14 +41,19 @@ Make commits that are easy to review and safe to ship:
 5) Describe the staged change in 1-2 sentences (before writing the message)
    - "What changed?" + "Why?"
    - If you cannot describe it cleanly, the commit is probably too big or mixed; go back to step 2.
-6) Write the commit message
-   - Use Conventional Commits (required):
-     - `type(scope): short summary`
-     - blank line
-     - body (what/why, not implementation diary)
-     - footer (BREAKING CHANGE) if needed
+6) Write the commit message, to this shape:
+
+   ```text
+   <type>(<scope>): <summary>
+
+   <What changed.>
+   <Why it changed.>
+   ```
+
+   - Keep the summary imperative and specific ("Add", "Fix", "Remove", "Refactor").
+   - Body carries behaviour and intent, not an implementation diary.
+   - Breaking change: `!` in the header and/or a `BREAKING CHANGE:` footer.
    - Prefer an editor for multi-line messages: `git commit -v`
-   - Use `references/commit-message-template.md` if helpful.
 7) Run the smallest relevant verification
    - Run the repo's fastest meaningful check (unit tests, lint, or build) before moving on.
 8) Repeat for the next commit until the working tree is clean

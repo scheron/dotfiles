@@ -209,19 +209,4 @@ When stage 0 and both axes pass with no blocking findings (an `adr-candidate` on
 
 Best-effort — it fingerprints `HEAD` + the working diff, so any later edit re-arms the gate and needs a fresh review. If findings remain, do **not** mark: address them (or hand them back) and re-review first.
 
-## Why the reviewer runs it
-
-The tempting optimisation is to trust the implementer's report — it already carries test evidence, so why re-run? Because that buys the saving with the one thing the review exists to establish. **An implementer's report is a hypothesis, not evidence.** A report contradicted on its most checkable claim — a green it reported that comes back red under stage 0 — is not load-bearing on any of its other claims either.
-
-Running stage 0 costs seconds. Discovering at merge that the report was optimistic costs the branch.
-
-## Why two axes
-
-A change can pass one and fail the other:
-
-- Follows every standard, implements the wrong thing → **Standards pass, Spec fail.**
-- Does exactly what the ticket asked, breaks the repo's conventions → **Spec pass, Standards fail.**
-
-Reporting them separately stops one from masking the other. Stages 0 and ½ are not axes — they're the gates the axes stand on.
-
 **Related:** `/brief` names the `Verify` command and the `Sweep` directions · `/to-implement` raises this as the unit's review gate · `/domain-modeling` owns the ADR test behind `adr-candidate` · `/receiving-code-review` governs the fixer's handling of findings · `/improve-codebase-architecture` receives the "no Verify command" finding

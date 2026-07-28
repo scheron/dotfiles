@@ -1,6 +1,6 @@
 ---
 name: tier-2
-description: The Tier 2 driver — a feature too large for one execution, driven through the planning chain (grill, spec, tickets, cold read) with a pause at every phase gate, then built as several Tier 1 units, one ticket at a time. Use when the user types /tier-2 already knowing the tier, or when route-me proposes Tier 2 and the user approves.
+description: The Tier 2 driver — work that is more than one vertical slice, driven through the planning chain (grill, spec, tickets, cold read) and then built as several Tier 1 units, one ticket at a time. Use when the user types /tier-2 already knowing the tier, or when route-me proposes Tier 2 and the user approves.
 ---
 
 <STOP-GATE>
@@ -10,9 +10,13 @@ Present the entry and wait for the user's explicit go before starting any phase:
 - the **open decisions** — the scout's list when one was provided, one line each; otherwise "none surfaced".
 
 No phase starts until the go is given.
+
+**Satisfied when** `/route-me` reached you — its G1 gate just presented this feature, this tier, and the open decisions, and took the go. Proceed to the preflight without asking again. Typed directly, the gate is live.
 </STOP-GATE>
 
-Tier 2 is planning, then several Tier 1 runs: the chain below produces the spec and the tickets, and each ticket is then built as its own Tier 1 — one `/to-implement` per fresh chat. Tier 2 splits and records; it builds no code itself.
+Tier 2 is **more than one vertical slice**: a spec that spans sessions, cut into tickets that each run as their own Tier 1 — one `/to-implement` per fresh chat. The spec exists to hold those slices together across sessions; that is the whole reason this tier has one. Tier 2 splits and records; it builds no code itself.
+
+Its planning is deliberately unhurried. Planning error compounds — missed in the spec, it grows into the tickets, travels into implementation, and is usually found on the *last* slice rather than the first. What gets trimmed on the way in is ceremony, never thinking.
 
 ## Preflight — the tracker, asked once
 
@@ -37,4 +41,4 @@ There is no hub. The domain docs live on the default branch from the grill onwar
 
 The driver sequences and pauses through planning; the phases' skills own their content. The chain is drivable entirely by hand — `/grill-me` → `/to-spec` → `/to-tickets` → `/to-implement` per ticket — the driver is a convenience, never a requirement.
 
-**Related:** `/route-me` proposes the tier from evidence · `/tier-1` for work that fits one execution · `/to-implement` builds each ticket · `/decision-map` clears heavy fog first
+**Related:** `/route-me` proposes the tier from evidence · `/tier-1` for a single vertical slice · `/to-implement` builds each ticket · `/decision-map` clears heavy fog first

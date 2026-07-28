@@ -5,6 +5,8 @@ description: A relentless interview to sharpen a plan or design, which also crea
 
 <STOP-GATE>
 I'll start a grill session with `/domain-modeling` riding along, writing CONTEXT.md and ADRs as we go — go?
+
+**Satisfied when** `/tier-2` reached you: the chain was approved at its entry, and the grill is its next phase. Open with the first question instead of asking permission to ask questions. Typed directly, the gate is live.
 </STOP-GATE>
 
 Run a `/grill` session, using the `/domain-modeling` skill.

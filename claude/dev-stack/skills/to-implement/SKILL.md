@@ -11,7 +11,14 @@ Present what is about to run and wait for the user's explicit go before creating
 
 Nothing is branched, dispatched, or integrated until the go is given.
 
-**Autopilot exception.** If `DEV_STACK_AUTOPILOT=1` is set in the environment (check with `printenv DEV_STACK_AUTOPILOT`), this gate is already satisfied — the ticket was approved at `/to-tickets` and the batch at `/autopilot` — so proceed without stopping. The base is the integration branch's tip; landing is `/finish-branch` Option 1 to that branch with no menu; any state that would normally escalate to the user instead halts the run for resume. The `/autopilot` skill owns the exact base/branch/sentinel contract.
+**Satisfied when** a driver reached you and its gate already carried both facts:
+
+- `/tier-1` — its G3 gate presented the plan **and the base commit** and took the go;
+- `/tier-2` — the ticket was approved at `/to-tickets`; present the base commit in one line as you branch, no stop.
+
+Typed directly with a raw task, the gate is live.
+
+**Autopilot exception.** If `DEV_STACK_AUTOPILOT=1` is set in the environment (check with `printenv DEV_STACK_AUTOPILOT`), this gate is already satisfied — the ticket was approved at `/to-tickets` and the batch at `/autopilot`. The base is the integration branch's tip; landing is `/finish-branch` Option 1 to that branch with no menu; any state that would normally escalate to the user instead halts the run for resume. The `/autopilot` skill owns the exact base/branch/sentinel contract.
 </STOP-GATE>
 
 # To Implement
@@ -80,17 +87,12 @@ Hand off to `/finish-branch`. It carries its own STOP-gate and the merge / PR / 
 
 ## Red flags
 
-**Never:**
-- Close a unit without `/verified-review` green on every axis
-- Close a unit on green tests alone — `/verified-review` drives the real runtime as a gate wherever there's a flow to observe; fake/mock/fixture-backed green is a working signal, not proof the thing runs. Say "done" only after you've watched it work.
-- Use `HEAD~1` as the review fixed point — it drops all but the last commit of a multi-commit unit
-- Dispatch the implementer against a brief you haven't verified
-- Merge or integrate without the user's word
-- Dispatch a seat by inline role prompt instead of by agent name
-- Paste a seat's full output into the next dispatch instead of its path — dispatches carry paths, never contents
-- Let the implementer's self-review replace `/verified-review` — both are needed
-- Tell a reviewer what not to flag, or pre-rate a finding's severity
-- Edit code yourself — you orchestrate; the seats build
-- Work on the default branch — the unit is always isolated
+The five that are not stated anywhere above — the rest of the contract lives in the steps:
+
+- **Say "done" on green tests alone.** A fake/mock/fixture-backed green is a working signal, not proof the thing runs; the word waits until you have watched it work.
+- **Dispatch a seat by inline role prompt** instead of by agent name — the seat's protocol lives in its definition, and an inline prompt silently forks it.
+- **Paste a seat's output into the next dispatch.** Dispatches carry paths, never contents.
+- **Tell a reviewer what not to flag**, or pre-rate a finding's severity. Let it surface and adjudicate it yourself.
+- **Edit code yourself.** You orchestrate; the seats build.
 
 **Related:** `/tier-1` drives this for one unit · `/tier-2` feeds it tickets one at a time · `/brief` is the brief-writer's protocol · `/verified-review` reviews the diff and drives the real runtime · `/finish-branch` integrates · `/using-git-worktrees` isolates the worktree

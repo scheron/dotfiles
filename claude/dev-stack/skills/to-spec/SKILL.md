@@ -5,6 +5,8 @@ description: Turn the current conversation into a spec and publish it to the pro
 
 <STOP-GATE>
 The conversation has settled; I'll synthesize it into a spec at <destination> — go?
+
+**Satisfied when** `/tier-2` reached you: the grill it just ran was aimed at this spec, so asking whether to write it buys nothing. Synthesize, and gate on the *content* instead — the seams question in step 2 and the spec approval in step 4 are the real stops. Typed directly, the gate is live.
 </STOP-GATE>
 
 This skill takes the current conversation context and codebase understanding and produces a spec (you may know this document as a PRD). Do NOT interview the user — just synthesize what you already know.
