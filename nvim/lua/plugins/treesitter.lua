@@ -1,5 +1,7 @@
 return {
   "nvim-treesitter/nvim-treesitter",
+  branch = "master",
+  build = ":TSUpdate",
   opts = {
     fold = {
       enable = true,
