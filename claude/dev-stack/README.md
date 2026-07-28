@@ -1,6 +1,6 @@
 # dev-stack
 
-An opinionated engineering workflow for Claude Code — a set of skills, three subagents, and four git hooks that carry a task from idea to reviewed, integrated code through one of two tiers.
+An opinionated engineering workflow for Claude Code — a set of skills, four subagents, and four git hooks that carry a task from idea to reviewed, integrated code through one of two tiers.
 
 Run **`/route-me`** any time for the live map. This file is the overview.
 
@@ -20,10 +20,16 @@ Domain vocabulary sits on a **second axis**, not this one: new terms, or a repo 
 **One engine.** Both tiers execute through `/to-implement`, which runs a single unit start to finish in an isolated worktree:
 
 ```
-brief → verify-brief → build → sweep → review → integrate
+ready-check → brief → verify-brief → waves of (implementer + reviewer) → slice review → ADR → integrate
 ```
 
-Each seat is a subagent: a **brief-writer** explores the code and writes the exact plan, an **implementer** builds from it test-first, a **test-runner** runs the repo's checks and returns a noise-free summary. The orchestrator gates, dispatches, and integrates — it never writes code itself. A feature of many tickets is run one ticket per fresh chat — or handed to **`/autopilot`** to run the batch unattended; the engine builds one unit at a time.
+**The unit is a vertical slice; the brief cuts it into horizontal tasks, one per layer.** Each task gets its own **implementer** and its own **task-reviewer** on a clean context — a pair — and tasks whose declared files and edges permit it run side by side as a wave. That cut is the load-bearing idea: handed a whole slice at once, a cheap model attempts everything, drifts out of scope, and the work is redone. Handed one layer with its fence and its proof, it finishes.
+
+Four subagents do the building. A **brief-writer** (the expensive model) explores the tree at pickup and makes the cut. An **implementer** builds one task test-first and refactors its own green code. A **task-reviewer** judges that task — conformance, its fence, repo conventions, smells, test quality — and hands findings back rather than fixing them. A **test-runner** runs the repo's checks once, at the slice review, and returns a noise-free summary.
+
+The orchestrator gates, dispatches, commits and integrates. It never writes code, and it is the **only** thing that touches git: one worktree means one index, so agents edit files and the orchestrator commits each wave by path.
+
+A feature of many tickets is run one ticket per fresh chat — or handed to **`/autopilot`** to run the batch unattended; the engine builds one unit at a time.
 
 ## The map
 
@@ -32,7 +38,7 @@ The map lives in **one place — `/route-me`.** Type it for the live chain, the 
 Both tiers clear the same two gates — a one-line fix and a whole feature meet the same bar:
 
 - **Plan in.** No code before an approved plan. Tier 1: a few lines in chat. Tier 2: the spec and the tickets, each approved at its gate.
-- **Review out.** No unit closes until `/verified-review` passes — the reviewer runs the verification command *itself* (green now, with red-at-pickup on file in the brief) and drives the real runtime: a green built on fakes fails here, before the axes spend a pass on it.
+- **Review out.** No unit closes until `/verified-review` passes — the sweep is run by a seat that wrote none of the code (green now, with red-at-pickup on file in the brief) and the real runtime is driven and observed: a green built on fakes fails here, before the axes spend a pass on it.
 
 ## Autopilot — a batch, unattended
 
@@ -54,7 +60,9 @@ The full menu — every command and when to reach for it — lives in **`/route-
 
 Five skills — `/brief`, `/codebase-design`, `/domain-modeling`, `/resolving-merge-conflicts`, `/receiving-code-review` — are **internal**: a driver or the model raises them in context, they aren't in the menu.
 
-Three subagents in `agents/` do the building — `brief-writer`, `implementer`, `test-runner` — each with its model pinned in frontmatter. `/to-implement` dispatches them by name.
+Four subagents in `agents/` do the building — `brief-writer`, `implementer`, `task-reviewer`, `test-runner` — each with its model pinned in frontmatter. `/to-implement` dispatches them by name.
+
+`task-reviewer` is **new**: a fresh clone or a `git pull` needs `install.sh` re-run before it resolves, because a new agent is a new symlink. An edit to an existing one is live through the link it already has.
 
 ## Artifacts — volatile vs durable
 
@@ -64,7 +72,7 @@ The single rule: **volatile lives in the ephemeral, stable lives in the durable.
 |---|---|---|---|
 | `CONTEXT.md` (glossary), `docs/adr/` | the default branch | never | forever |
 | Spec, ticket | tracker or `.scratch/` | never | until merged |
-| Brief, report | `.scratch/` only | always exact | dies with the worktree |
+| Brief, task reports | `.scratch/` only | always exact | dies with the worktree |
 
 A spec has no paths because a human reads it and volatile detail gets in the way. A brief has exact paths because it will be dead in a day and precision there is free — and it is written **at pickup**, against the exact commit the worktree branched from, so it cannot go stale.
 
