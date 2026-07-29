@@ -1,9 +1,12 @@
 #!/usr/bin/env bash
 # The installer. Symlinks each skills/<name> into ~/.claude/skills and each
 # agents/<name>.md into ~/.claude/agents, so an edit in this repo is picked up
-# live — no reinstall. It only ever manages this repo's own skill and agent
-# names — including pruning its own stale links whose target is gone — and
-# never touches anything else. Wire the hooks separately (see README).
+# live — no reinstall. It only ever creates links under this repo's own skill
+# and agent names, and never touches a real file or directory it didn't make.
+# It does sweep away *any* dangling symlink in the destinations — one whose
+# target is gone points at nothing and only confuses whoever reads the dir
+# next, whether or not this repo put it there. Wire the hooks separately
+# (see README).
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -70,14 +73,13 @@ for file in "$AGENTS_SRC"/*.md; do
   link_one "$file" "$AGENTS_DEST/$(basename "$file")" "$(basename "$file")"
 done
 
-prune_stale() {
-  local dest="$1" src="$2" link
+prune_dangling() {
+  local dest="$1" link
   for link in "$dest"/*; do
     [[ -L "$link" ]] || continue
-    [[ "$(readlink "$link")" == "$src"/* ]] || continue
     [[ -e "$link" ]] && continue
     if [[ $DRY -eq 1 ]]; then
-      echo "  would prune $(basename "$link") (target gone)"
+      echo "  would prune $(basename "$link") -> $(readlink "$link") (target gone)"
     else
       rm "$link"
       echo "  pruned    $(basename "$link") (target gone)"
@@ -86,8 +88,8 @@ prune_stale() {
   done
 }
 
-prune_stale "$SKILLS_DEST" "$SKILLS_SRC"
-prune_stale "$AGENTS_DEST" "$AGENTS_SRC"
+prune_dangling "$SKILLS_DEST"
+prune_dangling "$AGENTS_DEST"
 
 echo
 echo "linked: $linked  replaced: $replaced  pruned: $pruned  already-present: $skipped  collisions: $collided"
