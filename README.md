@@ -44,7 +44,7 @@ places under `claude/`:
   `to-implement` → review → `finish-branch`) with its agents, guard hooks and
   installer. Self-contained: `setup-symlinks.sh` runs its own `install.sh`,
   which links and prunes only its own names. Forked from Superpowers; see its
-  `NOTICE.md`. The generation before it is retired in `.archive/dev-stack/`.
+  `README.md`. The generation before it is retired in `.archive/dev-stack/`.
 - **`claude/skills/`** — a bucket for standalone skills. Every
   `claude/skills/<name>/` is linked in by name.
 
