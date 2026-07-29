@@ -6,7 +6,7 @@ An engineering workflow for Claude Code. One idea goes in; a reviewed, integrate
 grill-me      interview → 2-3 approaches → design doc          .ai-workflow/specs/
    ↓
 to-plan       one plan: exact paths, real code, TDD steps      .ai-workflow/plans/
-   ↓          ⏸ approve the plan
+   ↓          ⏸ approve the plan  ⏸ choose the workspace
 to-implement  per task: implementer → task-reviewer → fix loop
    ↓          then one whole-branch review, on the strongest model
 finish-branch ⏸ merge / PR / keep — a local merge offers to squash

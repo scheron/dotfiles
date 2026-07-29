@@ -52,14 +52,14 @@ digraph process {
         "Append completion to ledger, mark todo complete" [shape=box];
     }
 
-    "Setup: worktree, ledger check, read plan, pre-flight review" [shape=box];
+    "Setup: execute the workspace choice, ledger check, read plan" [shape=box];
     "More tasks remain?" [shape=diamond];
     "Dispatch final code reviewer (../requesting-code-review/code-reviewer.md)" [shape=box];
     "Final findings? ONE fix dispatch, one scoped re-review, adjudicate residuals" [shape=box];
     "Final review clean: delete this plan's workspace" [shape=box];
     "Use finish-branch" [shape=box style=filled fillcolor=lightgreen];
 
-    "Setup: worktree, ledger check, read plan, pre-flight review" -> "Dispatch implementer subagent (./implementer-prompt.md)";
+    "Setup: execute the workspace choice, ledger check, read plan" -> "Dispatch implementer subagent (./implementer-prompt.md)";
     "Dispatch implementer subagent (./implementer-prompt.md)" -> "Implementer asks questions?";
     "Implementer asks questions?" -> "Answer questions, provide context" [label="yes"];
     "Answer questions, provide context" -> "Implementer implements, tests, commits, self-reviews";
@@ -92,9 +92,14 @@ digraph process {
 
 ## Setup
 
-Ensure the work happens in an isolated workspace: use
-using-git-worktrees to create one or verify the existing one.
-Never start implementation on a main/master branch without your human
+The workspace was settled at `to-plan`'s second gate, right after the plan was
+approved: pre-flight run, one of worktree / new branch / current branch chosen.
+Execute that answer and **do not re-ask** — you run continuously from here, and
+a question at this point arrives after the decision has already been made.
+
+If you arrived without that gate — a plan handed to you directly, a resumed
+session that lost it — run it now via `using-git-worktrees` before dispatching
+anything. Never start implementation on a main/master branch without your human
 partner's explicit consent.
 
 Conversation memory does not survive compaction. In real sessions,

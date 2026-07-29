@@ -63,7 +63,7 @@ fi
 
 if [ "$branch" = "$def" ]; then
   jq -cn --arg b "$branch" \
-    '{hookSpecificOutput:{hookEventName:"PreToolUse",permissionDecision:"deny",permissionDecisionReason:("Blocked: on default branch (" + $b + ") in a dev-skills repo. Isolate before any work — /using-git-worktrees (every tier, Tier 1 included; its Step 1c is the in-place branch fallback). Enforced, not advised. (CONTEXT.md, docs/adr/ and .ai-workflow/ are exempt.)")}}' \
+    '{hookSpecificOutput:{hookEventName:"PreToolUse",permissionDecision:"deny",permissionDecisionReason:("Blocked: on default branch (" + $b + ") in a dev-skills repo. Isolate before any work — /using-git-worktrees, which offers a worktree, a branch here (its Step 1c), or the current branch. Enforced, not advised. (CONTEXT.md, docs/adr/ and .ai-workflow/ are exempt.)")}}' \
     2>/dev/null
 fi
 exit 0

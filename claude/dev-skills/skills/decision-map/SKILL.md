@@ -12,7 +12,7 @@ Present the proposed map and wait for the user's explicit go before creating any
 No ticket exists until the go is given.
 </STOP-GATE>
 
-This is **not a tier**. It is the optional front phase of Tier 2 — how Tier 2 opens when the scout's open decisions exceed one grill session. It resolves decisions, never builds; the fog clears, then the normal chain runs.
+This is an optional front phase, not a step of the chain — it opens when the scout's open decisions exceed what one grill session can clear. It resolves decisions, never builds; the fog clears, then the normal chain runs.
 
 ## Materialise
 

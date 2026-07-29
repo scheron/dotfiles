@@ -42,11 +42,11 @@ Create files lazily — only when you have something to write. If no `CONTEXT.md
 
 ## When this skill rides along
 
-Two facts raise it, and **neither is a tier**: the work introduces new domain vocabulary, or the repo has no `CONTEXT.md` yet. Either one brings this skill alongside whatever tier is running — a single Tier 1 slice that introduces one term gets a glossary entry, not a promotion to Tier 2. Recording a word does not need a spec, a ticket breakdown, and a cold read.
+Two facts raise it: the work introduces new domain vocabulary, or the repo has no `CONTEXT.md` yet. Either one brings this skill alongside whatever is already running, however small — a one-file change that introduces one term gets a glossary entry, and nothing more. Recording a word does not need a spec or a plan of its own.
 
 ## Where these land
 
-- **During planning** — a grill (either tier's), a decision-map session — you are on the default branch: commit `CONTEXT.md` and ADRs there directly (`branch-guard` passes both paths).
+- **During planning** — a grill, a decision-map session — you are on the default branch: commit `CONTEXT.md` and ADRs there directly (`branch-guard` passes both paths).
 - **During a unit** — inside its worktree — commit them on the unit's branch, each ADR its own commit, so they merge with the work they describe.
 - **On a discarded branch** — `/finish-branch`'s harvest writes what deserved to survive straight to the default branch before the branch dies.
 

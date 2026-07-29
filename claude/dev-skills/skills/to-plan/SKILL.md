@@ -170,6 +170,21 @@ Then ask:
 
 This is the last point where a correction is free. Everything after it is mechanical — the engine cuts each task out of this file verbatim, and no second reader re-derives what you wrote.
 
+## The Second Gate: Where the Work Happens
+
+**Approving the plan is not approving the workspace. Ask, every time, before handing off.**
+
+This gate is mandatory and has no "obvious" answer to skip it with. It sits here rather than inside `to-implement` because that skill runs continuously by design — it is told not to pause between tasks — so a workspace question asked in there is a question asked too late, after the first implementer has already written to whatever tree it found.
+
+**REQUIRED SUB-SKILL:** use `using-git-worktrees`. Its Step 0a runs the pre-flight, and Step 0c puts the three choices — isolated worktree, new branch here, current branch — with the pre-flight findings next to them.
+
+Two things to carry across, because both are cheap now and expensive later:
+
+- The pre-flight's findings decide as much as the choice does. Uncommitted changes follow you onto a new branch but stay behind when you leave for a worktree; an unfinished merge or rebase makes every option wrong until it is settled.
+- The current branch matters. If it is the default branch and the repo carries `.branch-guard`, option 3 stops at the first edit — say that before the run starts, not at the first denied write.
+
+Record the answer. `to-implement` executes it and must not re-ask.
+
 ## Execution Handoff
 
-On approval, hand off. **REQUIRED SUB-SKILL:** use `to-implement` — a fresh subagent per task, a review after each, one whole-branch review at the end.
+Once the plan is approved **and** the workspace is settled, hand off. **REQUIRED SUB-SKILL:** use `to-implement` — a fresh subagent per task, a review after each, one whole-branch review at the end.

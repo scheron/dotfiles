@@ -1,0 +1,82 @@
+#!/usr/bin/env bash
+# Report the repository's state before new work starts, so a problem is met at
+# the start rather than discovered after the feature is built. Every finding
+# here is cheap to settle now and expensive to settle later: a half-finished
+# rebase, work that would be stranded on the branch you are about to leave, a
+# base that moved weeks ago.
+#
+# Local only — never fetches. It stays fast and works offline; "behind" is
+# therefore measured against the remote refs already on disk and can only
+# understate how far the base has moved.
+#
+# Advisory by design: it prints findings and returns 1, and the workspace gate
+# shows them next to the choice. It blocks nothing by itself, because which
+# findings matter depends on which workspace you pick.
+#
+# Usage: preflight
+# Exit:  0 nothing to report · 1 findings printed · 2 not a git repository
+set -uo pipefail
+
+root="$(git rev-parse --show-toplevel 2>/dev/null)" || { echo "not a git repository" >&2; exit 2; }
+gitdir="$(git rev-parse --git-dir 2>/dev/null)"
+
+findings=()
+add() { findings+=("$1"); }
+
+# An operation left half-done. New work stacked on top of this inherits its mess.
+if [ -f "$gitdir/MERGE_HEAD" ]; then
+  add "merge in progress — finish or abort it before starting new work"
+fi
+if [ -d "$gitdir/rebase-merge" ] || [ -d "$gitdir/rebase-apply" ]; then
+  add "rebase in progress — finish or abort it before starting new work"
+fi
+if [ -f "$gitdir/CHERRY_PICK_HEAD" ]; then
+  add "cherry-pick in progress — finish or abort it"
+fi
+if [ -f "$gitdir/REVERT_HEAD" ]; then
+  add "revert in progress — finish or abort it"
+fi
+if [ -f "$gitdir/BISECT_LOG" ]; then
+  add "bisect in progress — 'git bisect reset' before starting new work"
+fi
+
+branch="$(git rev-parse --abbrev-ref HEAD 2>/dev/null || true)"
+if [ "$branch" = "HEAD" ]; then
+  add "detached HEAD — commits made here belong to no branch and are easy to lose"
+fi
+
+# Uncommitted work rides along into whatever workspace you choose next.
+staged="$(git diff --cached --name-only 2>/dev/null | wc -l | tr -d ' ')"
+unstaged="$(git diff --name-only 2>/dev/null | wc -l | tr -d ' ')"
+if [ "${staged:-0}" -gt 0 ] || [ "${unstaged:-0}" -gt 0 ]; then
+  add "uncommitted changes (${staged} staged, ${unstaged} unstaged) — they move onto a new branch, and a worktree leaves them behind"
+fi
+
+# Commits that exist only here. Leaving this branch strands them.
+if upstream="$(git rev-parse --abbrev-ref --symbolic-full-name '@{upstream}' 2>/dev/null)"; then
+  ahead="$(git rev-list --count "${upstream}..HEAD" 2>/dev/null || echo 0)"
+  [ "${ahead:-0}" -gt 0 ] && add "${ahead} commit(s) on '${branch}' not pushed to ${upstream}"
+fi
+
+# How far the base moved since this line of work forked off it.
+def="$(git symbolic-ref --quiet --short refs/remotes/origin/HEAD 2>/dev/null | sed 's#^origin/##')"
+if [ -z "$def" ]; then
+  if   git show-ref --verify --quiet refs/heads/main;   then def="main"
+  elif git show-ref --verify --quiet refs/heads/master; then def="master"
+  fi
+fi
+if [ -n "$def" ] && git rev-parse --verify --quiet "origin/$def" >/dev/null 2>&1; then
+  mb="$(git merge-base HEAD "origin/$def" 2>/dev/null || true)"
+  if [ -n "$mb" ]; then
+    behind="$(git rev-list --count "${mb}..origin/${def}" 2>/dev/null || echo 0)"
+    [ "${behind:-0}" -gt 0 ] && add "origin/${def} has moved ${behind} commit(s) since this point — building here means resolving them at merge time (local refs; not fetched)"
+  fi
+fi
+
+echo "on branch: ${branch}${def:+ (default: ${def})}"
+if [ ${#findings[@]} -eq 0 ]; then
+  echo "pre-flight clean"
+  exit 0
+fi
+for f in "${findings[@]}"; do printf '  - %s\n' "$f"; done
+exit 1

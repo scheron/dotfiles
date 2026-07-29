@@ -14,8 +14,8 @@
 
 [ -f "$HOME/.claude/.dev-skills-no-review-guard" ] && exit 0
 # Autopilot: review-out is enforced structurally by the engine (it merges only
-# after /verified-review is green) and by the success sentinel — this Stop-hook
-# backstop would only fight the headless wrap-up, so stand down under autopilot.
+# after the whole-branch review is clean) and by the success sentinel — this
+# Stop-hook backstop would only fight the headless wrap-up, so stand down.
 [ "${DEV_STACK_AUTOPILOT:-}" = "1" ] && exit 0
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
