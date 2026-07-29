@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
-# Record that the current working state has passed /verified-review, so the
-# review-guard Stop hook knows this exact state was reviewed. Called by the
-# verified-review skill on a PASS. Best-effort: never fail the caller.
+# Record that the current working state has passed review, so the review-guard
+# Stop hook knows this exact state was reviewed. Called by the
+# requesting-code-review skill once no Critical or Important finding is open.
+# Best-effort: never fail the caller.
 #
 #   review-mark.sh          write the marker for the current state
 #   review-mark.sh --check  exit 0 if the current state is already marked reviewed

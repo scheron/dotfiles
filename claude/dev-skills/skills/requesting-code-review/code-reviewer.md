@@ -5,7 +5,7 @@ Use this template when dispatching a code reviewer subagent.
 **Purpose:** Review completed work against requirements and code quality standards before it cascades into more work.
 
 ```
-Subagent (general-purpose):
+Subagent (code-reviewer):
   description: "Review code changes"
   prompt: |
     You are a Senior Code Reviewer with expertise in software architecture,
@@ -53,6 +53,25 @@ Subagent (general-purpose):
     - Reasonable scalability and performance?
     - Security concerns?
     - Integrates cleanly with surrounding code?
+
+    **Code smells that only the assembled range shows.** Read the baseline
+    and apply the three entries under "Visible only across tasks":
+
+    ```bash
+    cat "$HOME/.claude/skills/to-implement/SMELLS.md"
+    ```
+
+    - **Duplicated Code** — two implementers working separate layers of one
+      slice, neither seeing the other, is the case that produces it.
+    - **Shotgun Surgery** — one logical change forces scattered edits.
+    - **Divergent Change** — one module edited for several unrelated reasons.
+
+    You are the only seat that can see these: a task reviewer looking at one
+    layer's diff structurally cannot. The other nine smells in that file were
+    already judged per task — re-judging them here pays N times for a verdict
+    already delivered. Both of the file's binding rules hold: a documented repo
+    standard overrides the baseline, and every entry is a labelled heuristic
+    ("possible Shotgun Surgery"), never a hard violation.
 
     **Testing:**
     - Tests verify real behavior, not mocks?

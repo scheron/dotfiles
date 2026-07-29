@@ -1,8 +1,13 @@
 #!/usr/bin/env bash
 # Stop hook (opt-in via .branch-guard): Gate OUT enforced in code. When the model
 # is WRAPPING UP unreviewed changes on a fix branch, block ONCE and point it to
-# /verified-review. This is the one gate git state can actually back — "unreviewed
-# changes exist on a non-default branch" is unforgeable.
+# /requesting-code-review. This is the one gate git state can actually back —
+# "unreviewed changes exist on a non-default branch" is unforgeable.
+#
+# The marker that clears this gate is written by review-mark.sh, which
+# /requesting-code-review runs once no Critical or Important finding is open.
+# Nothing else writes it: if that call is ever dropped, this gate becomes
+# unsatisfiable except by the kill-switch below.
 #
 # Fail-open on every uncertainty: a spurious block (nagging a mid-work pause) is
 # worse than a missed nudge. Kill-switch: ~/.claude/.dev-skills-no-review-guard
@@ -49,6 +54,6 @@ last="$(tail -n 800 "$tp" 2>/dev/null \
   | tail -n 3)"
 printf '%s' "$last" | grep -qiE '(^|[^a-z])(done|complete|completed|finished|fixed|resolved|готов|исправ|заверш|all set|wrapped up)([^a-z]|$)|should (now )?work|passing now|ready to (commit|merge|review|ship)' || exit 0
 
-reason="dev-skills review gate — you're wrapping up unreviewed changes on '${branch}'. A change is not done until /verified-review has run: the reviewer runs the Verify command itself — green now, red-at-pickup on file in the brief — drives the real runtime, and checks Standards + Spec. Run /verified-review now. If you are pausing mid-work and not done, say so and stop again — this fires once."
+reason="dev-skills review gate — you're wrapping up unreviewed changes on '${branch}'. A change is not done until it has been reviewed on a clean context: the reviewer reads the diff it was handed, drives the real runtime rather than trusting the tests, and judges the cross-task smells no task-scoped review can see. Run /requesting-code-review now — it marks the reviewed state at the end, which is what clears this gate. If you are pausing mid-work and not done, say so and stop again — this fires once."
 jq -cn --arg r "$reason" '{decision:"block", reason:$r}' 2>/dev/null || exit 0
 exit 0

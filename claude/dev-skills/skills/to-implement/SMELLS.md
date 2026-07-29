@@ -2,7 +2,7 @@
 
 Fowler's code smells (*Refactoring*, ch. 3). They apply even when a repo documents nothing, which is why this is a baseline rather than a standard.
 
-Two consumers read this file, and both pass its **path** rather than its contents: the **task reviewer**, judging smells inside one task's diff, and `/verified-review`'s **Standards axis**, judging the ones that only appear across tasks. One file so the two never drift apart.
+Two consumers read this file, and both pass its **path** rather than its contents: the **task reviewer**, judging smells inside one task's diff, and the **whole-branch code reviewer**, judging the ones that only appear once the tasks are assembled. One file so the two never drift apart.
 
 ## Two rules bind every use
 
@@ -25,7 +25,7 @@ The task reviewer owns these.
 
 ## Visible only across tasks or across the system
 
-The Standards axis owns these — a task reviewer looking at one layer's diff structurally cannot see them.
+The whole-branch code reviewer owns these — a task reviewer looking at one layer's diff structurally cannot see them.
 
 - **Duplicated Code** — the same logic shape in more than one hunk or file. Two implementers working separate layers of one slice, neither seeing the other, is the case that produces it.
 - **Shotgun Surgery** — one logical change forces scattered edits.

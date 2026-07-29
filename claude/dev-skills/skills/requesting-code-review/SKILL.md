@@ -31,7 +31,10 @@ HEAD_SHA=$(git rev-parse HEAD)
 
 **2. Dispatch code reviewer subagent:**
 
-Dispatch a `general-purpose` subagent, filling the template at [code-reviewer.md](code-reviewer.md)
+Dispatch the `code-reviewer` agent **by name**, filling the template at
+[code-reviewer.md](code-reviewer.md). By name, because that definition pins the
+model — a `general-purpose` dispatch inherits the session's model instead, and a
+cheap reviewer does not merely miss defects, it argues for them.
 
 **Placeholders:**
 - `{DESCRIPTION}` - Brief summary of what you built
@@ -44,6 +47,21 @@ Dispatch a `general-purpose` subagent, filling the template at [code-reviewer.md
 - Fix Important issues before proceeding
 - Note Minor issues for later
 - Push back if reviewer is wrong (with reasoning)
+
+**4. Mark the reviewed state:**
+
+Once nothing Critical or Important is open, record that *this exact state*
+passed review:
+
+```bash
+"$HOME/.dotfiles/claude/dev-skills/hooks/review-mark.sh"
+```
+
+This is what the `review-guard` Stop hook reads. Without it the guard blocks
+wrap-up on the branch and there is no other way to satisfy it. Run it after the
+last fix, not before — the marker fingerprints the current commit, the changed
+files and the diff, so any edit after it invalidates the mark, which is the
+behaviour you want.
 
 ## Example
 
