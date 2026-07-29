@@ -31,6 +31,45 @@
             "if": "Bash(git commit*)"
           }
         ]
+      },
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "$HOME/Documents/Projects/Personal/bmox0/dev-skills/hooks/commit-guard.sh"
+          }
+        ]
+      },
+      {
+        "matcher": "Edit|MultiEdit|Write|NotebookEdit|Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "$HOME/Documents/Projects/Personal/bmox0/dev-skills/hooks/branch-guard.sh"
+          }
+        ]
+      }
+    ],
+    "SessionStart": [
+      {
+        "matcher": "startup|clear|compact",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "$HOME/Documents/Projects/Personal/bmox0/dev-skills/hooks/session-start"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "$HOME/Documents/Projects/Personal/bmox0/dev-skills/hooks/review-guard.sh"
+          }
+        ]
       }
     ]
   },
@@ -59,17 +98,9 @@
     "swiftui-expert@swiftui-expert-skill": true,
     "impeccable@impeccable": true,
     "frontend-slides@frontend-slides": true,
-    "vue-development@vue-development-marketplace": true,
-    "dev-skills@dev-skills": true
+    "vue-development@vue-development-marketplace": true
   },
   "extraKnownMarketplaces": {
-    "dev-skills": {
-      "source": {
-        "source": "git",
-        "url": "git@github.com-bmox0:bmox0/dev-skills.git"
-      },
-      "autoUpdate": true
-    },
     "chrome-devtools-plugins": {
       "source": {
         "source": "github",

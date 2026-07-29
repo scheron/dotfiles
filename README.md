@@ -42,11 +42,11 @@ Standalone skills live in **`claude/skills/`** and are symlinked into
 linked in by name.
 
 The engineering workflow (`grill-me` → `to-plan` → `to-implement` → review →
-`finish-branch`, with its agents and guard hooks) is **not** here: it ships as
-the `dev-skills` Claude Code plugin from
-[bmox0/dev-skills](https://github.com/bmox0/dev-skills), installed through the
-plugin marketplace and carrying its own hooks. The version that used to live at
-`claude/dev-stack/` is retired in `.archive/dev-stack/`.
+`finish-branch`, with its agents and guard hooks) is **not** here: it lives in
+[bmox0/dev-skills](https://github.com/bmox0/dev-skills). Clone it and run its
+`install.sh` — that symlinks its skills and agents into `~/.claude/`. Its hooks
+are wired in `claude/settings.json`, pointing at that checkout. The version that
+used to live at `claude/dev-stack/` is retired in `.archive/dev-stack/`.
 
 To add a skill, drop its folder into `claude/skills/` and re-run
 `setup-symlinks.sh` — the glob picks it up, no script edit needed:
