@@ -91,9 +91,6 @@ git clone https://github.com/obra/superpowers /tmp/sp
 diff -ru /tmp/sp/skills ./skills | less
 ```
 
-[NOTICE.md](NOTICE.md) records what this fork subtracted, renamed, added and
-deliberately kept — read it before pulling anything across.
-
 ## Licence
 
 MIT — see [LICENSE](LICENSE).
