@@ -23,7 +23,7 @@ a fresh subagent per task so nothing inherits your context, a review after each,
 and one broad review over the whole branch at the end.
 
 If there is no plan yet, go to `to-plan`. If there is no design yet,
-go to `grill-me`.
+go to `brainstorm`.
 
 ## The Process
 

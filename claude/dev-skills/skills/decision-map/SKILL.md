@@ -1,18 +1,18 @@
 ---
 name: decision-map
-description: Materialise a scout's open decisions as decision tickets and burn them down — research in parallel, prototypes for runnable questions, grills for the user's calls — until the fog clears and the normal chain can start. Use when the open decisions exceed one grill session — too much fog for grill-me to clear in one pass.
+description: Materialise a scout's open decisions as decision tickets and burn them down — research in parallel, prototypes for runnable questions, brainstorms for the user's calls — until the fog clears and the normal chain can start. Use when the open decisions exceed one brainstorm session — too much fog for brainstorm to clear in one pass.
 ---
 
 <STOP-GATE>
 Present the proposed map and wait for the user's explicit go before creating anything:
 
 - the **destination** — what this effort is finding its way to once the fog clears, in one or two lines. Naming it is the first act: it fixes the scope and shapes every ticket;
-- the **open decisions** the scout surfaced, one line each, tagged with the route each will take — `research`, `prototype`, or `grill`.
+- the **open decisions** the scout surfaced, one line each, tagged with the route each will take — `research`, `prototype`, or `brainstorm`.
 
 No ticket exists until the go is given.
 </STOP-GATE>
 
-This is an optional front phase, not a step of the chain — it opens when the scout's open decisions exceed what one grill session can clear. It resolves decisions, never builds; the fog clears, then the normal chain runs.
+This is an optional front phase, not a step of the chain — it opens when the scout's open decisions exceed what one brainstorm session can clear. It resolves decisions, never builds; the fog clears, then the normal chain runs.
 
 ## Materialise
 
@@ -32,9 +32,9 @@ A ticket has a name — its title. Everything the user reads refers to tickets b
 
 The ticket's shape decides its route:
 
-- **Research** — the decision waits on a fact from documentation, an API, or a knowledge base. Resolved by `/research` subagents, fired first and **in parallel** — the one type that batches — so the grills consume their findings.
+- **Research** — the decision waits on a fact from documentation, an API, or a knowledge base. Resolved by `/research` subagents, fired first and **in parallel** — the one type that batches — so the brainstorms consume their findings.
 - **Prototype** — the question needs a runnable answer: "how should it look", "does this state model feel right". Resolved via `/prototype`; the artifact is linked from the ticket.
-- **Grill** — the resolution is a decision. The default shape. Resolved via `/grill`, one question at a time. **Facts are looked up; decisions are always the user's** — a grill that answers its own questions has broken the contract.
+- **Brainstorm** — the resolution is a decision. The default shape. Resolved via `/brainstorm`, one question at a time. **Facts are looked up; decisions are always the user's** — a session that answers its own questions has broken the contract.
 
 Apart from the research batch, resolve **one ticket per session**. A resolution that surfaces a new decision adds a ticket — propose it with the resolution; a resolution that invalidates a ticket closes it.
 
@@ -44,4 +44,4 @@ Close a ticket by recording its answer on the ticket, then write the ADR via `/d
 
 ## When the fog clears
 
-Open tickets: zero, and no new decision graduating. The chain continues into `/grill-me`, arriving with the big decisions already on record as ADRs.
+Open tickets: zero, and no new decision graduating. The chain continues into `/brainstorm`, arriving with the big decisions already on record as ADRs.

@@ -3,7 +3,7 @@
 An engineering workflow for Claude Code. One idea goes in; a reviewed, integrated branch comes out.
 
 ```
-grill-me      interview → 2-3 approaches → design doc          .ai-workflow/specs/
+brainstorm    interview → 2-3 approaches → design doc          .ai-workflow/specs/
    ↓
 to-plan       one plan: exact paths, real code, TDD steps      .ai-workflow/plans/
    ↓          ⏸ approve the plan  ⏸ choose the workspace
@@ -70,7 +70,7 @@ The ledger is what survives compaction. A controller that loses its place re-dis
 
 ## Skills
 
-**The chain** — `grill-me` · `to-plan` · `to-implement` · `requesting-code-review` · `finish-branch`
+**The chain** — `brainstorm` · `to-plan` · `to-implement` · `requesting-code-review` · `finish-branch`
 
 **Discipline** — `tdd` · `diagnose` · `receiving-code-review` · `verification-before-completion` · `using-git-worktrees` · `commit-work` · `resolving-merge-conflicts`
 

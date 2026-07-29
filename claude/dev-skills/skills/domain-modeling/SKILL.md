@@ -46,7 +46,7 @@ Two facts raise it: the work introduces new domain vocabulary, or the repo has n
 
 ## Where these land
 
-- **During planning** — a grill, a decision-map session — you are on the default branch: commit `CONTEXT.md` and ADRs there directly (`branch-guard` passes both paths).
+- **During planning** — a brainstorm, a decision-map session — you are on the default branch: commit `CONTEXT.md` and ADRs there directly (`branch-guard` passes both paths).
 - **During a unit** — inside its worktree — commit them on the unit's branch, each ADR its own commit, so they merge with the work they describe.
 - **On a discarded branch** — `/finish-branch`'s harvest writes what deserved to survive straight to the default branch before the branch dies.
 

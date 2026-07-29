@@ -4,11 +4,11 @@
 # dedicated branch/worktree first. Fail-open on any uncertainty.
 #
 # Exception: the domain docs — CONTEXT.md and docs/adr/** — are always allowed.
-# Domain knowledge belongs on the main line (the grill and the harvest write it
+# Domain knowledge belongs on the main line (the brainstorm and the harvest write it
 # there directly), so the guard passes those paths even on the default branch.
 #
 # Exception: .ai-workflow/** — git-ignored scratch (specs, plans, run
-# workspaces). The grill and the plan are written before the branch exists, and
+# workspaces). The brainstorm and the plan are written before the branch exists, and
 # nothing under there can reach a commit, so blocking them buys no isolation.
 
 input="$(cat 2>/dev/null || true)"
