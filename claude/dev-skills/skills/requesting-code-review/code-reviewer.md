@@ -20,6 +20,20 @@ Subagent (code-reviewer):
 
     [PLAN_OR_REQUIREMENTS]
 
+    ## What This Project Actually Offers
+
+    Read: [ENVIRONMENT_FILE]
+
+    It states what test tooling exists (or that none does), how this branch is
+    verified, and how the plan's Observable outcome can be driven with what is
+    installed here. Plan what you check from those facts. You are told to drive
+    the real runtime — do that with what this file says exists, not with what a
+    project like this usually has. An `npm test` in a repo with no test
+    framework, or a browser launched for a screen you have no tool to drive,
+    costs the run real time and returns nothing. If the file is missing, or the
+    fact you need to drive the outcome is absent from it, say so as a finding
+    rather than guessing.
+
     ## Git Range to Review
 
     **Base:** [BASE_SHA]
@@ -147,6 +161,7 @@ Subagent (code-reviewer):
 **Placeholders:**
 - `[DESCRIPTION]` — brief summary of what was built
 - `[PLAN_OR_REQUIREMENTS]` — what it should do (plan file path, task text, or requirements)
+- `[ENVIRONMENT_FILE]` — `<workspace>/environment.md`: test tooling, how the branch is verified, how the runtime is driven here
 - `[BASE_SHA]` — starting commit
 - `[HEAD_SHA]` — ending commit
 

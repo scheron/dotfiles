@@ -126,6 +126,32 @@ a ledger file, not only in todos.
   trust the ledger and `git log` over your own recollection.
 - `git clean -fdx` will destroy the workspace (it's git-ignored scratch); if
   that happens, recover from `git log`.
+- Write `<workspace>/environment.md` once, before the first dispatch, and
+  hand its path to every reviewer. A reviewer plans what to verify from what
+  it believes the project offers; leave that blank and it infers a
+  conventional project and goes looking — a repo with no test framework gets
+  `npm test` attempts, a branch with a screen gets a browser launch. That is
+  not misbehaviour, it is filling a gap you left.
+
+  **State facts, not prohibitions.** Facts let a reviewer plan; a prohibition
+  only tells it what to abandon after it has already planned. Three of them:
+
+  ```markdown
+  # Environment — plan: <plan file path>
+
+  **Test tooling.** <the exact command that runs the suite — or: none, this
+  project has no test framework>
+  **Verification.** <how this branch is actually checked, and where that
+  evidence lives>
+  **Runtime.** <how the plan's Observable outcome can be driven with what is
+  installed here>
+  ```
+
+  One file, written once, read by the task reviewers and the whole-branch
+  reviewer alike — the same reason `SMELLS.md` has a single home. Two copies
+  of a fact drift. Keep it a file rather than a block pasted into each
+  dispatch: pasted text stays resident in your context and is re-read every
+  turn thereafter, and this text does not change between tasks.
 
 Read the plan once, note its context and Global Constraints, and create a
 todo per task.
@@ -250,9 +276,9 @@ needed.
   call. Use the BASE you recorded before dispatching the implementer —
   never `HEAD~1`, which silently truncates multi-commit tasks. Never
   dispatch a task reviewer without a diff file.
-- **Reviewer inputs:** the task reviewer gets three paths — the same brief
-  file, the report file, and the review package — plus the global
-  constraints that bind the task.
+- **Reviewer inputs:** the task reviewer gets four paths — the same brief
+  file, the report file, the review package, and `<workspace>/environment.md`
+  — plus the global constraints that bind the task.
 - The global-constraints block you hand the reviewer is its attention
   lens. Copy the binding requirements verbatim from the plan's Global
   Constraints section or the spec: exact values, exact formats, and the
@@ -374,7 +400,10 @@ The final whole-branch review gets a package too: run
 `scripts/review-package PLAN_FILE MERGE_BASE HEAD` (MERGE_BASE = the commit the
 branch started from, e.g. `git merge-base main HEAD`) and include the
 printed path in the final review dispatch, so the final reviewer reads
-one file instead of re-deriving the branch diff with git commands. Dispatch
+one file instead of re-deriving the branch diff with git commands. Hand it
+`<workspace>/environment.md` too — it is the seat told to drive the real
+runtime, so it is the one most likely to go looking for tooling the project
+does not have. Dispatch
 on the most capable available model (see Model Selection), dispatching the **code-reviewer** agent by name (protocol: [code-reviewer.md](../requesting-code-review/code-reviewer.md)). Point it at
 the ledger's deferred-minor and parked lines so it can triage which must be
 fixed before merge.

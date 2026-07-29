@@ -39,8 +39,22 @@ cheap reviewer does not merely miss defects, it argues for them.
 **Placeholders:**
 - `{DESCRIPTION}` - Brief summary of what you built
 - `{PLAN_OR_REQUIREMENTS}` - What it should do
+- `{ENVIRONMENT_FILE}` - What this project actually offers (see below)
 - `{BASE_SHA}` - Starting commit
 - `{HEAD_SHA}` - Ending commit
+
+**The environment file is not optional.** A reviewer plans what to verify from
+what it believes the project offers; hand it nothing and it infers a
+conventional project and goes looking — `npm test` in a repo with no test
+framework, a browser launched for a screen it has no tool to drive. State three
+facts: what test tooling exists or that none does, how this change is actually
+verified and where that evidence lives, and how its runtime can be driven with
+what is installed here.
+
+Inside a `to-implement` run this file already exists at
+`<workspace>/environment.md`. Outside one, write the same three facts to any
+file and pass its path — a file rather than a block in the prompt, because
+pasted text stays resident in your context and is re-read on every later turn.
 
 **3. Act on feedback:**
 - Fix Critical issues immediately
@@ -76,6 +90,7 @@ HEAD_SHA=$(git rev-parse HEAD)
 [Dispatch code reviewer subagent]
   DESCRIPTION: Added verifyIndex() and repairIndex() with 4 issue types
   PLAN_OR_REQUIREMENTS: Task 2 from .ai-workflow/plans/deployment-plan.md
+  ENVIRONMENT_FILE: .ai-workflow/run/deployment-plan/environment.md
   BASE_SHA: a7981ec
   HEAD_SHA: 3df7661
 

@@ -25,6 +25,18 @@ Subagent (general-purpose):
     Global constraints from the spec/design that bind this task:
     [GLOBAL_CONSTRAINTS]
 
+    ## What This Project Actually Offers
+
+    Read: [ENVIRONMENT_FILE]
+
+    It states what test tooling exists (or that none does), how this branch
+    is verified, and how its runtime can be driven here. Plan what you check
+    from those facts. Do not assume a conventional project and go looking —
+    an `npm test` in a repo with no test framework, or a browser launched for
+    a screen you have no tool to drive, costs the run real time and returns
+    nothing. If the file is missing or a fact you need is absent from it, say
+    so in your report rather than guessing.
+
     ## What the Implementer Claims They Built
 
     Read the implementer's report: [REPORT_FILE]
