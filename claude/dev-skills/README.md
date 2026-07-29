@@ -9,7 +9,7 @@ to-plan       one plan: exact paths, real code, TDD steps      .ai-workflow/plan
    ↓          ⏸ approve the plan
 to-implement  per task: implementer → task-reviewer → fix loop
    ↓          then one whole-branch review, on the strongest model
-finish-branch ⏸ merge / PR / keep
+finish-branch ⏸ merge / PR / keep — a local merge offers to squash
 ```
 
 There is no ticket layer and no second planning pass at pickup. The plan is the only document between the design and the code — the engine cuts each task out of it mechanically, so what is not in the plan does not reach an implementer.

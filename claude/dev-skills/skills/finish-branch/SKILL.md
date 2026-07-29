@@ -85,6 +85,23 @@ is theirs.
 
 ### Option 1: Merge Locally
 
+**First, ask how the branch should land.** A plan-driven branch carries one
+commit per task plus a commit per fix round — thirty of them is normal, and
+every one is scaffolding for a run that is now over. Ask before merging, never
+after:
+
+```
+Branch <feature-branch>: <N> commits on top of <base-branch>, tests green.
+
+Squash them into one commit on <base-branch>? The branch itself is untouched.
+  1. Yes, one commit
+  2. No, merge the history as-is
+```
+
+Squashing here collapses only what lands on the base. The feature branch keeps
+all <N> commits, so the ledger's recorded SHAs stay resolvable, the review
+packages still apply, and nothing is force-pushed.
+
 ```bash
 # Get main repo root for CWD safety
 MAIN_ROOT=$(git -C "$(git rev-parse --git-common-dir)/.." rev-parse --show-toplevel)
@@ -93,11 +110,30 @@ cd "$MAIN_ROOT"
 # Merge first — verify success before removing anything
 git checkout <base-branch>
 git pull
-git merge <feature-branch>
+
+# Squash chosen: the tree lands in the index, no commit yet
+git merge --squash <feature-branch>
+git commit -F -   # your own message — see below
+
+# History chosen:
+# git merge <feature-branch>
 
 # Verify tests on merged result
 <test command>
 ```
+
+**Write the squash message yourself.** `git merge --squash` leaves
+`.git/SQUASH_MSG` holding every branch commit message concatenated with its SHA,
+author and date. Committing with that default moves the noise out of `git log`
+and into one commit body. Pass `-F -` and author the message instead.
+
+Draft it from the plan's header — `Goal` becomes the subject, `Observable
+outcome` the body. That text was written before the code and approved at the
+plan gate. Find the plan through the ledger's first line
+(`# SDD ledger — plan: <path>`). If there is no ledger — a branch built by hand
+— draft from `git log --oneline <base>..<feature>` and the diffstat, and say
+that no plan was found. Show the draft and take an edit before committing;
+`commit-guard` requires Conventional Commits either way.
 
 If tests fail on the merged result: stop, leave the worktree and branch in
 place, and investigate — nothing has been pushed, so the merge is local
@@ -107,8 +143,13 @@ Once the merged result is green: clean up the worktree (Step 6), then
 delete the branch:
 
 ```bash
-git branch -d <feature-branch>
+git branch -d <feature-branch>    # after a history merge
+git branch -D <feature-branch>    # after a squash merge
 ```
+
+A squash merge leaves no ancestry, so `git branch -d` refuses it with "the
+branch is not fully merged" — that refusal is git working correctly, not a
+broken merge. Verify the squash commit exists on the base first, then use `-D`.
 
 ### Option 2: Push and Create PR
 
@@ -181,7 +222,7 @@ place. If your platform provides a workspace-exit tool, use it.
 
 | Option | Merge | Push | Keep Worktree | Cleanup Branch |
 |--------|-------|------|---------------|----------------|
-| 1. Merge locally | yes | - | - | yes |
+| 1. Merge locally | yes, squash or history (ask) | - | - | yes (`-D` after a squash) |
 | 2. Create PR | - | yes | yes | - |
 | 3. Keep as-is | - | - | yes | - |
 | Discard (explicit request only) | - | - | - | yes (force) |
@@ -198,4 +239,7 @@ place. If your platform provides a workspace-exit tool, use it.
 | "This other worktree looks stale — I'll clean it too" | Clean up only worktrees under `.worktrees/` or `worktrees/`. Everything else belongs to the host. |
 | "The merged-result failure is probably flaky" | A failing merged result stops everything. Branch and worktree stay put while you investigate. |
 | "The base branch is obviously main" | Confirm the fork point or ask. Merging into the wrong base is expensive to undo. |
+| "SQUASH_MSG is already written — just commit" | It is every branch message concatenated with SHAs and dates. Using it moves the noise from `git log` into one commit body. Author the message from the plan. |
+| "`git branch -d` failed, so the squash merge broke" | A squash merge leaves no ancestry; git refusing `-d` is correct. Confirm the squash commit is on the base, then use `-D`. |
+| "Squashing is tidier — I'll just do it" | How the branch lands is your human partner's call, like the integration option itself. Ask before merging. |
 | "The push was rejected — force-push will fix it" | A rejected push means the remote moved. Investigate; force-push only on your human partner's explicit request. |
