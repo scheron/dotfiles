@@ -10,6 +10,7 @@
     ],
     "defaultMode": "auto"
   },
+  "model": "claude-opus-5[1m]",
   "hooks": {
     "PreToolUse": [
       {
@@ -64,8 +65,8 @@
   "extraKnownMarketplaces": {
     "dev-skills": {
       "source": {
-        "source": "github",
-        "repo": "bmox0/dev-skills"
+        "source": "git",
+        "url": "git@github.com-bmox0:bmox0/dev-skills.git"
       },
       "autoUpdate": true
     },
@@ -116,6 +117,5 @@
   "tui": "fullscreen",
   "remoteControlAtStartup": true,
   "agentPushNotifEnabled": true,
-  "skipAutoPermissionPrompt": true,
-  "model": "claude-opus-5[1m]"
+  "skipAutoPermissionPrompt": true
 }
