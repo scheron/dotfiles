@@ -37,7 +37,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "$HOME/Documents/Projects/Personal/bmox0/dev-skills/hooks/commit-guard.sh"
+            "command": "$HOME/.dotfiles/claude/dev-skills/hooks/commit-guard.sh"
           }
         ]
       },
@@ -46,7 +46,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "$HOME/Documents/Projects/Personal/bmox0/dev-skills/hooks/branch-guard.sh"
+            "command": "$HOME/.dotfiles/claude/dev-skills/hooks/branch-guard.sh"
           }
         ]
       }
@@ -57,7 +57,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "$HOME/Documents/Projects/Personal/bmox0/dev-skills/hooks/session-start"
+            "command": "$HOME/.dotfiles/claude/dev-skills/hooks/session-start"
           }
         ]
       }
@@ -67,7 +67,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "$HOME/Documents/Projects/Personal/bmox0/dev-skills/hooks/review-guard.sh"
+            "command": "$HOME/.dotfiles/claude/dev-skills/hooks/review-guard.sh"
           }
         ]
       }

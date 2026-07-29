@@ -37,16 +37,16 @@ idempotent, so re-running it every time is safe.
 
 ## Claude Code skills
 
-Standalone skills live in **`claude/skills/`** and are symlinked into
-`~/.claude/skills/` by `setup-symlinks.sh` — every `claude/skills/<name>/` is
-linked in by name.
+Skills are symlinked into `~/.claude/skills/` by `setup-symlinks.sh`, from two
+places under `claude/`:
 
-The engineering workflow (`grill-me` → `to-plan` → `to-implement` → review →
-`finish-branch`, with its agents and guard hooks) is **not** here: it lives in
-[bmox0/dev-skills](https://github.com/bmox0/dev-skills). Clone it and run its
-`install.sh` — that symlinks its skills and agents into `~/.claude/`. Its hooks
-are wired in `claude/settings.json`, pointing at that checkout. The version that
-used to live at `claude/dev-stack/` is retired in `.archive/dev-stack/`.
+- **`claude/dev-skills/`** — the engineering workflow (`grill-me` → `to-plan` →
+  `to-implement` → review → `finish-branch`) with its agents, guard hooks and
+  installer. Self-contained: `setup-symlinks.sh` runs its own `install.sh`,
+  which links and prunes only its own names. Forked from Superpowers; see its
+  `NOTICE.md`. The generation before it is retired in `.archive/dev-stack/`.
+- **`claude/skills/`** — a bucket for standalone skills. Every
+  `claude/skills/<name>/` is linked in by name.
 
 To add a skill, drop its folder into `claude/skills/` and re-run
 `setup-symlinks.sh` — the glob picks it up, no script edit needed:
