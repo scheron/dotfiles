@@ -414,8 +414,8 @@ Use finish-branch.
 You: I'm using Subagent-Driven Development to execute this plan.
 
 [Setup: worktree verified]
-[Read plan file once: docs/ai-workflow/plans/feature-plan.md]
-[Resolve workspace: scripts/workspace docs/ai-workflow/plans/feature-plan.md — no ledger inside, fresh start]
+[Read plan file once: .ai-workflow/plans/feature-plan.md]
+[Resolve workspace: scripts/workspace .ai-workflow/plans/feature-plan.md — no ledger inside, fresh start]
 [Create todos for all tasks]
 
 Task 1: Hook installation script

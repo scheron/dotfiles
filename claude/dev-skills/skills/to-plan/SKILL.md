@@ -15,8 +15,13 @@ Assume they are a skilled developer, but know almost nothing about our toolset o
 
 **Context:** If working in an isolated worktree, it should have been created via the `using-git-worktrees` skill at execution time.
 
-**Save plans to:** `docs/ai-workflow/plans/YYYY-MM-DD-<feature-name>.md`
+**Save plans to:** `.ai-workflow/plans/YYYY-MM-DD-<feature-name>.md`
 - (User preferences for plan location override this default)
+- `.ai-workflow/` is git-ignored scratch. Before the first write, ensure it
+  ignores itself: `mkdir -p .ai-workflow/plans && printf '*\n' > .ai-workflow/.gitignore`
+- **Never commit the plan.** It is scaffolding for this branch — it is exact and
+  therefore wrong the moment the code moves past it. What outlives the branch is
+  the code, `git log`, and the domain docs (`CONTEXT.md`, `docs/adr/`).
 
 ## Scope Check
 

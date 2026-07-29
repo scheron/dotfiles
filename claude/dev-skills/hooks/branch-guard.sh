@@ -6,14 +6,20 @@
 # Exception: the domain docs — CONTEXT.md and docs/adr/** — are always allowed.
 # Domain knowledge belongs on the main line (the grill and the harvest write it
 # there directly), so the guard passes those paths even on the default branch.
+#
+# Exception: .ai-workflow/** — git-ignored scratch (specs, plans, run
+# workspaces). The grill and the plan are written before the branch exists, and
+# nothing under there can reach a commit, so blocking them buys no isolation.
 
 input="$(cat 2>/dev/null || true)"
 tool="$(printf '%s' "$input" | jq -r '.tool_name // ""' 2>/dev/null || true)"
 
-# A repo-relative or absolute path that names a domain doc the guard always allows.
+# A repo-relative or absolute path the guard always allows: a domain doc, or
+# anything under the git-ignored .ai-workflow/ scratch tree.
 is_doc_path() {
   case "$1" in
     CONTEXT.md|*/CONTEXT.md|docs/adr/*|*/docs/adr/*) return 0 ;;
+    .ai-workflow/*|*/.ai-workflow/*) return 0 ;;
     *) return 1 ;;
   esac
 }
@@ -57,7 +63,7 @@ fi
 
 if [ "$branch" = "$def" ]; then
   jq -cn --arg b "$branch" \
-    '{hookSpecificOutput:{hookEventName:"PreToolUse",permissionDecision:"deny",permissionDecisionReason:("Blocked: on default branch (" + $b + ") in a dev-skills repo. Isolate before any work — /using-git-worktrees (every tier, Tier 1 included; its Step 1c is the in-place branch fallback). Enforced, not advised. (CONTEXT.md and docs/adr/ are exempt.)")}}' \
+    '{hookSpecificOutput:{hookEventName:"PreToolUse",permissionDecision:"deny",permissionDecisionReason:("Blocked: on default branch (" + $b + ") in a dev-skills repo. Isolate before any work — /using-git-worktrees (every tier, Tier 1 included; its Step 1c is the in-place branch fallback). Enforced, not advised. (CONTEXT.md, docs/adr/ and .ai-workflow/ are exempt.)")}}' \
     2>/dev/null
 fi
 exit 0

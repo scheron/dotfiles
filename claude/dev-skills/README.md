@@ -3,9 +3,9 @@
 An engineering workflow for Claude Code. One idea goes in; a reviewed, integrated branch comes out.
 
 ```
-grill-me      interview → 2-3 approaches → design doc          docs/ai-workflow/specs/
+grill-me      interview → 2-3 approaches → design doc          .ai-workflow/specs/
    ↓
-to-plan       one plan: exact paths, real code, TDD steps      docs/ai-workflow/plans/
+to-plan       one plan: exact paths, real code, TDD steps      .ai-workflow/plans/
    ↓          ⏸ approve the plan
 to-implement  per task: implementer → task-reviewer → fix loop
    ↓          then one whole-branch review, on the strongest model
@@ -51,7 +51,7 @@ Every subagent has its model pinned in `agents/`, so a dispatch can never silent
 | Hook | When | Does |
 |---|---|---|
 | `session-start` | startup / clear / compact | injects `using-dev-skills` so skills actually fire |
-| `branch-guard` | before an edit or a commit | refuses work on the default branch; exempts `CONTEXT.md` and `docs/adr/` |
+| `branch-guard` | before an edit or a commit | refuses work on the default branch; exempts `CONTEXT.md`, `docs/adr/` and `.ai-workflow/` |
 | `commit-guard` | before a Bash commit | Conventional Commits, no blanket `git add`, no bot trailers |
 | `review-guard` | on stop | refuses "done" on a branch whose current state was never reviewed |
 
@@ -59,10 +59,12 @@ Every subagent has its model pinned in `agents/`, so a dispatch can never silent
 
 | Where | What | Lives |
 |---|---|---|
-| `docs/ai-workflow/specs/` | the design doc | committed |
-| `docs/ai-workflow/plans/` | the implementation plan | committed |
-| `CONTEXT.md`, `docs/adr/` | glossary and decisions | committed, on the default branch |
+| `.ai-workflow/specs/` | the design doc | git-ignored |
+| `.ai-workflow/plans/` | the implementation plan | git-ignored |
 | `.ai-workflow/run/<plan>/` | ledger, task briefs, reports, review packages | git-ignored, deleted when the branch lands |
+| `CONTEXT.md`, `docs/adr/` | glossary and decisions | committed, on the default branch |
+
+Everything under `.ai-workflow/` is scaffolding for one branch, and a self-ignoring `.gitignore` at its root keeps all of it out of `git status`. Specs and plans are exact, which is what makes them useful during the run and false the moment the code moves past them — a committed spec is a document that rots in place and misleads the next reader. Only the domain docs are written to survive: `CONTEXT.md` for the vocabulary, `docs/adr/` for the decisions and their reasons. Those go on the default branch, and they are the record.
 
 The ledger is what survives compaction. A controller that loses its place re-dispatches completed tasks; the ledger and `git log` are trusted over recollection.
 

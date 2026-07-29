@@ -55,7 +55,7 @@ without repeating it.
 
 **Finding connection info:** The server writes its startup JSON to `$STATE_DIR/server-info`. If you launched the server in the background and didn't capture stdout, read that file to get the URL and port. When using `--project-dir`, check `<project>/.ai-workflow/brainstorm/` for the session directory.
 
-**Note:** Pass the project root as `--project-dir` so mockups persist in `.ai-workflow/brainstorm/` and survive server restarts. Without it, files go to `/tmp` and get cleaned up. Remind the user to add `.ai-workflow/` to `.gitignore` if it's not already there.
+**Note:** Pass the project root as `--project-dir` so mockups persist in `.ai-workflow/brainstorm/` and survive server restarts. Without it, files go to `/tmp` and get cleaned up. The server writes a self-ignoring `.gitignore` at `.ai-workflow/`, so nothing it creates reaches `git status` — no need to touch the project's own `.gitignore`.
 
 **Launching the server by platform:**
 

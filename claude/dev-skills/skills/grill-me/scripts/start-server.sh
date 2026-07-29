@@ -115,6 +115,10 @@ SESSION_ID="$$-$(date +%s)"
 
 if [[ -n "$PROJECT_DIR" ]]; then
   SESSION_DIR="${PROJECT_DIR}/.ai-workflow/brainstorm/${SESSION_ID}"
+  # A self-ignoring .gitignore keeps the whole scratch tree out of `git status`
+  # without touching the project's own .gitignore.
+  mkdir -p "${PROJECT_DIR}/.ai-workflow"
+  printf '*\n' > "${PROJECT_DIR}/.ai-workflow/.gitignore"
   # Persist the bound port and key per project so a restart reuses them and an
   # already-open browser tab reconnects to the same URL with a valid cookie.
   export BRAINSTORM_PORT_FILE="${PROJECT_DIR}/.ai-workflow/brainstorm/.last-port"
