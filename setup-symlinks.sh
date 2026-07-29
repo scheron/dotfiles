@@ -53,13 +53,6 @@ echo "gh";        link gh/config.yml "$HOME/.config/gh/config.yml"
 echo "claude";    for f in settings.json CLAUDE.md RTK.md statusline.sh subagent-statusline.sh rtk-rewrite.sh; do
                     link "claude/$f" "$HOME/.claude/$f"
                   done
-echo "claude dev-stack"
-                  # Self-contained unit: its own installer links skills+agents
-                  # and prunes its own stale links. Tolerate collisions (exit 2)
-                  # without aborting the rest of this script.
-                  if ! "$DOTFILES/claude/dev-stack/install.sh"; then
-                    printf '  warn  dev-stack install.sh reported an issue (see above)\n'
-                  fi
 echo "claude skills"
                   # Standalone skills bucket — every claude/skills/<name> is
                   # linked into ~/.claude/skills. Drop a new skill dir here and

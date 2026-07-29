@@ -30,53 +30,6 @@
             "if": "Bash(git commit*)"
           }
         ]
-      },
-      {
-        "matcher": "Bash",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "$HOME/.dotfiles/claude/dev-stack/hooks/commit-guard.sh"
-          }
-        ]
-      },
-      {
-        "matcher": "Edit|MultiEdit|Write|NotebookEdit|Bash",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "$HOME/.dotfiles/claude/dev-stack/hooks/branch-guard.sh"
-          }
-        ]
-      }
-    ],
-    "SessionStart": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "bash \"$HOME/.dotfiles/claude/dev-stack/install.sh\" >/dev/null 2>&1 || true"
-          }
-        ]
-      },
-      {
-        "matcher": "startup|clear|compact",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "$HOME/.dotfiles/claude/dev-stack/hooks/session-gate.sh"
-          }
-        ]
-      }
-    ],
-    "Stop": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "$HOME/.dotfiles/claude/dev-stack/hooks/review-guard.sh"
-          }
-        ]
       }
     ]
   },
@@ -105,9 +58,17 @@
     "swiftui-expert@swiftui-expert-skill": true,
     "impeccable@impeccable": true,
     "frontend-slides@frontend-slides": true,
-    "vue-development@vue-development-marketplace": true
+    "vue-development@vue-development-marketplace": true,
+    "dev-skills@dev-skills": true
   },
   "extraKnownMarketplaces": {
+    "dev-skills": {
+      "source": {
+        "source": "github",
+        "repo": "bmox0/dev-skills"
+      },
+      "autoUpdate": true
+    },
     "chrome-devtools-plugins": {
       "source": {
         "source": "github",
