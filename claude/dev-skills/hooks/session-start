@@ -1,13 +1,14 @@
 #!/usr/bin/env bash
-# SessionStart hook: inject the using-dev-skills bootstrap so skills actually fire.
+# SessionStart hook: inject ds-bootstrap — the one rule (don't start building a
+# task silently) plus the list of entries that exist.
 
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 PLUGIN_ROOT="$(cd "${SCRIPT_DIR}/.." && pwd)"
 
-bootstrap=$(cat "${PLUGIN_ROOT}/skills/using-dev-skills/SKILL.md" 2>&1 \
-  || echo "Error reading using-dev-skills skill")
+bootstrap=$(cat "${PLUGIN_ROOT}/skills/meta/ds-bootstrap/SKILL.md" 2>&1 \
+  || echo "Error reading ds-bootstrap skill")
 
 # Escape for JSON embedding. Each ${s//old/new} is a single C-level pass —
 # orders of magnitude faster than a character-by-character loop.
@@ -22,7 +23,7 @@ escape_for_json() {
 }
 
 bootstrap_escaped=$(escape_for_json "$bootstrap")
-session_context="<EXTREMELY_IMPORTANT>\nYou have dev-skills.\n\n**Below is the full content of your 'dev-skills:using-dev-skills' skill — your introduction to using skills. For all other skills, use the 'Skill' tool:**\n\n${bootstrap_escaped}\n</EXTREMELY_IMPORTANT>"
+session_context="<dev-skills-bootstrap>\nThis environment has dev-skills. Read the note below once; it is not an instruction to invoke anything.\n\n${bootstrap_escaped}\n</dev-skills-bootstrap>"
 
 # printf rather than a heredoc: bash 5.3+ hangs on heredocs here.
 printf '{\n  "hookSpecificOutput": {\n    "hookEventName": "SessionStart",\n    "additionalContext": "%s"\n  }\n}\n' "$session_context" | cat

@@ -16,9 +16,16 @@ deny() {
   exit 0
 }
 
-# 1) Blanket staging — commit-work: stage intentionally, never `git add .`/`-A`/`--all`.
+# 1) Blanket staging — stage intentionally, never `git add .`/`-A`/`--all`.
 if printf '%s' "$cmd" | grep -qE '(^|[;&|[:space:]])git[[:space:]]+add[[:space:]]+(-A|--all|\.)($|[[:space:]]|[;&|])'; then
-  deny "Blocked by commit-work: blanket staging (git add . / -A / --all). Stage intentionally with 'git add -p' or explicit paths so only intended changes land."
+  deny "Blocked: blanket staging (git add . / -A / --all). Stage intentionally with 'git add -p' or explicit paths so only intended changes land."
+fi
+
+# 1b) The same thing wearing a different hat: `git commit -a` stages every tracked
+# modification, including work another agent is halfway through. Matches the
+# combined short forms (-am, -av) and the long option, but not `--amend`.
+if printf '%s' "$cmd" | grep -qE '(^|[;&|[:space:]])git[[:space:]]+commit[[:space:]]+([^[:space:]]*[[:space:]]+)*(-[[:alnum:]]*a[[:alnum:]]*|--all)([[:space:]]|=|$)'; then
+  deny "Blocked: 'git commit -a' stages every tracked modification, including a file another agent is mid-edit on. Stage the paths you changed yourself, then commit."
 fi
 
 # Everything below concerns git commit only.

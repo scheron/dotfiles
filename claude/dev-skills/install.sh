@@ -1,12 +1,19 @@
 #!/usr/bin/env bash
-# The installer. Symlinks each skills/<name> into ~/.claude/skills and each
-# agents/<name>.md into ~/.claude/agents, so an edit in this repo is picked up
-# live — no reinstall. It only ever creates links under this repo's own skill
-# and agent names, and never touches a real file or directory it didn't make.
-# It does sweep away *any* dangling symlink in the destinations — one whose
-# target is gone points at nothing and only confuses whoever reads the dir
-# next, whether or not this repo put it there. Wire the hooks separately
-# (see README).
+# The installer. Symlinks every skill directory under skills/ into
+# ~/.claude/skills and each agents/<name>.md into ~/.claude/agents, so an edit
+# in this repo is picked up live — no reinstall. It only ever creates links
+# under this repo's own skill and agent names, and never touches a real file or
+# directory it didn't make. It does sweep away *any* dangling symlink in the
+# destinations — one whose target is gone points at nothing and only confuses
+# whoever reads the dir next, whether or not this repo put it there. Wire the
+# hooks separately (see README).
+#
+# A skill is any directory holding a SKILL.md, at any depth: skills/ groups them
+# into folders by pipeline stage, and the search is recursive so the grouping
+# costs nothing. The install itself stays flat — one link per skill, named after
+# its directory — which is what the harness reads and what the plugin format
+# would later reproduce. Flat installs demand unique names, so a name used twice
+# anywhere in the tree is an error rather than a silent last-one-wins.
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -63,10 +70,26 @@ link_one() {
   linked=$((linked+1))
 }
 
-for dir in "$SKILLS_SRC"/*/; do
-  [[ -e "${dir%/}" ]] || continue
-  link_one "${dir%/}" "$SKILLS_DEST/$(basename "$dir")" "$(basename "$dir")"
-done
+skill_names=() skill_srcs=()
+while IFS= read -r skill_md; do
+  [[ -n "$skill_md" ]] || continue
+  src="$(dirname "$skill_md")"
+  skill_names+=("$(basename "$src")")
+  skill_srcs+=("$src")
+done < <(find "$SKILLS_SRC" -name SKILL.md 2>/dev/null | LC_ALL=C sort)
+
+if [[ ${#skill_names[@]} -gt 0 ]]; then
+  dupes="$(printf '%s\n' "${skill_names[@]}" | LC_ALL=C sort | uniq -d)"
+  if [[ -n "$dupes" ]]; then
+    echo "duplicate skill names — the install is flat, so a name must be unique across skills/:" >&2
+    printf '  %s\n' $dupes >&2
+    exit 3
+  fi
+
+  for i in "${!skill_names[@]}"; do
+    link_one "${skill_srcs[$i]}" "$SKILLS_DEST/${skill_names[$i]}" "${skill_names[$i]}"
+  done
+fi
 
 for file in "$AGENTS_SRC"/*.md; do
   [[ -e "$file" ]] || continue
