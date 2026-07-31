@@ -4,11 +4,13 @@
 # dedicated branch/worktree first. Fail-open on any uncertainty.
 #
 # Exception: the domain docs — CONTEXT.md and docs/adr/** — are always allowed.
-# Domain knowledge belongs on the main line (the brainstorm and the harvest write it
-# there directly), so the guard passes those paths even on the default branch.
+# Domain knowledge belongs on the main line, and the human may ask for it to be
+# recorded while standing on the default branch. Nothing writes these on its own
+# any more: ds-domain-modeling offers, the human decides, and this exemption only
+# means the guard does not stand in the way once they have.
 #
 # Exception: .ai-workflow/** — git-ignored scratch (specs, plans, run
-# workspaces). The brainstorm and the plan are written before the branch exists, and
+# workspaces). The grilling and the plan are written before the branch exists, and
 # nothing under there can reach a commit, so blocking them buys no isolation.
 
 input="$(cat 2>/dev/null || true)"
@@ -63,7 +65,7 @@ fi
 
 if [ "$branch" = "$def" ]; then
   jq -cn --arg b "$branch" \
-    '{hookSpecificOutput:{hookEventName:"PreToolUse",permissionDecision:"deny",permissionDecisionReason:("Blocked: on default branch (" + $b + ") in a dev-skills repo. Isolate before any work — /using-git-worktrees, which offers a worktree, a branch here (its Step 1c), or the current branch. Enforced, not advised. (CONTEXT.md, docs/adr/ and .ai-workflow/ are exempt.)")}}' \
+    '{hookSpecificOutput:{hookEventName:"PreToolUse",permissionDecision:"deny",permissionDecisionReason:("Blocked: on the default branch (" + $b + ") in a dev-skills repo. Work is isolated first — ds-implement settles that at its first step, offering a worktree, a branch here, or the current branch. Enforced, not advised. (CONTEXT.md, docs/adr/ and .ai-workflow/ are exempt.)")}}' \
     2>/dev/null
 fi
 exit 0

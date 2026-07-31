@@ -1,90 +1,167 @@
 # dev-skills
 
-An engineering workflow for Claude Code. One idea goes in; a reviewed, integrated branch comes out.
+An engineering workflow for Claude Code. One idea goes in; a reviewed, integrated
+commit comes out.
 
 ```
-brainstorm    interview → 2-3 approaches → design doc          .ai-workflow/specs/
+ds-grill        interview → shared understanding → STOP
+   ↓            (a bug goes through ds-bug first)
+ds-spec         only when the work needs more than one plan → STOP
    ↓
-to-plan       one plan: exact paths, real code, TDD steps      .ai-workflow/plans/
-   ↓          ⏸ approve the plan  ⏸ choose the workspace
-to-implement  per task: implementer → task-reviewer → fix loop
-   ↓          then one whole-branch review, on the strongest model
-finish-branch ⏸ merge / PR / keep — a local merge offers to squash
+ds-plan         one plan file, phases of seven fields, human approval → STOP
+   ↓            (also an entry of its own: name a plan from a spec's list)
+ds-implement    workspace + preflight, then per segment:
+   ↓              implementer → implement-review, fixes by the same pair, cap 2
+   ↓            then final-review on the runtime, then GATE 1: the human clicks
+ds-finish       reset --soft into one commit, GATE 2: the human reads one diff
+   ↓
+merge (ff-only) / rebase / keep
 ```
 
-There is no ticket layer and no second planning pass at pickup. The plan is the only document between the design and the code — the engine cuts each task out of it mechanically, so what is not in the plan does not reach an implementer.
+**The human invokes every step.** Nothing here fires on a bare prompt except
+`ds-bug`, which exists because a bug arrives as a symptom and the mistake it
+prevents happens in the first reply. The model proposes; the human calls.
 
-## Install
+## The idea
 
-Part of the dotfiles. `setup-symlinks.sh` runs `install.sh`, which links every
-`skills/<name>/` into `~/.claude/skills/` and every `agents/<name>.md` into
-`~/.claude/agents/`. It only ever touches its own names and prunes its own stale
-links, so an edit here is live at once — no reinstall.
+Planning is the lever. A plan dense enough that a cheap model can build from it
+without inventing anything is what buys everything else: the human steps off
+step-by-step supervision, execution runs on Haiku or Sonnet, and review has a
+fixed contract to judge against instead of re-deriving intent from a diff.
 
-On another machine: `git pull` in the dotfiles, then `./setup-symlinks.sh`.
+So the plan is exhaustive about **decisions** — paths, abstractions by name,
+which signatures are frozen, the verification cases and their assertions — and
+silent about **mechanics**. Function bodies and test code are typing, not
+deciding; a plan carrying them makes the planner write code it cannot run, and
+goes stale at the first correction.
 
-The hooks are wired in `claude/settings.json`, pointing at this directory:
+## Entries
 
-| Event | Command |
+| | |
 |---|---|
-| `SessionStart` (startup\|clear\|compact) | `hooks/session-start` |
-| `PreToolUse` Bash | `hooks/commit-guard.sh` |
-| `PreToolUse` Edit\|Write\|Bash | `hooks/branch-guard.sh` |
-| `Stop` | `hooks/review-guard.sh` |
+| [`ds-grill`](skills/entry/ds-grill/SKILL.md) | the task is not clear yet; interview it into a shared understanding |
+| [`ds-grill-with-docs`](skills/entry/ds-grill-with-docs/SKILL.md) | same, and it captures vocabulary and earned ADRs as they settle |
+| [`ds-bug`](skills/entry/ds-bug/SKILL.md) | reproduce, root cause, a failing test that pins it |
+| [`ds-scout`](skills/entry/ds-scout/SKILL.md) | explain how existing code works; read-only |
+| [`ds-refactor`](skills/entry/ds-refactor/SKILL.md) | restructure, migrate, upgrade — behaviour must not change |
+| [`ds-tests`](skills/entry/ds-tests/SKILL.md) | the tests are the deliverable: cover code, or repair tests that lie |
+
+Each entry exists because its verification contract differs. Where the contract
+is the same — a feature, a behaviour change, tooling — the route is the same, and
+there is no separate skill for it.
+
+## The pipeline
+
+| | |
+|---|---|
+| [`ds-spec`](skills/planning/ds-spec/SKILL.md) | shared decisions, glossary, and the list of plans — only when there is more than one |
+| [`ds-plan`](skills/planning/ds-plan/SKILL.md) | the plan file: completeness contract, phases, topology, scenarios, ledger |
+| [`ds-implement`](skills/execution/ds-implement/SKILL.md) | workspace, preflight, the segment loop, the final gate |
+| [`ds-finish`](skills/finishing/ds-finish/SKILL.md) | one commit, GATE 2, integration, cleanup |
+
+## Outside a run
+
+[`ds-review`](skills/standalone/ds-review/SKILL.md) ·
+[`ds-improve`](skills/standalone/ds-improve/SKILL.md) ·
+[`ds-research`](skills/standalone/ds-research/SKILL.md) ·
+[`ds-prototype`](skills/standalone/ds-prototype/SKILL.md) ·
+[`ds-domain-modeling`](skills/docs/ds-domain-modeling/SKILL.md)
+
+**Utilities:** [`ds-commit-work`](skills/utils/ds-commit-work/SKILL.md) ·
+[`ds-merge-conflicts`](skills/utils/ds-merge-conflicts/SKILL.md) ·
+[`ds-pre-commit`](skills/utils/ds-pre-commit/SKILL.md) ·
+[`ds-guardrails`](skills/utils/ds-guardrails/SKILL.md) ·
+[`ds-writing-skills`](skills/utils/ds-writing-skills/SKILL.md)
+
+**Meta:** [`ds-bootstrap`](skills/meta/ds-bootstrap/SKILL.md), injected at session
+start — one rule and a list of what exists.
 
 ## The seats
 
-Every subagent has its model pinned in `agents/`, so a dispatch can never silently inherit the session's most expensive model.
+Dispatched by `ds-implement`; the human never types these.
 
 | Seat | Model | Does |
 |---|---|---|
-| `implementer` | `sonnet` | builds one task, TDD, commits, self-reviews |
-| `task-reviewer` | `sonnet` | judges that task on a clean context — spec, quality, smells |
-| `re-reviewer` | `sonnet` | verifies one fix round against the fix diff only |
-| `fixer` | `sonnet` | applies a whole findings list in one pass |
-| `code-reviewer` | `opus` | the branch's one broad judgement, and drives the runtime |
+| [`implementer`](agents/implementer.md) | assigned per segment by the plan | every phase of one segment, TDD where the plan says there are tests, commits |
+| [`implement-review`](agents/implement-review.md) | `sonnet` | runs the checks itself first, then judges the diff against the phases' fields |
+| [`final-review`](agents/final-review.md) | `opus` | drives the plan's scenarios on a live system and reports what it saw |
 
-`implementer` drops to `haiku` when the plan step carries the complete code — that task is transcription. Reviewing seats never go below `sonnet`: a cheap reviewer does not merely miss defects, it argues for them.
+Two orthogonal questions, never asked twice of one diff: **is it well written**
+belongs to the checkpoint, **does it work** to the final gate.
+
+The `model:` in each definition is a floor, not the decision — the dispatch names
+the model, and for the implementer the plan's topology decides it.
+
+## Shared material
+
+| Where | What | Read by |
+|---|---|---|
+| [`ds-review-criteria/CRITERIA.md`](skills/shared/ds-review-criteria/CRITERIA.md) | what counts as a finding, and what does not | `implement-review`, `final-review`, `ds-review` |
+| [`ds-implement/tdd.md`](skills/execution/ds-implement/tdd.md) | test discipline | `implementer` |
+| [`ds-implement/environment-contract.md`](skills/execution/ds-implement/environment-contract.md) | how the project builds, runs, and prepares a fresh tree | preflight, both reviewers |
+| [`ds-plan/codebase-design.md`](skills/planning/ds-plan/codebase-design.md) | deep-module vocabulary | `ds-plan`, `ds-grill`, `ds-improve` |
+
+`ds-review-criteria` is a skill only so the installer gives it a stable path; it
+runs nothing and cannot be invoked. The other three live with the skill that owns
+them.
+
+**No agent definition carries a filesystem path.** The orchestrator resolves every
+path and puts it in the dispatch; an agent handed no path stops and says so.
 
 ## The hooks
 
+Wired in `claude/settings.json`, pointing at this directory.
+
 | Hook | When | Does |
 |---|---|---|
-| `session-start` | startup / clear / compact | injects `using-dev-skills` so skills actually fire |
-| `branch-guard` | before an edit or a commit | refuses work on the default branch; exempts `CONTEXT.md`, `docs/adr/` and `.ai-workflow/` |
-| `commit-guard` | before a Bash commit | Conventional Commits, no blanket `git add`, no bot trailers |
-| `review-guard` | on stop | refuses "done" on a branch whose current state was never reviewed |
+| `session-start` | startup / clear / compact | injects `ds-bootstrap` |
+| `commit-guard` | before a Bash command | Conventional Commits, no blanket `git add`, no `git commit -a`, no bot trailers |
+| `finish-guard` | before a Bash command | while a run is open, history surgery goes through `ds-finish` and nowhere else |
+| `branch-guard` | before an edit or a commit | refuses work on the default branch in an opt-in repo; exempts `CONTEXT.md`, `docs/adr/` and `.ai-workflow/` |
+
+`finish-guard` is armed by a run marker (`.ai-workflow/run/<plan>/RUN`) and is
+inert without one — an unconditional block on `reset`/`merge`/`rebase` would
+break ordinary work in every repository.
 
 ## Artifacts
 
 | Where | What | Lives |
 |---|---|---|
-| `.ai-workflow/specs/` | the design doc | git-ignored |
-| `.ai-workflow/plans/` | the implementation plan | git-ignored |
-| `.ai-workflow/run/<plan>/` | ledger, task briefs, reports, review packages | git-ignored, deleted when the branch lands |
-| `CONTEXT.md`, `docs/adr/` | glossary and decisions | committed, on the default branch |
+| `.ai-workflow/specs/` | the spec, when there is one | git-ignored |
+| `.ai-workflow/plans/` | the plan — contract and ledger both | git-ignored |
+| `.ai-workflow/run/<plan>/` | briefs, reports, review packages, and `RUN` — the marker holding plan, branch and base | git-ignored |
+| `CONTEXT.md`, `docs/adr/` | glossary and decisions | committed, when the human says so |
 
-Everything under `.ai-workflow/` is scaffolding for one branch, and a self-ignoring `.gitignore` at its root keeps all of it out of `git status`. Specs and plans are exact, which is what makes them useful during the run and false the moment the code moves past them — a committed spec is a document that rots in place and misleads the next reader. Only the domain docs are written to survive: `CONTEXT.md` for the vocabulary, `docs/adr/` for the decisions and their reasons. Those go on the default branch, and they are the record.
+`.gitignore` carries the line `.ai-workflow` **without a trailing slash**: in a
+worktree it is a symlink into the main checkout, and git sees a symlink as a
+file, which a trailing-slash pattern does not match. A symlink rather than a copy
+because the plan is also the ledger — two copies would diverge, and an edit in
+one tree would never reach the execution in the other.
 
-The ledger is what survives compaction. A controller that loses its place re-dispatches completed tasks; the ledger and `git log` are trusted over recollection.
+Specs and plans are **not** deleted after integration. Deletion is irreversible
+and disk is cheap; the human decides when they go.
 
-## Skills
+## Install
 
-**The chain** — `brainstorm` · `to-plan` · `to-implement` · `requesting-code-review` · `finish-branch`
+Part of the dotfiles. `setup-symlinks.sh` runs `install.sh`, which searches
+`skills/` **recursively** for `SKILL.md`, links each skill directory flat into
+`~/.claude/skills/` under its own name, and links every `agents/*.md` into
+`~/.claude/agents/`. The grouping into folders lives in this repository only.
 
-**Discipline** — `tdd` · `diagnose` · `receiving-code-review` · `verification-before-completion` · `using-git-worktrees` · `commit-work` · `resolving-merge-conflicts`
+Because the install is flat, a skill name must be unique across the whole tree —
+the `ds-` prefix takes care of that, and a duplicate is an error rather than a
+silent overwrite. Stale links are pruned, so an edit here is live at once.
 
-**Design and knowledge** — `domain-modeling` · `codebase-design` · `improve-codebase-architecture` · `decision-map` · `prototype` · `research` · `handoff`
-
-**Setup and meta** — `setup-pre-commit` · `git-guardrails-claude-code` · `writing-skills` · `using-dev-skills` · `dispatching-parallel-agents`
+On another machine: `git pull`, then `./setup-symlinks.sh`.
 
 ## Upstream
 
 Forked from [Superpowers](https://github.com/obra/superpowers) by Jesse Vincent,
-MIT licensed, at v6.2.0. It is not wired as a git remote — this lives inside the
-dotfiles now, and their history does not belong here.
+MIT licensed, at v6.2.0, and reshaped since — the pipeline, the seven-field
+phase, the review criteria and the finishing mechanics are this fork's. It is not
+wired as a git remote.
 
-To take a later version of theirs, clone it beside this directory and diff:
+To look at a later version of theirs, clone it beside this directory and diff:
 
 ```bash
 git clone https://github.com/obra/superpowers /tmp/sp
