@@ -13,6 +13,7 @@ set -euo pipefail
 
 DOTFILES="$HOME/.dotfiles"
 CODE_USER="$HOME/Library/Application Support/Code/User"
+CURSOR_USER="$HOME/Library/Application Support/Cursor/User"
 
 link() {
   # link <path-inside-dotfiles> <absolute-target>
@@ -65,6 +66,9 @@ echo "claude skills"
 echo "vscode";    link VSCode/settings.json "$CODE_USER/settings.json"
                   link VSCode/keybindings.json "$CODE_USER/keybindings.json"
                   link VSCode/snippets "$CODE_USER/snippets"
+echo "cursor";    link Cursor/settings.json "$CURSOR_USER/settings.json"
+                  link Cursor/keybindings.json "$CURSOR_USER/keybindings.json"
+                  link Cursor/snippets "$CURSOR_USER/snippets"
 
 echo
 echo "Done. Per-machine secrets (SSH keys, npm, gh, Claude) are set up manually — see README."

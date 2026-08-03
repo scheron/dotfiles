@@ -159,7 +159,7 @@ run = ["move-node-to-workspace M1", 'layout floating']
 
 [[on-window-detected]]
 if.app-id='com.todesktop.230313mzl4w4u92'
-run = "move-node-to-workspace M2"
+run = ["move-node-to-workspace M2", 'layout floating']
 
 [[on-window-detected]]
 if.app-id='com.google.antigravity'

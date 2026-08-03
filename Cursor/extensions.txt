@@ -1,0 +1,49 @@
+# Extension IDs derived from Cursor (~/.cursor/extensions/extensions.json).
+# Cursor installs extensions from OpenVSX; VSCode installs from the Microsoft
+# Marketplace. Some IDs below may not exist there, may be a different/renamed
+# package, or may be blocked by Microsoft's marketplace terms for non-VSCode
+# products. All IDs are kept for reference — verify each one manually when
+# reinstalling on a fresh VSCode machine.
+#
+# Flagged as possibly problematic on the VSCode Marketplace:
+#   - anysphere.remote-ssh   -> Anysphere's (Cursor's maker) own fork/rebrand
+#                               of Microsoft's proprietary ms-vscode-remote.remote-ssh.
+#                               Not expected to exist under this ID on the VSCode
+#                               Marketplace; use ms-vscode-remote.remote-ssh instead
+#                               (subject to Microsoft's product-specific licensing).
+#
+# No ms-vscode.* or github.copilot* IDs were present in the source list.
+aaron-bond.better-comments
+antfu.icons-carbon
+antfu.theme-vitesse
+anthropic.claude-code
+anysphere.remote-ssh
+beardedbear.beardedtheme
+bierner.markdown-mermaid
+bradlc.vscode-tailwindcss
+castrogusttavo.symbols
+catppuccin.catppuccin-vsc-icons
+dbaeumer.vscode-eslint
+donjayamanne.githistory
+enkia.tokyo-night
+esbenp.prettier-vscode
+infectedbyjs.filediff
+jock.svg
+juanlias.ultra-instinct-theme
+kisstkondoros.vscode-gutter-preview
+lakshitsomani.best-themes-redefined
+meganrogge.template-string-converter
+mhutchie.git-graph
+naumovs.color-highlight
+nicholashsiang.vscode-vue3-snippets
+pierrecomputer.pierre-vscode-icons
+sdras.night-owl
+streetsidesoftware.code-spell-checker
+subframe7536.custom-ui-style
+typescriptteam.native-preview
+usernamehw.errorlens
+vscodevim.vim
+vue.volar
+waderyan.gitblame
+yoavbls.pretty-ts-errors
+znck.vue

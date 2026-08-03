@@ -1,0 +1,10 @@
+{
+	"Export default from index (Vue)": {
+		"scope": "javascript,typescript",
+		"prefix": "exd",
+		"body": [
+			"export { default } from \"./${1:${TM_DIRECTORY/(.*[\\/])?([^\\/]+)$/$2/}}.vue\""
+		],
+		"description": "Экспорт дефолта из одноимённого .vue файла (имя папки родителя)"
+	}
+}
