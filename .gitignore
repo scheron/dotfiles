@@ -11,3 +11,4 @@ claude/.claude.json
 zed/conversations/
 zed/*.mdb
 zed/settings_backup.json
+.ai-workflow

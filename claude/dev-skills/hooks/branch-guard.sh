@@ -6,7 +6,7 @@
 # Exception: the domain docs — CONTEXT.md and docs/adr/** — are always allowed.
 # Domain knowledge belongs on the main line, and the human may ask for it to be
 # recorded while standing on the default branch. Nothing writes these on its own
-# any more: ds-domain-modeling offers, the human decides, and this exemption only
+# any more: dev-skills:domain-modeling offers, the human decides, and this exemption only
 # means the guard does not stand in the way once they have.
 #
 # Exception: .ai-workflow/** — git-ignored scratch (specs, plans, run
@@ -65,7 +65,7 @@ fi
 
 if [ "$branch" = "$def" ]; then
   jq -cn --arg b "$branch" \
-    '{hookSpecificOutput:{hookEventName:"PreToolUse",permissionDecision:"deny",permissionDecisionReason:("Blocked: on the default branch (" + $b + ") in a dev-skills repo. Work is isolated first — ds-implement settles that at its first step, offering a worktree, a branch here, or the current branch. Enforced, not advised. (CONTEXT.md, docs/adr/ and .ai-workflow/ are exempt.)")}}' \
+    '{hookSpecificOutput:{hookEventName:"PreToolUse",permissionDecision:"deny",permissionDecisionReason:("Blocked: on the default branch (" + $b + ") in a dev-skills repo. Work is isolated first — dev-skills:implement settles that at its first step, offering a worktree, a branch here, or the current branch. Enforced, not advised. (CONTEXT.md, docs/adr/ and .ai-workflow/ are exempt.)")}}' \
     2>/dev/null
 fi
 exit 0

@@ -31,44 +31,6 @@
             "if": "Bash(git commit*)"
           }
         ]
-      },
-      {
-        "matcher": "Bash",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "$HOME/.dotfiles/claude/dev-skills/hooks/commit-guard.sh"
-          }
-        ]
-      },
-      {
-        "matcher": "Bash",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "$HOME/.dotfiles/claude/dev-skills/hooks/finish-guard.sh"
-          }
-        ]
-      },
-      {
-        "matcher": "Edit|MultiEdit|Write|NotebookEdit|Bash",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "$HOME/.dotfiles/claude/dev-skills/hooks/branch-guard.sh"
-          }
-        ]
-      }
-    ],
-    "SessionStart": [
-      {
-        "matcher": "startup|clear|compact",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "$HOME/.dotfiles/claude/dev-skills/hooks/session-start"
-          }
-        ]
       }
     ]
   },
