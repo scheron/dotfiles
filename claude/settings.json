@@ -109,7 +109,8 @@
       "source": {
         "source": "github",
         "repo": "bmox0/dev-skills"
-      }
+      },
+      "autoUpdate": true
     }
   },
   "effortLevel": "xhigh",
