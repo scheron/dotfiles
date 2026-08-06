@@ -26,7 +26,7 @@ WARN=$(printf '\342\232\240')      # ⚠ U+26A0
 echo "$input" | jq -rc \
   --argjson now "$NOW" \
   --arg reset "$RESET" --arg dim "$DIM" --arg bold "$BOLD" \
-  --arg opus "$MAGENTA" --arg sonnet "$CYAN" --arg haiku "$GREEN" \
+  --arg opus "$YELLOW" --arg sonnet "$GREEN" \
   --arg fable "$RED" --arg mgen "$WHITE" \
   --arg emax "$MAGENTA" --arg ehigh "$YELLOW" --arg emed "$CYAN" --arg elow "$GREEN" \
   --arg drun "$GREEN" --arg dfail "$RED" --arg ddone "$DIM" --arg dwait "$YELLOW" --arg dgen "$CYAN" \
@@ -35,7 +35,6 @@ echo "$input" | jq -rc \
   def mname: (. // "") as $m
     | if   ($m|test("opus";"i"))   then "Opus"
       elif ($m|test("sonnet";"i")) then "Sonnet"
-      elif ($m|test("haiku";"i"))  then "Haiku"
       elif ($m|test("fable";"i"))  then "Fable"
       elif $m == "" then "?"
       else ($m|sub("^claude-";"")) end;
@@ -43,12 +42,11 @@ echo "$input" | jq -rc \
   def mcolor: (. // "") as $m
     | if   ($m|test("opus";"i"))   then $opus
       elif ($m|test("sonnet";"i")) then $sonnet
-      elif ($m|test("haiku";"i"))  then $haiku
       elif ($m|test("fable";"i"))  then $fable
       else $mgen end;
 
   # ⚠ marker on Fable only — a mis-pinned implementer should be unmistakable
-  # even in themes that render magenta (Opus) as reddish.
+  # even in themes that render yellow (Opus) warm enough to read as red.
   def mmark: (. // "") | if test("fable";"i") then ($warn + " ") else "" end;
 
   def elabel: (. // "")
