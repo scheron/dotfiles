@@ -1,5 +1,6 @@
 confirm-close-surface		= false
 macos-titlebar-proxy-icon	= "hidden"
+macos-titlebar-style		= "hidden"
 macos-option-as-alt		= true
 mouse-hide-while-typing		= true
 
