@@ -13,7 +13,7 @@ new_cwd = "follow"            # new panes inherit the source pane/workspace cwd
 [keys]
 prefix = "ctrl+g"             # aerospace owns alt-*/cmd-* → prefix stays on ctrl, no conflicts
 open_worktree = "prefix+shift+o" # switch to an EXISTING worktree (I don't create by hand; use `herdr worktree create` if ever needed)
-goto = "prefix+shift+g"          # moved off default prefix+g (freed for reviewr below)
+goto = "prefix+shift+g"          # moved off default prefix+g (freed for hunk below)
 toggle_sidebar = "prefix+e"      # sidebar toggle, moved off default prefix+b (freed for agents below)
 edit_scrollback = ""             # disabled — frees prefix+e for the sidebar toggle above
 next_agent = "prefix+b"          # jump to next agent (1st press → top of priority-sorted list), wraps
@@ -29,10 +29,13 @@ rename_workspace = "prefix+shift+n" # moved off default prefix+shift+w
 #   panes  prefix+h/j/k/l   splits  prefix+v (vert) / prefix+- (horiz)
 #   tabs   prefix+shift+t rename · prefix+1..9 switch · zoom prefix+z
 
-[[keys.command]]              # reviewr: toggle code-review sidebar (persiyanov.reviewr plugin)
+[[keys.command]]              # hunk: review the working tree in a popup over the current pane
 key = "prefix+g"
-type = "plugin_action"
-command = "persiyanov.reviewr.toggle"
+type = "popup"
+command = "hunk diff"
+description = "Review changes in hunk"
+width = "90%"                 # cells or a percentage 1%-100%; popup-only fields
+height = "90%"
 
 [ui]
 accent = "#7aa2f7"            # tokyo-night blue for borders/highlights/nav

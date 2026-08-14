@@ -1,0 +1,35 @@
+# hunk — review-first terminal diff viewer for agent-authored changesets.
+# https://github.com/modem-dev/hunk
+#
+# Symlinked to ~/.config/hunk/config.toml by setup-symlinks.sh.
+# A repo can override any of this with its own .hunk/config.toml.
+
+# "auto" probes the terminal background and picks github-light-default or
+# github-dark-default, falling back to dark when the terminal does not answer.
+theme = "auto"
+
+# Layout: "auto" picks split or stack from the window width.
+mode = "auto"
+
+vcs = "git"
+
+# Re-read the diff on every save; off by default, `hunk diff --watch` opts in.
+watch = false
+
+# Untracked files are part of what an agent just wrote, so keep them visible.
+exclude_untracked = false
+
+line_numbers = true
+tab_width = 2
+wrap_lines = false
+hunk_headers = true
+menu_bar = true
+
+# The point of using hunk here is reviewing agent-authored changesets, so show
+# the agent's inline rationale by default rather than hiding it behind a key.
+agent_notes = true
+
+# Ghostty runs at background-opacity 0.7 with blur; let that show through.
+transparent_background = true
+
+prompt_save_view_preferences = true
