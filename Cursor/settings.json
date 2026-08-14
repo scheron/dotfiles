@@ -120,7 +120,8 @@
         { "before": [ "leader", "o" ], "commands": [ "editor.action.organizeImports" ] },
         { "before": [ "leader", "r" ], "commands": [ "editor.action.rename" ] },
         { "before": [ "leader", "/" ], "commands": [ "editor.action.commentLine" ] },
-        { "before": [ "<leader>", "e" ], "commands": [ "workbench.explorer.fileView.focus", "workbench.files.action.showActiveFileInExplorer" ] }
+        { "before": [ "<leader>", "e" ], "commands": [ "workbench.explorer.fileView.focus", "workbench.files.action.showActiveFileInExplorer" ] },
+        { "before": [ "<leader>", "g", "b" ], "commands": [ "breadcrumbs.focusAndSelect" ] }
     ],
     "vim.visualModeKeyBindings": [
         { "before": [ "<" ], "commands": [ "editor.action.outdentLines" ] },
@@ -168,7 +169,7 @@
     "cSpell.language": "en,ru",
     "update.showReleaseNotes": false,
     "window.titleBarStyle": "custom",
-    "window.zoomLevel": 1.6,
+    "window.zoomLevel": 1.4,
     "editor.quickSuggestionsDelay": 100,
     "workbench.hover.delay": 1500,
     "workbench.sash.hoverDelay": 1000,
@@ -189,7 +190,6 @@
     "window.systemColorTheme": "dark",
     "window.autoDetectColorScheme": false,
     "window.commandCenter": false,
-    "workbench.colorTheme": "Ultra Instinct Sign",
 
     "explorer.fileNesting.enabled": true,
     "explorer.fileNesting.expand": false,
@@ -289,5 +289,6 @@
     "workbench.sideBar.location": "right",
     "workbench.browser.showInTitleBar": false,
     "workbench.agentsWindowButton.enabled": false,
+    "workbench.colorTheme": "Ultra Instinct Sign",
 }
 
