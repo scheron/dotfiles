@@ -13,7 +13,7 @@ new_cwd = "follow"            # new panes inherit the source pane/workspace cwd
 [keys]
 prefix = "ctrl+g"             # aerospace owns alt-*/cmd-* → prefix stays on ctrl, no conflicts
 open_worktree = "prefix+shift+o" # switch to an EXISTING worktree (I don't create by hand; use `herdr worktree create` if ever needed)
-goto = "prefix+shift+g"          # moved off default prefix+g (freed for hunk below)
+goto = "prefix+shift+g"          # moved off default prefix+g (freed for lazygit below)
 toggle_sidebar = "prefix+e"      # sidebar toggle, moved off default prefix+b (freed for agents below)
 edit_scrollback = ""             # disabled — frees prefix+e for the sidebar toggle above
 next_agent = "prefix+b"          # jump to next agent (1st press → top of priority-sorted list), wraps
@@ -29,12 +29,22 @@ rename_workspace = "prefix+shift+n" # moved off default prefix+shift+w
 #   panes  prefix+h/j/k/l   splits  prefix+v (vert) / prefix+- (horiz)
 #   tabs   prefix+shift+t rename · prefix+1..9 switch · zoom prefix+z
 
-[[keys.command]]              # hunk: review the working tree in a popup over the current pane
+# Both popups overlay the current pane rather than resizing it. width/height
+# take a cell count or a 1%-100% percentage and are popup-only fields.
+[[keys.command]]              # g for git: the full lazygit UI
 key = "prefix+g"
+type = "popup"
+command = "lazygit"
+description = "Git UI (lazygit)"
+width = "90%"
+height = "90%"
+
+[[keys.command]]              # d for diff: review the working tree in hunk
+key = "prefix+d"
 type = "popup"
 command = "hunk diff"
 description = "Review changes in hunk"
-width = "90%"                 # cells or a percentage 1%-100%; popup-only fields
+width = "90%"
 height = "90%"
 
 [ui]
