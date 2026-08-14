@@ -12,14 +12,13 @@
 set -euo pipefail
 
 DOTFILES="$HOME/.dotfiles"
-CODE_USER="$HOME/Library/Application Support/Code/User"
 CURSOR_USER="$HOME/Library/Application Support/Cursor/User"
 
-link() {
-  # link <path-inside-dotfiles> <absolute-target>
-  local src="$DOTFILES/$1" dest="$2"
+link_abs() {
+  # link_abs <absolute-source> <absolute-target>
+  local src="$1" dest="$2"
   if [ ! -e "$src" ]; then
-    printf '  skip  %s (no source: %s)\n' "$dest" "$1"
+    printf '  skip  %s (no source: %s)\n' "$dest" "$src"
     return
   fi
   mkdir -p "$(dirname "$dest")"
@@ -28,11 +27,23 @@ link() {
     return
   fi
   if [ -e "$dest" ] || [ -L "$dest" ]; then
-    mv "$dest" "$dest.backup"
-    printf '  bak   %s -> %s.backup\n' "$dest" "$dest"
+    # Never reuse an existing backup name: `mv dir dir.backup` would move the
+    # directory *inside* the old backup instead of alongside it.
+    local backup="$dest.backup" n=2
+    while [ -e "$backup" ] || [ -L "$backup" ]; do
+      backup="$dest.backup.$n"
+      n=$((n + 1))
+    done
+    mv "$dest" "$backup"
+    printf '  bak   %s -> %s\n' "$dest" "$backup"
   fi
   ln -s "$src" "$dest"
   printf '  link  %s\n' "$dest"
+}
+
+link() {
+  # link <path-inside-dotfiles> <absolute-target>
+  link_abs "$DOTFILES/$1" "$2"
 }
 
 echo "shell";     link zsh/.zshrc "$HOME/.zshrc"
@@ -43,13 +54,11 @@ echo "git";       link .gitconfig "$HOME/.gitconfig"
 echo "starship";  link starship/starship.toml "$HOME/.config/starship.toml"
 echo "ghostty";   link ghostty/config "$HOME/.config/ghostty/config"
 echo "herdr";     link herdr/config.toml "$HOME/.config/herdr/config.toml"
+echo "hunk";      link hunk/config.toml "$HOME/.config/hunk/config.toml"
 echo "aerospace"; link aerospace/aerospace.toml "$HOME/.aerospace.toml"
 echo "karabiner"; link karabiner/karabiner.json "$HOME/.config/karabiner/karabiner.json"
 echo "nvim";      link nvim "$HOME/.config/nvim"
-echo "zed";       link zed/settings.json "$HOME/.config/zed/settings.json"
-                  link zed/keymap.json "$HOME/.config/zed/keymap.json"
 echo "lazygit";   link lazygit/config.yml "$HOME/.config/lazygit/config.yml"
-echo "yazi";      link yazi "$HOME/.config/yazi"
 echo "gh";        link gh/config.yml "$HOME/.config/gh/config.yml"
 echo "claude";    for f in settings.json CLAUDE.md RTK.md statusline.sh subagent-statusline.sh rtk-rewrite.sh; do
                     link "claude/$f" "$HOME/.claude/$f"
@@ -63,9 +72,17 @@ echo "claude skills"
                     name="$(basename "$d")"
                     link "claude/skills/$name" "$HOME/.claude/skills/$name"
                   done
-echo "vscode";    link VSCode/settings.json "$CODE_USER/settings.json"
-                  link VSCode/keybindings.json "$CODE_USER/keybindings.json"
-                  link VSCode/snippets "$CODE_USER/snippets"
+                  # hunk ships its own review skill inside the Homebrew keg.
+                  # Link from `brew --prefix` (the version-independent opt path,
+                  # not the Cellar path) so a `brew upgrade hunk` cannot leave
+                  # this pointing at a version that no longer exists.
+                  if hunk_prefix="$(brew --prefix hunk 2>/dev/null)"; then
+                    link_abs "$hunk_prefix/libexec/skills/hunk-review" \
+                             "$HOME/.claude/skills/hunk-review"
+                  else
+                    printf '  skip  %s (hunk not installed — run setup-brew.sh)\n' \
+                           "$HOME/.claude/skills/hunk-review"
+                  fi
 echo "cursor";    link Cursor/settings.json "$CURSOR_USER/settings.json"
                   link Cursor/keybindings.json "$CURSOR_USER/keybindings.json"
                   link Cursor/snippets "$CURSOR_USER/snippets"
