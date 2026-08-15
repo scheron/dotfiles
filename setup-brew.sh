@@ -25,6 +25,24 @@ tap() {
   fi
 }
 
+trust() {
+  # trust <tap/cask>...
+  #
+  # Homebrew 6 refuses to load a cask from a non-official tap until it is
+  # trusted, so this must run after `tap` and before `install`. Trust is
+  # per-cask rather than per-tap (`brew trust <tap>` also covers whatever is
+  # added to that tap later). Re-trusting is a no-op that exits 0.
+  local c
+  for c in "$@"; do
+    if brew trust --cask "$c"; then
+      printf '  trust   %s\n' "$c"
+    else
+      printf '  FAILED  trust %s\n' "$c"
+      FAILED+=("trust $c")
+    fi
+  done
+}
+
 install() {
   # install <formula|cask> <pkg>...
   #
@@ -66,6 +84,10 @@ brew update || printf '  warn    brew update failed, continuing\n'
 echo "taps"
 tap nikitabobko/tap   # aerospace
 tap scheron/tap       # daily
+
+echo "trust"
+trust nikitabobko/tap/aerospace
+trust scheron/tap/daily
 
 # --- CLI tools ---
 echo "cli"

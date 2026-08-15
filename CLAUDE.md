@@ -115,6 +115,10 @@ playwright install chromium`).
 - `setup-brew.sh` taps `nikitabobko/tap` and `scheron/tap` before installing.
   Anything added from a tapped source needs its tap added there too, or a fresh
   machine fails to resolve it.
+- Tapping is not enough: Homebrew 6 refuses to load casks from non-official
+  taps until they are trusted, so `setup-brew.sh` also runs `brew trust --cask`
+  on `aerospace` and `daily`. A new cask from a tap needs a `trust` line too,
+  or the install dies with "Refusing to load cask ... from untrusted tap".
 - Casks install with `--adopt` so an app already sitting in `/Applications` from
   a manual download is taken over instead of erroring.
 - `setup-symlinks.sh` only ever creates links. Archiving a config leaves its old
