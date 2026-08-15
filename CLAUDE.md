@@ -40,9 +40,8 @@ password.
 elsewhere, move or re-clone it there first — `setup-symlinks.sh` hardcodes
 `DOTFILES="$HOME/.dotfiles"` and would otherwise link into the wrong tree.
 
-**3. Packages — the user runs this one.** Some casks (Karabiner, Logi Options+)
-install privileged helpers and prompt for the macOS password, which you cannot
-type. Have them run:
+**3. Packages — the user runs this one.** Karabiner installs a privileged helper
+and prompts for the macOS password, which you cannot type. Have them run:
 
 ```
 ! ~/.dotfiles/setup-brew.sh
@@ -84,7 +83,6 @@ explicitly at the end rather than attempting them:
   `!` prefix.
 - Accessibility / Input Monitoring approval in System Settings for AeroSpace and
   Karabiner, and Karabiner's driver extension.
-- "Dank Mono" — the editor font in the configs is paid and installs by hand.
 - MCP servers, per step 6.
 
 **8. Verify before reporting.** Do not report success off a script's exit code
@@ -114,9 +112,9 @@ playwright install chromium`).
 - macOS ships bash 3.2. In the setup scripts, expanding an empty array under
   `set -u` (`"${arr[@]}"`) is an unbound-variable error — spell the branches out
   or use `${arr[@]+"${arr[@]}"}`.
-- `setup-brew.sh` taps `nikitabobko/tap`, `mediosz/tap` and `scheron/tap` before
-  installing. Anything added from a tapped source needs its tap added there too,
-  or a fresh machine fails to resolve it.
+- `setup-brew.sh` taps `nikitabobko/tap` and `scheron/tap` before installing.
+  Anything added from a tapped source needs its tap added there too, or a fresh
+  machine fails to resolve it.
 - Casks install with `--adopt` so an app already sitting in `/Applications` from
   a manual download is taken over instead of erroring.
 - `setup-symlinks.sh` only ever creates links. Archiving a config leaves its old

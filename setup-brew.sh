@@ -62,10 +62,9 @@ brew update || printf '  warn    brew update failed, continuing\n'
 # --- Taps ---
 # These must come before the packages that live in them, or the install below
 # fails with "No available formula/cask". This was the single biggest
-# fresh-machine failure: aerospace, swipeaerospace and daily are all tapped.
+# fresh-machine failure: aerospace and daily are both tapped.
 echo "taps"
 tap nikitabobko/tap   # aerospace
-tap mediosz/tap       # swipeaerospace
 tap scheron/tap       # daily
 
 # --- CLI tools ---
@@ -80,8 +79,7 @@ install formula \
   python@3.14 uv \
   jq make websocat \
   tree-sitter-cli \
-  rtk \
-  podman
+  rtk
 
 # --- Swift / iOS toolchain (drop this block if not doing Swift dev) ---
 echo "swift"
@@ -91,23 +89,24 @@ install formula swift-format swiftformat xcbeautify xcode-build-server
 echo "casks"
 install cask \
   ghostty \
-  aerospace swipeaerospace \
+  aerospace \
   karabiner-elements \
   cursor \
   raycast \
   claude-code codex \
   daily \
-  logi-options+ \
   numi spotify vlc
 
 # --- Fonts ---
 echo "fonts"
 install cask \
-  font-iosevka-nerd-font \
   font-fira-code-nerd-font \
+  font-geist-mono-nerd-font \
+  font-iosevka-nerd-font \
+  font-victor-mono-nerd-font \
+  font-zed-mono-nerd-font \
   font-symbols-only-nerd-font \
   font-fragment-mono
-# "Dank Mono" (editor font referenced in configs) is a paid font — install it manually.
 
 brew cleanup || true
 

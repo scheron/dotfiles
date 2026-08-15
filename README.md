@@ -28,9 +28,9 @@ tracked — re-add those by hand.
 Then sign in by hand: SSH keys + `~/.ssh/config` (`.gitconfig` `includeIf` picks
 the identity per directory), `gh auth login`, `claude`, `npm login` if needed.
 
-Optional: `setup-pnpm.sh` (just prettierd), "Dank Mono" font (paid), Excalidraw
-renderer — `cd claude/skills/excalidraw-diagram/references && uv sync && uv run
-playwright install chromium`.
+Optional: `setup-pnpm.sh` (just prettierd), Excalidraw renderer — `cd
+claude/skills/excalidraw-diagram/references && uv sync && uv run playwright
+install chromium`.
 
 ## Existing machine
 
