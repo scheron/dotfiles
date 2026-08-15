@@ -59,6 +59,10 @@ alias gcl="git clone"
   && . "$HOMEBREW_PREFIX/etc/profile.d/z.sh"
 [ -f "$HOMEBREW_PREFIX/share/zsh-autosuggestions/zsh-autosuggestions.zsh" ] \
   && . "$HOMEBREW_PREFIX/share/zsh-autosuggestions/zsh-autosuggestions.zsh"
+[ -t 0 ] && [ -f "$HOMEBREW_PREFIX/opt/fzf/shell/key-bindings.zsh" ] \
+  && . "$HOMEBREW_PREFIX/opt/fzf/shell/key-bindings.zsh"
+[ -t 0 ] && [ -f "$HOMEBREW_PREFIX/opt/fzf/shell/completion.zsh" ] \
+  && . "$HOMEBREW_PREFIX/opt/fzf/shell/completion.zsh"
 [ -f "$HOMEBREW_PREFIX/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" ] \
   && . "$HOMEBREW_PREFIX/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
 
