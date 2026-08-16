@@ -63,13 +63,6 @@
     "dev-skills@dev-skills": true
   },
   "extraKnownMarketplaces": {
-    "chrome-devtools-plugins": {
-      "source": {
-        "source": "github",
-        "repo": "ChromeDevTools/chrome-devtools-mcp"
-      },
-      "autoUpdate": true
-    },
     "supabase-agent-skills": {
       "source": {
         "source": "github",
