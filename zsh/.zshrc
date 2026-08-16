@@ -68,3 +68,10 @@ alias gcl="git clone"
 
 # --- prompt ---
 command -v starship >/dev/null && eval "$(starship init zsh)"
+
+# bun completions
+[ -s "/Users/olegato/.bun/_bun" ] && source "/Users/olegato/.bun/_bun"
+
+# bun
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"
