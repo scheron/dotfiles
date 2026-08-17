@@ -97,7 +97,7 @@ install formula \
   eza fd fzf ripgrep z \
   starship herdr \
   zsh-autosuggestions zsh-syntax-highlighting \
-  node pnpm yarn n \
+  fnm pnpm yarn \
   python@3.14 uv \
   jq make websocat \
   tree-sitter-cli \

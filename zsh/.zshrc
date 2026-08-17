@@ -12,6 +12,12 @@ case ":$PATH:" in
   *) export PATH="$PNPM_HOME/bin:$PATH" ;;
 esac
 
+# --- node ---
+# fnm owns node; there is deliberately no brew `node` formula, or
+# $HOMEBREW_PREFIX/bin/node would shadow whatever fnm selects.
+command -v fnm >/dev/null \
+  && eval "$(fnm env --use-on-cd --version-file-strategy recursive --shell zsh)"
+
 # --- history ---
 # oh-my-zsh used to set these; it is gone, so they live here now.
 HISTFILE="$HOME/.zsh_history"
