@@ -1,11 +1,7 @@
 return {
   "nvim-treesitter/nvim-treesitter",
-  branch = "master",
-  build = ":TSUpdate",
+  branch = "main",
   opts = {
-    fold = {
-      enable = true,
-    },
     ensure_installed = {
       "vim",
       "lua",
