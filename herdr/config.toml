@@ -29,7 +29,7 @@ rename_workspace = "prefix+shift+n" # moved off default prefix+shift+w
 #   panes  prefix+h/j/k/l   splits  prefix+v (vert) / prefix+- (horiz)
 #   tabs   prefix+shift+t rename · prefix+1..9 switch · zoom prefix+z
 
-# Both popups overlay the current pane rather than resizing it. width/height
+# The popup overlays the current pane rather than resizing it. width/height
 # take a cell count or a 1%-100% percentage and are popup-only fields.
 [[keys.command]]              # g for git: the full lazygit UI
 key = "prefix+g"
@@ -39,13 +39,13 @@ description = "Git UI (lazygit)"
 width = "90%"
 height = "90%"
 
-[[keys.command]]              # d for diff: review the working tree in hunk
+# Not a popup: reviewr is a herdr plugin, so it opens as a plugin-owned pane
+# (split to the right by default) and width/height do not apply.
+[[keys.command]]              # d for diff: toggle the reviewr sidebar
 key = "prefix+d"
-type = "popup"
-command = "hunk diff"
-description = "Review changes in hunk"
-width = "90%"
-height = "90%"
+type = "plugin_action"
+command = "persiyanov.reviewr.toggle"
+description = "Review changes in reviewr"
 
 [ui]
 accent = "#7aa2f7"            # tokyo-night blue for borders/highlights/nav
