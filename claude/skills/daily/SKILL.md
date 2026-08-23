@@ -65,8 +65,11 @@ matching extension, plus a migration for what is already in assets.
   never "look into it".
 - Write the task itself in the language the user is speaking, not in the
   language of this skill; their tracker is in Russian.
-- Keep it scannable: short paragraphs or a bullet list, no headings past the
-  first.
+- Keep it scannable. The body renders full markdown — short paragraphs, bullet
+  lists, fenced blocks and **tables** are all available. Reach for a table
+  whenever a paragraph would otherwise spell out values across two dimensions:
+  prices by tier, per-vendor differences, who-owns-what. No headings past the
+  first — the `# ` summary line is the only heading a ticket gets.
 
 Multi-line content needs ANSI-C quoting — inside `"…"` a `\n` is stored
 literally, as two characters:
