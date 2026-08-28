@@ -47,6 +47,29 @@ type = "plugin_action"
 command = "persiyanov.reviewr.toggle"
 description = "Review changes in reviewr"
 
+# herdr-nvim ships no default bindings. Its README suggests prefix+e and
+# prefix+o; both are taken here — prefix+e is toggle_sidebar above, prefix+o is
+# herdr's own open_notification_target default.
+[[keys.command]]              # shift+e: the nvim sidebar, next to prefix+e
+key = "prefix+shift+e"
+type = "plugin_action"
+command = "chmarax.herdr-nvim.toggle"
+description = "nvim sidebar"
+
+[[keys.command]]              # f for find: agent-touched files first, then the repo
+key = "prefix+f"
+type = "plugin_action"
+command = "chmarax.herdr-nvim.pick-file"
+description = "Open file from agent output"
+
+# Live tiles of every workspace. Sits beside herdr's built-in workspace_picker
+# (prefix+w, left at its default) rather than replacing it.
+[[keys.command]]              # m for mission control
+key = "prefix+m"
+type = "plugin_action"
+command = "herdr-overview.open"
+description = "Spaces overview"
+
 [ui]
 accent = "#7aa2f7"            # tokyo-night blue for borders/highlights/nav
 agent_panel_sort = "priority" # attention queue: blocked/done agents float to the top
@@ -54,9 +77,11 @@ sidebar_start_collapsed = false   # sidebar visible on launch; prefix+e toggles 
 prompt_new_workspace_name = true  # prefix+n asks for a name instead of auto-generating one
 
 show_agent_labels_on_pane_borders = false
-[ui.sidebar.agents.rows_by_agent]
-claude = [["state_icon", "workspace", "tab"], ["terminal_title_stripped"], ["agent"]]
-codex  = [["state_icon", "workspace", "tab"], ["terminal_title_stripped"], ["agent"]]
+# [ui.sidebar.agents] is owned by the herdr-agent-quota plugin: its configure
+# action writes rows/row_gap/rows_by_agent here and *skips* any agent already
+# customised by hand, so hand-written claude/codex rows would silently hide
+# every quota token. Apply:   herdr plugin action invoke herdr-agent-quota.configure
+#                  Restore:   herdr plugin action invoke herdr-agent-quota.uninstall
 
 [ui.toast]
 delivery = "off"             # no toast notifications (was "system"; other values: herdr=in-app, terminal)
