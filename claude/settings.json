@@ -183,7 +183,8 @@
     "impeccable@impeccable": true,
     "frontend-slides@frontend-slides": true,
     "vue-development@vue-development-marketplace": true,
-    "dev-skills@dev-skills": true
+    "dev-skills@dev-skills": true,
+    "claude-seo@agricidaniel-claude-seo": true
   },
   "extraKnownMarketplaces": {
     "supabase-agent-skills": {
@@ -227,6 +228,12 @@
         "repo": "bmox0/dev-skills"
       },
       "autoUpdate": true
+    },
+    "agricidaniel-claude-seo": {
+      "source": {
+        "source": "github",
+        "repo": "AgriciDaniel/claude-seo"
+      }
     }
   },
   "effortLevel": "xhigh",
