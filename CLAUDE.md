@@ -27,7 +27,7 @@ CLI are all system-provided and already present
 Trigger: the user says this is a new/fresh device and asks to install
 everything. Work through the steps below in order, without asking which parts
 to do — the whole list is the job. Report at the end what landed, what failed,
-and the exact handoff list from step 7.
+and the exact handoff list from step 8.
 
 `.archive/` is retired configuration. Never install, link or restore anything
 from it.
@@ -62,19 +62,31 @@ run *after* step 3, because it links hunk's Claude skill from
 `brew --prefix hunk`; if hunk was not installed yet it prints a skip line for
 that one entry and everything else still links. Re-run after fixing step 3.
 
-**5. Neovim plugins.**
+**5. macOS preferences — you run this.**
+
+```sh
+~/.dotfiles/setup-macos.sh
+```
+
+Idempotent `defaults write` calls; it prints `ok` for keys already holding the
+wanted value and `set` for the ones it changed. Nothing here is symlinked, so
+this script is the only record of these settings — a preference the user asks
+for goes in here, never into a bare `defaults write`. Most keys are read at app
+launch, so mention a logout in the final report if anything says `set`.
+
+**6. Neovim plugins.**
 
 ```sh
 nvim --headless "+Lazy! sync" +qa
 ```
 
-**6. Claude Code.** Nothing to do. `claude/settings.json` is symlinked in step 4
+**7. Claude Code.** Nothing to do. `claude/settings.json` is symlinked in step 4
 and already declares every marketplace and enabled plugin, including
 `dev-skills`, with `autoUpdate` — they install themselves on the next `claude`
 start. MCP servers live in the untracked `~/.claude.json` and do **not** come
 back this way; list them as manual work.
 
-**7. Hand off what needs a human.** You cannot do any of these — list them
+**8. Hand off what needs a human.** You cannot do any of these — list them
 explicitly at the end rather than attempting them:
 
 - SSH keys + `~/.ssh/config`. The `includeIf` rules in `.gitconfig` only pick
@@ -83,13 +95,14 @@ explicitly at the end rather than attempting them:
   `!` prefix.
 - Accessibility / Input Monitoring approval in System Settings for AeroSpace and
   Karabiner, and Karabiner's driver extension.
-- MCP servers, per step 6.
+- MCP servers, per step 7.
 
-**8. Verify before reporting.** Do not report success off a script's exit code
+**9. Verify before reporting.** Do not report success off a script's exit code
 alone:
 
 ```sh
 ~/.dotfiles/setup-symlinks.sh   # second run: every line should say "ok"
+~/.dotfiles/setup-macos.sh      # second run: every line should say "ok"
 zsh -i -c exit                  # must print nothing to stderr
 
 # dangling symlinks — expect no output
@@ -121,5 +134,8 @@ playwright install chromium`).
   or the install dies with "Refusing to load cask ... from untrusted tap".
 - Casks install with `--adopt` so an app already sitting in `/Applications` from
   a manual download is taken over instead of erroring.
+- `defaults write` settings live in `~/Library/Preferences`, outside this repo,
+  and no symlink brings them back. `setup-macos.sh` is the record of them; a
+  setting applied by hand is a setting the next fresh machine loses.
 - `setup-symlinks.sh` only ever creates links. Archiving a config leaves its old
-  symlink dangling; the `find` in step 8 is what catches that.
+  symlink dangling; the `find` in step 9 is what catches that.

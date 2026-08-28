@@ -15,11 +15,17 @@ git clone https://github.com/scheron/dotfiles.git ~/.dotfiles
 # 4. Symlinks (idempotent; existing files moved to <path>.backup)
 ~/.dotfiles/setup-symlinks.sh
 
-# 5. nvim plugins
+# 5. macOS preferences (idempotent defaults write)
+~/.dotfiles/setup-macos.sh
+
+# 6. nvim plugins
 nvim --headless "+Lazy! sync" +qa
 
-# 6. Restart the shell
+# 7. Log out and back in
 ```
+
+`setup-macos.sh` is the only record of the `defaults write` settings — nothing
+symlinks them. Add new ones there instead of running `defaults` by hand.
 
 Claude Code plugins (dev-skills and the rest) install themselves from the
 symlinked `claude/settings.json` on the next `claude` start. MCP servers are not
