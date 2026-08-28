@@ -2,6 +2,9 @@
 	name = Oleg 👾
 	email = infectedbyjs@gmail.com
 
+[includeIf "gitdir:~/Documents/Projects/Work/"]
+  path = ~/.gitconfig-work
+
 [includeIf "gitdir:~/Documents/Projects/Personal/scheron/"]
   path = ~/.gitconfig-personal
 
