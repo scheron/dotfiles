@@ -13,7 +13,7 @@ new_cwd = "follow"            # new panes inherit the source pane/workspace cwd
 [keys]
 prefix = "ctrl+g"             # aerospace owns alt-*/cmd-* → prefix stays on ctrl, no conflicts
 open_worktree = "prefix+shift+o" # switch to an EXISTING worktree (I don't create by hand; use `herdr worktree create` if ever needed)
-goto = "prefix+shift+g"          # moved off default prefix+g (freed for lazygit below)
+goto = "prefix+m"                # moved off default prefix+g (freed for lazygit below)
 toggle_sidebar = "prefix+e"      # sidebar toggle, moved off default prefix+b (freed for agents below)
 edit_scrollback = ""             # disabled — frees prefix+e for the sidebar toggle above
 next_agent = "prefix+b"          # jump to next agent (1st press → top of priority-sorted list), wraps
@@ -46,29 +46,6 @@ key = "prefix+d"
 type = "plugin_action"
 command = "persiyanov.reviewr.toggle"
 description = "Review changes in reviewr"
-
-# herdr-nvim ships no default bindings. Its README suggests prefix+e and
-# prefix+o; both are taken here — prefix+e is toggle_sidebar above, prefix+o is
-# herdr's own open_notification_target default.
-[[keys.command]]              # shift+e: the nvim sidebar, next to prefix+e
-key = "prefix+shift+e"
-type = "plugin_action"
-command = "chmarax.herdr-nvim.toggle"
-description = "nvim sidebar"
-
-[[keys.command]]              # f for find: agent-touched files first, then the repo
-key = "prefix+f"
-type = "plugin_action"
-command = "chmarax.herdr-nvim.pick-file"
-description = "Open file from agent output"
-
-# Live tiles of every workspace. Sits beside herdr's built-in workspace_picker
-# (prefix+w, left at its default) rather than replacing it.
-[[keys.command]]              # m for mission control
-key = "prefix+m"
-type = "plugin_action"
-command = "herdr-overview.open"
-description = "Spaces overview"
 
 [ui]
 accent = "#7aa2f7"            # tokyo-night blue for borders/highlights/nav
