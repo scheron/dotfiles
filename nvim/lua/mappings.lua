@@ -28,6 +28,8 @@ end, { desc = "Toggle Word Wrap" })
 map({ "n", "x" }, "j", function() return vim.v.count == 0 and vim.wo.wrap and "gj" or "j" end, { expr = true, desc = "Down (display line when wrapped)" })
 map({ "n", "x" }, "k", function() return vim.v.count == 0 and vim.wo.wrap and "gk" or "k" end, { expr = true, desc = "Up (display line when wrapped)" })
 
+map("n", "zM", function() require("ufo").closeAllFolds() end, { desc = "Close all folds" })
+
 -- Buffers
 map("n", "<S-h>", ":bprevious<CR>", { desc = "Prev Buffer" })
 map("n", "<S-l>", ":bnext<CR>", { desc = "Next Buffer" })

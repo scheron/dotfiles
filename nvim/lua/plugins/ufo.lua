@@ -8,6 +8,9 @@ return {
     config = function()
       require('ufo').setup({
         provider_selector = function(bufnr, filetype, buftype)
+          if filetype == 'markdown' then
+            return ''
+          end
           return {'treesitter', 'indent'}
         end,
         fold_virt_text_handler = function(virtText, lnum, endLnum, width, truncate)
@@ -46,7 +49,6 @@ return {
       vim.o.foldenable = true       -- Enable folding globally
 
       vim.keymap.set('n', 'zR', require('ufo').openAllFolds)   -- Open all folds
-      vim.keymap.set('n', 'zM', require('ufo').closeAllFolds)  -- Close all folds
     end,
   },
 }
