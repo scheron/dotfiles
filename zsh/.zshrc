@@ -57,6 +57,9 @@ alias gco="git checkout"
 alias gcob="git checkout -b"
 alias gcl="git clone"
 
+alias cc='claude'
+alias cx='codex'
+
 # --- plugins ---
 # Every source is guarded: a fresh machine that has not run setup-brew.sh yet
 # gets a working shell instead of a screenful of "no such file or directory".
