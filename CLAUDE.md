@@ -105,7 +105,7 @@ alone:
 ~/.dotfiles/setup-macos.sh      # second run: every line should say "ok"
 zsh -i -c exit                  # must print nothing to stderr
 
-# dangling symlinks — expect no output
+# dangling symlinks the prune step does not own — expect no output
 find ~/.config "$HOME/Library/Application Support/Code" -maxdepth 3 -type l \
   | while read -r l; do [ -e "$l" ] || echo "$l"; done
 ```
@@ -137,5 +137,7 @@ playwright install chromium`).
 - `defaults write` settings live in `~/Library/Preferences`, outside this repo,
   and no symlink brings them back. `setup-macos.sh` is the record of them; a
   setting applied by hand is a setting the next fresh machine loses.
-- `setup-symlinks.sh` only ever creates links. Archiving a config leaves its old
-  symlink dangling; the `find` in step 9 is what catches that.
+- `setup-symlinks.sh` creates links and prunes dead ones. Archiving a config
+  used to leave its old symlink dangling; the `prune` step now removes any
+  dangling link that points back into this repo. A dangling link pointing
+  somewhere else is left alone on purpose — the `find` in step 9 catches those.

@@ -46,6 +46,25 @@ link() {
   link_abs "$DOTFILES/$1" "$2"
 }
 
+prune_dangling() {
+  # prune_dangling <root> <maxdepth>
+  # This script only ever creates links, so a config that moves to .archive/
+  # leaves its old symlink behind pointing at nothing. Remove only links that
+  # point back into this repo — a broken link owned by something else is not
+  # ours to delete. Keep maxdepth tight: walking all of $HOME is slow and
+  # trips macOS privacy errors on Library, Photos and Trash.
+  [ -d "$1" ] || return 0
+  find "$1" -maxdepth "$2" -type l | while read -r l; do
+    if [ -e "$l" ]; then continue; fi
+    case "$(readlink "$l")" in
+      "$DOTFILES"/*)
+        rm "$l"
+        printf '  prune %s\n' "$l"
+        ;;
+    esac
+  done
+}
+
 echo "shell";     link zsh/.zshrc "$HOME/.zshrc"
                   link zsh/.zprofile "$HOME/.zprofile"
 echo "git";       link .gitconfig "$HOME/.gitconfig"
@@ -87,6 +106,10 @@ echo "claude skills"
 echo "cursor";    link Cursor/settings.json "$CURSOR_USER/settings.json"
                   link Cursor/keybindings.json "$CURSOR_USER/keybindings.json"
                   link Cursor/snippets "$CURSOR_USER/snippets"
+echo "prune";     prune_dangling "$HOME" 1
+                  prune_dangling "$HOME/.config" 3
+                  prune_dangling "$HOME/.claude" 2
+                  prune_dangling "$CURSOR_USER" 1
 
 echo
 echo "Done. Per-machine secrets (SSH keys, npm, gh, Claude) are set up manually — see README."
