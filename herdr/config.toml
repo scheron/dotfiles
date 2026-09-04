@@ -19,6 +19,7 @@ edit_scrollback = ""             # disabled — frees prefix+e for the sidebar t
 next_agent = "prefix+b"          # jump to next agent (1st press → top of priority-sorted list), wraps
 previous_agent = "prefix+shift+b" # jump to previous agent (step back up the list)
 detach = ""                      # disabled — unused, avoid accidental session detach
+resize_mode = ""                 # disabled — frees prefix+r for the nvim popup below
 new_tab = "prefix+t"             # moved off default prefix+c, matches new_workspace naming below
 close_tab = "prefix+shift+q"     # moved off default prefix+shift+x
 next_tab = ""                    # disabled — unused
@@ -39,6 +40,14 @@ description = "Git UI (lazygit)"
 width = "90%"
 height = "90%"
 
+[[keys.command]]              # r for read/edit: nvim over the current pane
+key = "prefix+r"
+type = "popup"
+command = "nvim"
+description = "Editor (nvim)"
+width = "90%"
+height = "90%"
+
 # Not a popup: reviewr is a herdr plugin, so it opens as a plugin-owned pane
 # (split to the right by default) and width/height do not apply.
 [[keys.command]]              # d for diff: toggle the reviewr sidebar
@@ -47,6 +56,14 @@ type = "plugin_action"
 command = "persiyanov.reviewr.toggle"
 description = "Review changes in reviewr"
 
+# Same story: herdr-nvim declares its sidebar pane as placement = "split", so
+# this can only ever be a full-height split — the popup above is a plain nvim.
+[[keys.command]]              # shift+e: the nvim sidebar, next to prefix+e
+key = "prefix+shift+e"
+type = "plugin_action"
+command = "chmarax.herdr-nvim.toggle"
+description = "nvim sidebar"
+
 [ui]
 accent = "#7aa2f7"            # tokyo-night blue for borders/highlights/nav
 agent_panel_sort = "priority" # attention queue: blocked/done agents float to the top
@@ -54,12 +71,6 @@ sidebar_start_collapsed = false   # sidebar visible on launch; prefix+e toggles 
 prompt_new_workspace_name = true  # prefix+n asks for a name instead of auto-generating one
 
 show_agent_labels_on_pane_borders = false
-# [ui.sidebar.agents] is owned by the herdr-agent-quota plugin: its configure
-# action writes rows/row_gap/rows_by_agent here and *skips* any agent already
-# customised by hand, so hand-written claude/codex rows would silently hide
-# every quota token. Apply:   herdr plugin action invoke herdr-agent-quota.configure
-#                  Restore:   herdr plugin action invoke herdr-agent-quota.uninstall
-
 [ui.toast]
 delivery = "off"             # no toast notifications (was "system"; other values: herdr=in-app, terminal)
 

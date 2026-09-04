@@ -90,6 +90,8 @@ trust nikitabobko/tap/aerospace
 trust scheron/tap/daily
 
 # --- CLI tools ---
+# go builds the herdr auto-title plugin, whose `[[build]]` step is a bare
+# `go build` — the other herdr plugins fetch a prebuilt binary instead.
 echo "cli"
 install formula \
   git gh lazygit hunk \
@@ -101,7 +103,8 @@ install formula \
   python@3.14 uv \
   jq make websocat \
   tree-sitter-cli \
-  rtk
+  rtk \
+  go
 
 # --- Swift / iOS toolchain (drop this block if not doing Swift dev) ---
 echo "swift"
