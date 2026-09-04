@@ -27,7 +27,7 @@ CLI are all system-provided and already present
 Trigger: the user says this is a new/fresh device and asks to install
 everything. Work through the steps below in order, without asking which parts
 to do — the whole list is the job. Report at the end what landed, what failed,
-and the exact handoff list from step 8.
+and the exact handoff list from step 9.
 
 `.archive/` is retired configuration. Never install, link or restore anything
 from it.
@@ -80,13 +80,28 @@ launch, so mention a logout in the final report if anything says `set`.
 nvim --headless "+Lazy! sync" +qa
 ```
 
-**7. Claude Code.** Nothing to do. `claude/settings.json` is symlinked in step 4
+**7. herdr plugins.**
+
+```sh
+~/.dotfiles/setup-herdr-plugins.sh
+```
+
+herdr keeps plugins under `~/.config/herdr/plugins`, outside this repo and
+outside every symlink, so without this step `herdr/config.toml` binds prefix+d
+and prefix+shift+e to plugins that are not installed and the keys quietly do
+nothing. It runs fine with no herdr server up, which is the fresh-machine case.
+It refuses only when a *running* server is older than the herdr CLI — what
+`brew upgrade herdr` leaves behind on a machine that already had herdr open;
+stop that server, start `herdr` again, re-run. Either way restart herdr once at
+the end: plugin startup hooks only fire on a fresh server.
+
+**8. Claude Code.** Nothing to do. `claude/settings.json` is symlinked in step 4
 and already declares every marketplace and enabled plugin, including
 `dev-skills`, with `autoUpdate` — they install themselves on the next `claude`
 start. MCP servers live in the untracked `~/.claude.json` and do **not** come
 back this way; list them as manual work.
 
-**8. Hand off what needs a human.** You cannot do any of these — list them
+**9. Hand off what needs a human.** You cannot do any of these — list them
 explicitly at the end rather than attempting them:
 
 - SSH keys + `~/.ssh/config`. The `includeIf` rules in `.gitconfig` only pick
@@ -95,15 +110,16 @@ explicitly at the end rather than attempting them:
   `!` prefix.
 - Accessibility / Input Monitoring approval in System Settings for AeroSpace and
   Karabiner, and Karabiner's driver extension.
-- MCP servers, per step 7.
+- MCP servers, per step 8.
 
-**9. Verify before reporting.** Do not report success off a script's exit code
+**10. Verify before reporting.** Do not report success off a script's exit code
 alone:
 
 ```sh
-~/.dotfiles/setup-symlinks.sh   # second run: every line should say "ok"
-~/.dotfiles/setup-macos.sh      # second run: every line should say "ok"
-zsh -i -c exit                  # must print nothing to stderr
+~/.dotfiles/setup-symlinks.sh        # second run: every line should say "ok"
+~/.dotfiles/setup-macos.sh           # second run: every line should say "ok"
+~/.dotfiles/setup-herdr-plugins.sh   # second run: every line should say "ok"
+zsh -i -c exit                       # must print nothing to stderr
 
 # dangling symlinks the prune step does not own — expect no output
 find ~/.config "$HOME/Library/Application Support/Code" -maxdepth 3 -type l \
@@ -137,7 +153,12 @@ playwright install chromium`).
 - `defaults write` settings live in `~/Library/Preferences`, outside this repo,
   and no symlink brings them back. `setup-macos.sh` is the record of them; a
   setting applied by hand is a setting the next fresh machine loses.
+- herdr plugins are not symlinked and no `git pull` brings them back;
+  `setup-herdr-plugins.sh` is their only record. A plugin's install id is not
+  derivable from its repo name — `persiyanov/herdr-reviewr` installs as
+  `persiyanov.reviewr` — so adding one there means reading the id out of its
+  `herdr-plugin.toml`.
 - `setup-symlinks.sh` creates links and prunes dead ones. Archiving a config
   used to leave its old symlink dangling; the `prune` step now removes any
   dangling link that points back into this repo. A dangling link pointing
-  somewhere else is left alone on purpose — the `find` in step 9 catches those.
+  somewhere else is left alone on purpose — the `find` in step 10 catches those.

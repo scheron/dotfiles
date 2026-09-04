@@ -21,11 +21,16 @@ git clone https://github.com/scheron/dotfiles.git ~/.dotfiles
 # 6. nvim plugins
 nvim --headless "+Lazy! sync" +qa
 
-# 7. Log out and back in
+# 7. herdr plugins (not symlinked; restart herdr afterwards)
+~/.dotfiles/setup-herdr-plugins.sh
+
+# 8. Log out and back in
 ```
 
 `setup-macos.sh` is the only record of the `defaults write` settings — nothing
-symlinks them. Add new ones there instead of running `defaults` by hand.
+symlinks them. Add new ones there instead of running `defaults` by hand. Same
+deal for `setup-herdr-plugins.sh`: herdr keeps plugins outside this repo, so
+that script is the only list of which ones to install.
 
 Claude Code plugins (dev-skills and the rest) install themselves from the
 symlinked `claude/settings.json` on the next `claude` start. MCP servers are not
@@ -46,6 +51,10 @@ git pull && ~/.dotfiles/setup-symlinks.sh
 
 Symlinked files pick up edits instantly; the script is only needed for **new**
 configs. It's idempotent — just always run it.
+
+If the pull changed `herdr/config.toml` or `setup-herdr-plugins.sh`, run that
+one too. It needs herdr 0.8.2+ and says so if the version is short; restart the
+herdr server after it installs anything.
 
 ## Adding a skill
 
