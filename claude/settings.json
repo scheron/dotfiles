@@ -10,7 +10,6 @@
     ],
     "defaultMode": "auto"
   },
-  "model": "opus[1m]",
   "hooks": {
     "PreToolUse": [
       {
@@ -184,7 +183,8 @@
     "frontend-slides@frontend-slides": true,
     "vue-development@vue-development-marketplace": true,
     "dev-skills@dev-skills": true,
-    "claude-seo@agricidaniel-claude-seo": true
+    "claude-seo@agricidaniel-claude-seo": true,
+    "posthog@claude-plugins-official": true
   },
   "extraKnownMarketplaces": {
     "supabase-agent-skills": {
