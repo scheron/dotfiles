@@ -76,5 +76,15 @@ M.nvdash = {
   buttons = {},
 }
 
+if vim.tbl_isempty(M.nvdash.buttons) then
+  vim.api.nvim_create_autocmd("FileType", {
+    pattern = "nvdash",
+    callback = function(args)
+      for _, key in ipairs { "j", "k", "<up>", "<down>", "<cr>" } do
+        pcall(vim.keymap.del, "n", key, { buffer = args.buf })
+      end
+    end,
+  })
+end
 
 return M
