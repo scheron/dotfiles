@@ -27,7 +27,7 @@ CLI are all system-provided and already present
 Trigger: the user says this is a new/fresh device and asks to install
 everything. Work through the steps below in order, without asking which parts
 to do — the whole list is the job. Report at the end what landed, what failed,
-and the exact handoff list from step 9.
+and the exact handoff list from step 10.
 
 `.archive/` is retired configuration. Never install, link or restore anything
 from it.
@@ -74,13 +74,25 @@ this script is the only record of these settings — a preference the user asks
 for goes in here, never into a bare `defaults write`. Most keys are read at app
 launch, so mention a logout in the final report if anything says `set`.
 
-**6. Neovim plugins.**
+**6. Node.** `setup-brew.sh` installs `fnm`, but fnm arrives with no Node
+version and no `default` alias, while `.zshrc` runs `fnm use` on every `cd`.
+Until this step runs, every prompt prints `Requested version default is not
+currently installed`.
+
+```sh
+fnm install --lts
+```
+
+The first install creates the `default` alias itself. It is idempotent: with the
+version already there it warns and exits 0.
+
+**7. Neovim plugins.**
 
 ```sh
 nvim --headless "+Lazy! sync" +qa
 ```
 
-**7. herdr plugins.**
+**8. herdr plugins.**
 
 ```sh
 ~/.dotfiles/setup-herdr-plugins.sh
@@ -95,13 +107,13 @@ It refuses only when a *running* server is older than the herdr CLI — what
 stop that server, start `herdr` again, re-run. Either way restart herdr once at
 the end: plugin startup hooks only fire on a fresh server.
 
-**8. Claude Code.** Nothing to do. `claude/settings.json` is symlinked in step 4
+**9. Claude Code.** Nothing to do. `claude/settings.json` is symlinked in step 4
 and already declares every marketplace and enabled plugin, including
 `dev-skills`, with `autoUpdate` — they install themselves on the next `claude`
 start. MCP servers live in the untracked `~/.claude.json` and do **not** come
 back this way; list them as manual work.
 
-**9. Hand off what needs a human.** You cannot do any of these — list them
+**10. Hand off what needs a human.** You cannot do any of these — list them
 explicitly at the end rather than attempting them:
 
 - SSH keys + `~/.ssh/config`. The `includeIf` rules in `.gitconfig` only pick
@@ -110,9 +122,9 @@ explicitly at the end rather than attempting them:
   `!` prefix.
 - Accessibility / Input Monitoring approval in System Settings for AeroSpace and
   Karabiner, and Karabiner's driver extension.
-- MCP servers, per step 8.
+- MCP servers, per step 9.
 
-**10. Verify before reporting.** Do not report success off a script's exit code
+**11. Verify before reporting.** Do not report success off a script's exit code
 alone:
 
 ```sh
@@ -158,7 +170,11 @@ playwright install chromium`).
   derivable from its repo name — `persiyanov/herdr-reviewr` installs as
   `persiyanov.reviewr` — so adding one there means reading the id out of its
   `herdr-plugin.toml`.
+- fnm holds no Node until `fnm install --lts` runs, and nothing in this repo
+  restores it — step 6 is its only record. `.zshrc` calls `fnm use` on every
+  `cd`, so an empty fnm turns into an error on every prompt; `zsh -i -c exit` in
+  step 11 is the check that catches it.
 - `setup-symlinks.sh` creates links and prunes dead ones. Archiving a config
   used to leave its old symlink dangling; the `prune` step now removes any
   dangling link that points back into this repo. A dangling link pointing
-  somewhere else is left alone on purpose — the `find` in step 10 catches those.
+  somewhere else is left alone on purpose — the `find` in step 11 catches those.
