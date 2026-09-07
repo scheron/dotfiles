@@ -46,15 +46,45 @@ install chromium`.
 ## Existing machine
 
 ```sh
-git pull && ~/.dotfiles/setup-symlinks.sh
+git pull
+~/.dotfiles/setup-symlinks.sh
+~/.dotfiles/setup-macos.sh --check
+~/.dotfiles/setup-macos.sh
 ```
 
 Symlinked files pick up edits instantly; the script is only needed for **new**
-configs. It's idempotent — just always run it.
+configs. It's idempotent — just always run it. `setup-macos.sh --check` is a
+read-only preview and can be omitted once a machine is known to match.
 
 If the pull changed `herdr/config.toml` or `setup-herdr-plugins.sh`, run that
 one too. It needs herdr 0.8.2+ and says so if the version is short; restart the
 herdr server after it installs anything.
+
+### Raycast settings
+
+Raycast keeps command hotkeys in its encrypted application database, so they
+cannot be represented safely as `defaults` entries or symlinked dotfiles. Use
+Raycast's **Export Settings & Data** command, then **Import Settings & Data** on
+another Mac and select **Settings, Aliases & Hotkeys**. This carries the
+`Maximize` and `Restore` shortcuts. The export is an encrypted `.rayconfig`
+file; keep its passphrase outside this repository.
+
+Official instructions: <https://manual.raycast.com/import-export>
+
+### Native Spaces
+
+Application-to-Space bindings contain machine-specific Space UUIDs and cannot
+be copied safely between Macs. The current layout, for quick manual setup
+after creating the Desktops, is:
+
+- Main display, Desktop 1: Brave
+- Main display, Desktop 3: Ghostty
+- Main display, Desktop 5: Daily
+- Secondary display, Desktop 1: Zen
+
+Use each app's Dock menu: **Options → Assign To → This Desktop**. Everything
+else about Spaces, including `Option+1` through `Option+5`, is handled by
+`setup-macos.sh`.
 
 ## Adding a skill
 

@@ -120,8 +120,8 @@ explicitly at the end rather than attempting them:
   the right git identity per directory once the keys exist.
 - `gh auth login`, `claude` sign-in, `npm login` — all interactive; suggest the
   `!` prefix.
-- Accessibility / Input Monitoring approval in System Settings for AeroSpace and
-  Karabiner, and Karabiner's driver extension.
+- Accessibility / Input Monitoring approval in System Settings for Karabiner,
+  and Karabiner's driver extension.
 - MCP servers, per step 9.
 
 **11. Verify before reporting.** Do not report success off a script's exit code
@@ -153,13 +153,13 @@ playwright install chromium`).
 - macOS ships bash 3.2. In the setup scripts, expanding an empty array under
   `set -u` (`"${arr[@]}"`) is an unbound-variable error — spell the branches out
   or use `${arr[@]+"${arr[@]}"}`.
-- `setup-brew.sh` taps `nikitabobko/tap` and `scheron/tap` before installing.
-  Anything added from a tapped source needs its tap added there too, or a fresh
-  machine fails to resolve it.
+- `setup-brew.sh` taps `scheron/tap` before installing Daily. Anything added
+  from a tapped source needs its tap added there too, or a fresh machine fails
+  to resolve it.
 - Tapping is not enough: Homebrew 6 refuses to load casks from non-official
   taps until they are trusted, so `setup-brew.sh` also runs `brew trust --cask`
-  on `aerospace` and `daily`. A new cask from a tap needs a `trust` line too,
-  or the install dies with "Refusing to load cask ... from untrusted tap".
+  on `daily`. A new cask from a tap needs a `trust` line too, or the install
+  dies with "Refusing to load cask ... from untrusted tap".
 - Casks install with `--adopt` so an app already sitting in `/Applications` from
   a manual download is taken over instead of erroring.
 - `defaults write` settings live in `~/Library/Preferences`, outside this repo,

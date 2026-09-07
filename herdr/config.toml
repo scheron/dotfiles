@@ -11,7 +11,7 @@ name = "tokyo-night"          # matches nvim (tokyonight), dark
 new_cwd = "follow"            # new panes inherit the source pane/workspace cwd
 
 [keys]
-prefix = "ctrl+g"             # aerospace owns alt-*/cmd-* → prefix stays on ctrl, no conflicts
+prefix = "ctrl+g"             # dedicated global prefix; avoids ordinary app shortcuts
 open_worktree = "prefix+shift+o" # switch to an EXISTING worktree (I don't create by hand; use `herdr worktree create` if ever needed)
 goto = "prefix+m"                # moved off default prefix+g (freed for lazygit below)
 toggle_sidebar = "prefix+e"      # sidebar toggle, moved off default prefix+b (freed for agents below)

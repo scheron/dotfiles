@@ -79,14 +79,11 @@ brew update || printf '  warn    brew update failed, continuing\n'
 
 # --- Taps ---
 # These must come before the packages that live in them, or the install below
-# fails with "No available formula/cask". This was the single biggest
-# fresh-machine failure: aerospace and daily are both tapped.
+# fails with "No available formula/cask".
 echo "taps"
-tap nikitabobko/tap   # aerospace
 tap scheron/tap       # daily
 
 echo "trust"
-trust nikitabobko/tap/aerospace
 trust scheron/tap/daily
 
 # --- CLI tools ---
@@ -114,7 +111,6 @@ install formula swift-format swiftformat xcbeautify xcode-build-server
 echo "casks"
 install cask \
   ghostty \
-  aerospace \
   karabiner-elements \
   cursor \
   raycast \
