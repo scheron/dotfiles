@@ -70,68 +70,6 @@ pref() {
   fi
 }
 
-hotkey() {
-  # hotkey <symbolic-id> <label> <character-code> <key-code> <modifiers>
-  #
-  # AppleSymbolicHotKeys is a nested dictionary. Export/import lets plutil
-  # replace one typed entry without turning booleans and integers into strings
-  # or discarding shortcuts configured elsewhere on the machine.
-  local id="$1" label="$2" character="$3" key_code="$4" modifiers="$5"
-  local current expected temp_dir temp_plist rc
-
-  current="$(
-    defaults export com.apple.symbolichotkeys - 2>/dev/null |
-      plutil -extract "AppleSymbolicHotKeys.$id" json -o - - 2>/dev/null
-  )"
-  expected="{\"enabled\":true,\"value\":{\"type\":\"standard\",\"parameters\":[$character,$key_code,$modifiers]}}"
-
-  if [ "$current" = "$expected" ]; then
-    printf '  ok      %s\n' "$label"
-    return
-  fi
-
-  DIFFERENT=$((DIFFERENT + 1))
-  if [ "$CHECK_ONLY" -eq 1 ]; then
-    printf '  differs %s\n' "$label"
-    return
-  fi
-
-  temp_dir="$(mktemp -d -t dotfiles-symbolichotkeys)" || {
-    printf '  FAILED  %s (could not create temporary directory)\n' "$label"
-    FAILED+=("hotkey $label")
-    return
-  }
-  temp_plist="$temp_dir/preferences.plist"
-  rc=0
-
-  if ! defaults export com.apple.symbolichotkeys "$temp_plist" 2>/dev/null; then
-    plutil -create xml1 "$temp_plist" || rc=$?
-    if [ "$rc" -eq 0 ]; then
-      plutil -insert AppleSymbolicHotKeys -dictionary "$temp_plist" || rc=$?
-    fi
-  fi
-  if [ "$rc" -eq 0 ]; then
-    if ! plutil -replace "AppleSymbolicHotKeys.$id" -json "$expected" \
-        "$temp_plist" 2>/dev/null; then
-      plutil -insert "AppleSymbolicHotKeys.$id" -json "$expected" \
-        "$temp_plist" || rc=$?
-    fi
-  fi
-  if [ "$rc" -eq 0 ]; then
-    defaults import com.apple.symbolichotkeys "$temp_plist" || rc=$?
-  fi
-  rm -f "$temp_plist"
-  rmdir "$temp_dir" 2>/dev/null || true
-
-  if [ "$rc" -eq 0 ]; then
-    printf '  set     %s\n' "$label"
-    CHANGED=$((CHANGED + 1))
-  else
-    printf '  FAILED  %s\n' "$label"
-    FAILED+=("hotkey $label")
-  fi
-}
-
 # --- Sound ---
 # Silence the system alert beep and UI sound effects. The alert volume and UI
 # effects are separate controls in macOS, so set both rather than muting the
@@ -153,17 +91,6 @@ pref -g NSAutomaticPeriodSubstitutionEnabled bool false
 pref -g NSAutomaticQuoteSubstitutionEnabled bool false
 pref -g NSAutomaticSpellingCorrectionEnabled bool false
 
-# These are the current shortcuts under System Settings > Keyboard > Keyboard
-# Shortcuts. IDs and key codes are Apple's stable-but-undocumented symbolic
-# hotkey representation. Modifier 524288 is Option.
-echo "keyboard shortcuts"
-hotkey 9   "Option+N: focus active or next window" 110 45 524288
-hotkey 118 "Option+1: switch to Desktop 1"          49 18 524288
-hotkey 119 "Option+2: switch to Desktop 2"          50 19 524288
-hotkey 120 "Option+3: switch to Desktop 3"          51 20 524288
-hotkey 121 "Option+4: switch to Desktop 4"          52 21 524288
-hotkey 122 "Option+5: switch to Desktop 5"          53 23 524288
-
 # --- Windows ---
 # Ctrl+Cmd+drag anywhere inside a window moves it, instead of having to grab
 # the title bar; Ctrl+Cmd+right-drag resizes from any edge. The modifier is
@@ -184,7 +111,6 @@ pref com.apple.dock tilesize float 47
 pref com.apple.dock largesize float 62
 pref com.apple.dock launchanim bool false
 pref com.apple.dock mru-spaces bool false
-pref com.apple.dock expose-group-apps bool true
 
 echo
 if [ ${#FAILED[@]} -ne 0 ]; then

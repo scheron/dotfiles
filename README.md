@@ -71,21 +71,6 @@ file; keep its passphrase outside this repository.
 
 Official instructions: <https://manual.raycast.com/import-export>
 
-### Native Spaces
-
-Application-to-Space bindings contain machine-specific Space UUIDs and cannot
-be copied safely between Macs. The current layout, for quick manual setup
-after creating the Desktops, is:
-
-- Main display, Desktop 1: Brave
-- Main display, Desktop 3: Ghostty
-- Main display, Desktop 5: Daily
-- Secondary display, Desktop 1: Zen
-
-Use each app's Dock menu: **Options → Assign To → This Desktop**. Everything
-else about Spaces, including `Option+1` through `Option+5`, is handled by
-`setup-macos.sh`.
-
 ## Adding a skill
 
 Drop the folder into `claude/skills/` and re-run `setup-symlinks.sh`.

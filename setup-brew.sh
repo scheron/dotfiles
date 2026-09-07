@@ -28,10 +28,11 @@ tap() {
 trust() {
   # trust <tap/cask>...
   #
-  # Homebrew 6 refuses to load a cask from a non-official tap until it is
-  # trusted, so this must run after `tap` and before `install`. Trust is
-  # per-cask rather than per-tap (`brew trust <tap>` also covers whatever is
-  # added to that tap later). Re-trusting is a no-op that exits 0.
+  # Homebrew 6 validates every definition while adding a tap. Record trust
+  # before `tap`, otherwise old versioned casks in the repository can make the
+  # tap itself fail before the wanted cask is reached. Trust is per-cask rather
+  # than per-tap (`brew trust <tap>` is broader and also trusts future items).
+  # Re-trusting is a no-op that exits 0.
   local c
   for c in "$@"; do
     if brew trust --cask "$c"; then
@@ -77,14 +78,17 @@ install() {
 
 brew update || printf '  warn    brew update failed, continuing\n'
 
-# --- Taps ---
-# These must come before the packages that live in them, or the install below
-# fails with "No available formula/cask".
-echo "taps"
-tap scheron/tap       # daily
-
 echo "trust"
+trust nikitabobko/tap/aerospace
+trust mediosz/tap/swipeaerospace
 trust scheron/tap/daily
+
+# --- Taps ---
+# Trust must be recorded first; taps still must precede package installation.
+echo "taps"
+tap nikitabobko/tap   # aerospace
+tap mediosz/tap       # swipeaerospace
+tap scheron/tap       # daily
 
 # --- CLI tools ---
 # go builds the herdr auto-title plugin, whose `[[build]]` step is a bare
@@ -111,6 +115,8 @@ install formula swift-format swiftformat xcbeautify xcode-build-server
 echo "casks"
 install cask \
   ghostty \
+  aerospace \
+  swipeaerospace \
   karabiner-elements \
   cursor \
   raycast \
