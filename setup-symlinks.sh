@@ -74,6 +74,10 @@ echo "git";       link .gitconfig "$HOME/.gitconfig"
 echo "starship";  link starship/starship.toml "$HOME/.config/starship.toml"
 echo "ghostty";   link ghostty/config "$HOME/.config/ghostty/config"
 echo "herdr";     link herdr/config.toml "$HOME/.config/herdr/config.toml"
+                  # The auto-title plugin reads a fixed macOS path of its
+                  # own, not herdr's plugin config dir.
+                  link herdr/auto-title/config.env \
+                       "$HOME/Library/Application Support/herdr-auto-title/config.env"
 echo "hunk";      link hunk/config.toml "$HOME/.config/hunk/config.toml"
 echo "aerospace"; link aerospace/aerospace.toml "$HOME/.aerospace.toml"
 echo "karabiner"; link karabiner/karabiner.json "$HOME/.config/karabiner/karabiner.json"

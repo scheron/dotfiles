@@ -167,7 +167,12 @@ playwright install chromium`).
   `setup-herdr-plugins.sh` is their only record. A plugin's install id is not
   derivable from its repo name — `persiyanov/herdr-reviewr` installs as
   `persiyanov.reviewr` — so adding one there means reading the id out of its
-  `herdr-plugin.toml`.
+  `herdr-plugin.toml`. A plugin's *settings* are a separate question: auto-title
+  reads `~/Library/Application Support/herdr-auto-title/config.env` — a fixed
+  path of its own, not the config dir `herdr plugin list` prints — and that one
+  file is symlinked from `herdr/auto-title/`, so it does come back. It is read
+  once, when the server starts the plugin, so a change needs `herdr server stop`
+  and a restart.
 - fnm holds no Node until `fnm install --lts` runs, and nothing in this repo
   restores it — step 6 is its only record. `.zshrc` calls `fnm use` on every
   `cd`, so an empty fnm turns into an error on every prompt; `zsh -i -c exit` in
