@@ -60,17 +60,6 @@ If the pull changed `herdr/config.toml` or `setup-herdr-plugins.sh`, run that
 one too. It needs herdr 0.8.2+ and says so if the version is short; restart the
 herdr server after it installs anything.
 
-### Raycast settings
-
-Raycast keeps command hotkeys in its encrypted application database, so they
-cannot be represented safely as `defaults` entries or symlinked dotfiles. Use
-Raycast's **Export Settings & Data** command, then **Import Settings & Data** on
-another Mac and select **Settings, Aliases & Hotkeys**. This carries the
-`Maximize` and `Restore` shortcuts. The export is an encrypted `.rayconfig`
-file; keep its passphrase outside this repository.
-
-Official instructions: <https://manual.raycast.com/import-export>
-
 ## Adding a skill
 
 Drop the folder into `claude/skills/` and re-run `setup-symlinks.sh`.
