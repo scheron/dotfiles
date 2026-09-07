@@ -1,13 +1,14 @@
 #!/usr/bin/env bash
 #
-# Install the herdr plugins this config binds keys to.
+# Install the herdr plugins this setup uses.
 #   ~/.dotfiles/setup-herdr-plugins.sh
 #
 # herdr keeps plugins under ~/.config/herdr/plugins, which is not symlinked
 # and does not come back from a `git pull`. Without this step herdr/config.toml
-# binds prefix+d and prefix+shift+e to plugins that are not installed, and the
-# keys silently do nothing. This script is the only record of which plugins
-# those are.
+# binds prefix+d to a plugin that is not installed and the key silently does
+# nothing, and the ones that bind no key at all — the sidebar segments, the
+# palette, the sleep timer — are simply absent, with nothing to notice. This
+# script is the only record of which plugins those are.
 #
 # Idempotent: an already-installed plugin is reported and skipped.
 #
@@ -19,7 +20,7 @@ set -uo pipefail
 FAILED=()
 INSTALLED=0
 
-MIN_HERDR=0.8.2   # auto-title's min_herdr_version, the highest of the three
+MIN_HERDR=0.8.2   # auto-title's min_herdr_version, the highest of the five
 
 # --- Preconditions ---
 
@@ -28,12 +29,19 @@ if ! command -v herdr >/dev/null; then
   exit 1
 fi
 
-# auto-title's [[build]] step is a bare `go build`. The other two download a
-# prebuilt binary from their GitHub release instead, so go is the only
-# toolchain needed here.
+# Toolchains. auto-title's [[build]] step is a bare `go build`, agent-quota's is
+# `cargo build --release`; the rest download a prebuilt binary from their GitHub
+# release or are plain bash. go comes from setup-brew.sh, so a missing one is a
+# bug worth stopping for. cargo does not — it arrives with rustup, outside brew
+# and outside this repo — so it only warns and lets the other four land.
 if ! command -v go >/dev/null; then
   echo "go is not on PATH — run setup-brew.sh first." >&2
   exit 1
+fi
+
+if ! command -v cargo >/dev/null; then
+  echo "note: cargo is not on PATH, so herdr-agent-quota will fail to build." >&2
+  echo "      install rustup from https://rustup.rs, then re-run for that one." >&2
 fi
 
 have="$(herdr --version | awk '{print $2}')"
@@ -81,9 +89,11 @@ install_plugin() {
 }
 
 echo "plugins"
-install_plugin persiyanov.reviewr persiyanov/herdr-reviewr    # prefix+d
-install_plugin chmarax.herdr-nvim ChmaraX/herdr-nvim          # prefix+shift+e
-install_plugin herdr.auto-title   kryptamine/herdr-auto-title # tab titles
+install_plugin persiyanov.reviewr    persiyanov/herdr-reviewr        # prefix+d
+install_plugin herdr.auto-title      kryptamine/herdr-auto-title     # tab titles
+install_plugin herdr-agent-quota     levi-qiao/herdr-agent-quota     # quota in the sidebar (cargo)
+install_plugin jt.command-palette    JanTvrdik/herdr-command-palette # fzf over every plugin action
+install_plugin scheron.want-to-sleep scheron/herdr-want-to-sleep     # sleeps the Mac once agents idle
 
 echo
 if [ ${#FAILED[@]} -ne 0 ]; then
