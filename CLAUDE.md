@@ -100,8 +100,8 @@ nvim --headless "+Lazy! sync" +qa
 
 herdr keeps plugins under `~/.config/herdr/plugins`, outside this repo and
 outside every symlink, so without this step `herdr/config.toml` binds prefix+d
-and prefix+shift+e to plugins that are not installed and the keys quietly do
-nothing. It runs fine with no herdr server up, which is the fresh-machine case.
+to a plugin that is not installed and the key quietly does nothing. It runs
+fine with no herdr server up, which is the fresh-machine case.
 It refuses only when a *running* server is older than the herdr CLI — what
 `brew upgrade herdr` leaves behind on a machine that already had herdr open;
 stop that server, start `herdr` again, re-run. Either way restart herdr once at

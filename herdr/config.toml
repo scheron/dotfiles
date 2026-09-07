@@ -56,14 +56,6 @@ type = "plugin_action"
 command = "persiyanov.reviewr.toggle"
 description = "Review changes in reviewr"
 
-# Same story: herdr-nvim declares its sidebar pane as placement = "split", so
-# this can only ever be a full-height split — the popup above is a plain nvim.
-[[keys.command]]              # shift+e: the nvim sidebar, next to prefix+e
-key = "prefix+shift+e"
-type = "plugin_action"
-command = "chmarax.herdr-nvim.toggle"
-description = "nvim sidebar"
-
 [ui]
 accent = "#7aa2f7"            # tokyo-night blue for borders/highlights/nav
 agent_panel_sort = "priority" # attention queue: blocked/done agents float to the top
