@@ -153,11 +153,10 @@ playwright install chromium`).
 - macOS ships bash 3.2. In the setup scripts, expanding an empty array under
   `set -u` (`"${arr[@]}"`) is an unbound-variable error — spell the branches out
   or use `${arr[@]+"${arr[@]}"}`.
-- `setup-brew.sh` records cask trust, then taps `nikitabobko/tap`,
-  `mediosz/tap`, and `scheron/tap` before installing. Homebrew 6 validates
-  definitions while adding a tap, so trust must come first; otherwise an old
-  versioned cask can make `brew tap` fail. Anything added from a tapped source
-  needs both entries.
+- `setup-brew.sh` records cask trust, then taps `nikitabobko/tap` and
+  `scheron/tap` before installing. Homebrew 6 validates definitions while adding
+  a tap, so trust must come first; otherwise an old versioned cask can make
+  `brew tap` fail. Anything added from a tapped source needs both entries.
 - Casks install with `--adopt` so an app already sitting in `/Applications` from
   a manual download is taken over instead of erroring.
 - `defaults write` settings live in `~/Library/Preferences`, outside this repo,

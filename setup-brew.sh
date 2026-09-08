@@ -80,14 +80,12 @@ brew update || printf '  warn    brew update failed, continuing\n'
 
 echo "trust"
 trust nikitabobko/tap/aerospace
-trust mediosz/tap/swipeaerospace
 trust scheron/tap/daily
 
 # --- Taps ---
 # Trust must be recorded first; taps still must precede package installation.
 echo "taps"
 tap nikitabobko/tap   # aerospace
-tap mediosz/tap       # swipeaerospace
 tap scheron/tap       # daily
 
 # --- CLI tools ---
@@ -116,7 +114,6 @@ echo "casks"
 install cask \
   ghostty \
   aerospace \
-  swipeaerospace \
   karabiner-elements \
   cursor \
   raycast \

@@ -14,10 +14,6 @@ on-focused-monitor-changed = ['move-mouse window-lazy-center']
 # Notify Sketchybar about workspace change
 exec-on-workspace-change = ['/bin/bash', '-c', 'sketchybar --trigger aerospace_workspace_change FOCUSED_WORKSPACE=$AEROSPACE_FOCUSED_WORKSPACE' ]
 
-# Enable touchpad swipe workspaceses
-# aerospace workspace "$(aerospace list-workspaces --monitor mouse --visible)" && aerospace workspace next
-# aerospace workspace "$(aerospace list-workspaces --monitor mouse --visible)" && aerospace workspace prev
-
 enable-normalization-flatten-containers = true
 enable-normalization-opposite-orientation-for-nested-containers = true
 
