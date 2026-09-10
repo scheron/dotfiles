@@ -9,6 +9,8 @@ name = "tokyo-night"          # matches nvim (tokyonight), dark
 
 [terminal]
 new_cwd = "follow"            # new panes inherit the source pane/workspace cwd
+kitty_graphics = true         # pass the Kitty graphics protocol through to Ghostty, so
+                              # serie renders its commit graph as a real image
 
 [keys]
 prefix = "ctrl+g"             # aerospace owns alt-*/cmd-* → prefix stays on ctrl, no conflicts
@@ -37,6 +39,14 @@ key = "prefix+g"
 type = "popup"
 command = "lazygit"
 description = "Git UI (lazygit)"
+width = "90%"
+height = "90%"
+
+[[keys.command]]              # shift+g for the graph: serie next to lazygit on g
+key = "prefix+shift+g"
+type = "popup"
+command = "serie"
+description = "Commit graph (serie)"
 width = "90%"
 height = "90%"
 
