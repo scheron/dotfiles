@@ -6,20 +6,10 @@ return {
     "hrsh7th/cmp-path",
     "onsails/lspkind.nvim",
     "nvim-tree/nvim-web-devicons",
-    {
-      "supermaven-inc/supermaven-nvim",
-      event = "VimEnter",
-      config = function()
-        require("supermaven-nvim").setup {
-          disable_keymaps = true,
-        }
-      end,
-    },
   },
   config = function()
     local cmp = require "cmp"
     local devicons = require "nvim-web-devicons"
-    local supermaven = require "supermaven-nvim.completion_preview"
 
     local kind_icons = {
       Text = "",
@@ -47,7 +37,6 @@ return {
       Event = "",
       Operator = "",
       TypeParameter = "",
-      Supermaven = "",
     }
 
     cmp.setup {
@@ -55,8 +44,6 @@ return {
         ["<Tab>"] = cmp.mapping(function(fallback)
           if cmp.visible() then
             cmp.confirm { select = true }
-          elseif supermaven.has_suggestion() then
-            supermaven.on_accept_suggestion()
           else
             fallback()
           end
@@ -73,12 +60,7 @@ return {
 
         ["<C-i>"] = cmp.mapping(function(fallback)
           if cmp.visible() then
-            if supermaven.has_suggestion() then
-              supermaven.on_accept_suggestion()
-              fallback()
-            else
-              fallback()
-            end
+            fallback()
           else
             cmp.complete()
           end
@@ -86,7 +68,6 @@ return {
       },
 
       sources = cmp.config.sources {
-        { name = "supermaven" },
         { name = "buffer" },
         { name = "nvim_lsp" },
         { name = "path" },
@@ -107,7 +88,6 @@ return {
             buffer = "[Buffer]",
             nvim_lsp = "[LSP]",
             path = "[Path]",
-            supermaven = "[AI]",
           })[entry.source.name]
 
           return vim_item
