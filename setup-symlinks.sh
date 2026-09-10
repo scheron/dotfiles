@@ -79,6 +79,7 @@ echo "herdr";     link herdr/config.toml "$HOME/.config/herdr/config.toml"
                   link herdr/auto-title/config.env \
                        "$HOME/Library/Application Support/herdr-auto-title/config.env"
 echo "hunk";      link hunk/config.toml "$HOME/.config/hunk/config.toml"
+echo "serie";     link serie/config.toml "$HOME/.config/serie/config.toml"
 echo "aerospace"; link aerospace/aerospace.toml "$HOME/.aerospace.toml"
 echo "karabiner"; link karabiner/karabiner.json "$HOME/.config/karabiner/karabiner.json"
 echo "nvim";      link nvim "$HOME/.config/nvim"

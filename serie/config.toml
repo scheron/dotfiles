@@ -1,0 +1,85 @@
+# serie — commit graph TUI. Launched bare (no flags) from herdr's
+# prefix+shift+g popup, so this file is the only record of its settings.
+#
+# Palette: tokyonight, taken from base46's tokyonight theme to match nvim
+# (chadrc.lua) and herdr's theme. Every ANSI name serie ships as a default is
+# mapped 1:1 to its tokyonight hex; serie's "reset" defaults stay "reset" so
+# Ghostty's background-opacity 0.7 + blur shows through instead of being
+# painted over.
+
+[core.option]
+protocol = "auto"          # herdr passes the Kitty graphics protocol through
+                           # to Ghostty, so the graph renders as a real image
+order = "chrono"           # chrono | topo — topo groups a branch's commits
+                           # together instead of interleaving them by date
+graph_width = "auto"       # auto | double | single
+graph_style = "rounded"    # rounded | angular
+initial_selection = "latest"
+
+[ui.list]
+# serie has no relative ("2 hours ago") format — date_format is strftime only,
+# so the date column carries the clock time instead. date_width must match the
+# rendered width or the column is truncated: "%H:%M %d.%m.%Y" is 16.
+# Compact alternative, drops the year: "%H:%M %d.%m" with date_width = 11.
+date_format = "%H:%M %d.%m.%Y"
+date_width = 16
+date_local = true
+# Author column: "Oleg 👾" is 7 cells (the emoji is double-width), so the
+# default 20 left a wide gap before the hash. 12 keeps headroom for other
+# committers in work repos while handing the rest back to the subject, which
+# flexes to fill whatever the fixed columns don't take — subject_min_width is
+# only a floor, not the actual width.
+name_width = 12
+subject_min_width = 20
+
+[graph]
+row_image_width = "compact"
+
+[graph.color]
+# Lane colors, in serie's default hue order (red, green, yellow, blue,
+# purple, cyan) — the One Dark hexes swapped for their tokyonight twins.
+branches = ["#f7768e", "#9ece6a", "#e0af68", "#7aa2f7", "#bb9af7", "#7dcfff"]
+edge = "#00000000"         # transparent — the graph is an image drawn over
+background = "#00000000"   # the terminal, and Ghostty's blur must show through
+
+[color]
+fg = "reset"
+bg = "reset"               # keep reset: a solid hex here kills the blur
+list_selected_fg = "#c0caf5"
+list_selected_bg = "#414868"
+list_ref_paren_fg = "#e0af68"
+list_ref_branch_fg = "#9ece6a"
+list_ref_remote_branch_fg = "#f7768e"
+list_ref_tag_fg = "#e0af68"
+list_ref_stash_fg = "#bb9af7"
+list_head_fg = "#7dcfff"
+list_subject_fg = "reset"
+list_name_fg = "#7dcfff"
+list_hash_fg = "#e0af68"
+list_date_fg = "#bb9af7"
+list_match_fg = "#1a1b26"
+list_match_bg = "#e0af68"
+detail_label_fg = "reset"
+detail_name_fg = "reset"
+detail_date_fg = "reset"
+detail_email_fg = "#7aa2f7"
+detail_hash_fg = "reset"
+detail_ref_branch_fg = "#9ece6a"
+detail_ref_remote_branch_fg = "#f7768e"
+detail_ref_tag_fg = "#e0af68"
+detail_file_change_add_fg = "#9ece6a"
+detail_file_change_modify_fg = "#e0af68"
+detail_file_change_delete_fg = "#f7768e"
+detail_file_change_move_fg = "#bb9af7"
+ref_selected_fg = "#c0caf5"
+ref_selected_bg = "#414868"
+help_block_title_fg = "#9ece6a"
+help_key_fg = "#e0af68"
+virtual_cursor_fg = "reset"
+status_input_fg = "reset"
+status_input_transient_fg = "#565f89"
+status_info_fg = "#7dcfff"
+status_success_fg = "#9ece6a"
+status_warn_fg = "#e0af68"
+status_error_fg = "#f7768e"
+divider_fg = "#565f89"
