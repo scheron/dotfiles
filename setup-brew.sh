@@ -93,7 +93,7 @@ tap scheron/tap       # daily
 # `go build` — the other herdr plugins fetch a prebuilt binary instead.
 echo "cli"
 install formula \
-  git gh lazygit hunk \
+  git gh lazygit serie hunk \
   neovim \
   eza fd fzf ripgrep z \
   starship herdr \

@@ -43,6 +43,7 @@ alias tm=tmux
 alias vim="nvim"
 alias pn=pnpm
 alias gg=lazygit
+alias ggh=serie
 alias h=herdr
 alias aty="antigravity"
 
