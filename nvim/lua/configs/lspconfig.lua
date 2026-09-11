@@ -91,14 +91,15 @@ vim.lsp.enable { "ts_ls", "tsc", "vue_ls" }
 -- custom tags to tsserver; no colourscheme defines the group yet.
 vim.api.nvim_set_hl(0, "@lsp.type.component", { link = "@type" })
 
+-- Emmet expands HTML abbreviations, so it only earns its place where markup can
+-- appear. On plain .ts/.js it contributes nothing but noise in the completion
+-- menu and in the statusline.
 vim.lsp.config("emmet_language_server", {
   filetypes = {
     "html",
     "css",
     "scss",
     "less",
-    "javascript",
-    "typescript",
     "javascriptreact",
     "typescriptreact",
     "vue",
