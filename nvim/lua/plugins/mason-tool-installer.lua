@@ -16,5 +16,6 @@ return {
       "prettier",
     },
     run_on_start = true,
+    auto_update = true,
   },
 }
