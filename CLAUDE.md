@@ -180,3 +180,23 @@ playwright install chromium`).
   used to leave its old symlink dangling; the `prune` step now removes any
   dangling link that points back into this repo. A dangling link pointing
   somewhere else is left alone on purpose — the `find` in step 11 catches those.
+- nvim-treesitter is pinned to its `main` branch, which needs Neovim 0.12+ and
+  `tree-sitter-cli`; `setup-brew.sh` supplies both. On that branch
+  `ensure_installed` is **not** a setup option — `setup()` takes only
+  `install_dir` — so the spec's own `config` installs the missing parsers, and
+  that install is what copies each language's queries next to them. A parser
+  whose queries never landed still attaches a highlighter, and it paints
+  nothing; there is no regex fallback either, because `"syntax"` sits in
+  `configs/lazy.lua`'s `disabled_plugins`. The symptom is a file with no
+  highlighting at all, and `:TSUpdate` is not the fix — a reinstall is.
+- Vue and TypeScript 7 do not mix. TS 7 is the native Go compiler: it ships no
+  `tsserver.js` and no programmatic API, so neither `ts_ls` nor
+  `@vue/typescript-plugin` can drive it, and Volar is pinned to the TypeScript 6
+  line until TS 7.1. `configs/lspconfig.lua` therefore picks per project — a
+  project whose `node_modules/typescript` has no `lib/tsserver.js` and no `vue`
+  dependency gets `tsc --lsp`, everything else gets `ts_ls` with the Vue plugin.
+  The two must stay mutually exclusive; attached together they double-report
+  every diagnostic.
+- `mason-tool-installer` defaults to `auto_update = false`, which quietly froze
+  the language servers at whatever version first got installed. It is `true`
+  here, so `ensure_installed` means current rather than merely present.
