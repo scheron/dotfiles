@@ -29,9 +29,35 @@ M.base46 = {
   },
 }
 
+-- NvChad's statusline reports the first client by id, which on a .tsx or .vue
+-- buffer is whichever helper server started fastest rather than the one doing
+-- the work. List every attached client, helpers last.
+local lsp_helpers = { emmet_language_server = true, tailwindcss = true }
+
+local function lsp_status()
+  local bufnr = vim.api.nvim_win_get_buf(vim.g.statusline_winid or 0)
+  local names, helpers = {}, {}
+
+  for _, client in ipairs(vim.lsp.get_clients { bufnr = bufnr }) do
+    table.insert(lsp_helpers[client.name] and helpers or names, client.name)
+  end
+
+  vim.list_extend(names, helpers)
+
+  if #names == 0 then
+    return ""
+  end
+
+  local label = (vim.o.columns > 100 and "   LSP ~ " .. table.concat(names, ", ") .. " ") or "   LSP "
+  return "%#St_Lsp#" .. label
+end
+
 M.ui = {
   statusline = {
     theme = "vscode_colored",
+    modules = {
+      lsp = lsp_status,
+    },
   },
 
   tabufline = {
